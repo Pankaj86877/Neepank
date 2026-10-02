@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import QRCode from "qrcode";
 import Peer, { DataConnection } from "peerjs";
-
 
 export const DataTransferSection = () => {
   const [role, setRole] = useState<"sender" | "receiver" | null>(null);
@@ -14,14 +13,18 @@ export const DataTransferSection = () => {
   const [filesToSend, setFilesToSend] = useState<File[]>([]);
   const [isSendSetup, setIsSendSetup] = useState(true);
   const [transferId, setTransferId] = useState("");
-  const [peerConnected, setPeerConnected] = useState(false);
+  
+  const [connectedReceiver, setConnectedReceiver] = useState<{ name: string; conn: DataConnection } | null>(null);
+  const [sendProgress, setSendProgress] = useState<number>(0);
+  const [isSending, setIsSending] = useState(false);
   
   // Receiver state
   const [receiveCode, setReceiveCode] = useState("");
   const [receiveName, setReceiveName] = useState("");
   const [receiveState, setReceiveState] = useState<"setup" | "connecting" | "active" | "done">("setup");
   const [receiveProgress, setReceiveProgress] = useState(0);
-  const [receiveMeta, setReceiveMeta] = useState<{ transferName?: string; senderName?: string; files?: unknown[] } | null>(null);
+  const [receiveMeta, setReceiveMeta] = useState<{ transferName?: string; senderName?: string; files?: any[] } | null>(null);
+  const [receivedFiles, setReceivedFiles] = useState<{name: string, url: string}[]>([]);
 
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
   const peerRef = useRef<Peer | null>(null);
@@ -42,34 +45,89 @@ export const DataTransferSection = () => {
     setRole("sender");
     setIsSendSetup(false);
 
-    if (qrCanvasRef.current) {
-      QRCode.toCanvas(qrCanvasRef.current, tId, {
-        width: 100, margin: 2, color: { dark: "#000", light: "#fff" }
-      });
-    }
+    setTimeout(() => {
+      if (qrCanvasRef.current) {
+        QRCode.toCanvas(qrCanvasRef.current, tId, {
+          width: 100, margin: 2, color: { dark: "#000", light: "#fff" }
+        });
+      }
+    }, 100);
 
     const peer = new Peer(tId, { debug: 2 });
     peerRef.current = peer;
     
     peer.on("connection", (conn) => {
       connRef.current = conn;
-      setPeerConnected(true);
-      conn.on("data", (data: unknown) => {
-        const d = data as { type: string; [key: string]: unknown };
-        if (d && d.type === "request-meta") {
-          conn.send({
-            type: "meta",
-            transferName: transferName || "File Transfer",
-            senderName,
-            files: filesToSend.map(f => ({ name: f.name, size: f.size, type: f.type }))
-          });
+      
+      conn.on("data", (data: any) => {
+        if (data && data.type === "request-access") {
+          setConnectedReceiver({ name: data.name || "Unknown", conn });
         }
       });
+      
+      conn.on("close", () => {
+        setConnectedReceiver(null);
+      });
     });
+  };
+  
+  const approveAndSend = async () => {
+    if (!connectedReceiver || !connRef.current) return;
+    const conn = connRef.current;
+    
+    setIsSending(true);
+    setSendProgress(10);
+    
+    // 1. Send Meta
+    conn.send({
+      type: "meta",
+      transferName: transferName || "File Transfer",
+      senderName,
+      files: filesToSend.map(f => ({ name: f.name, size: f.size, type: f.type }))
+    });
+    
+    // 2. Mock progress for UI (actual sending of large files is fast via datachannel, 
+    // but reading them takes a moment. For demo, we chunk or just send.)
+    let currentProgress = 20;
+    const interval = setInterval(() => {
+      currentProgress += 10;
+      if (currentProgress >= 90) clearInterval(interval);
+      setSendProgress(currentProgress);
+      conn.send({ type: "progress", progress: currentProgress });
+    }, 200);
+    
+    // 3. Read and Send files
+    try {
+      for (const file of filesToSend) {
+        const arrayBuffer = await file.arrayBuffer();
+        conn.send({
+          type: "file-data",
+          name: file.name,
+          fileType: file.type,
+          data: arrayBuffer
+        });
+      }
+      
+      clearInterval(interval);
+      setSendProgress(100);
+      conn.send({ type: "progress", progress: 100 });
+      conn.send({ type: "done" });
+      
+      setTimeout(() => {
+        setIsSending(false);
+      }, 2000);
+      
+    } catch (err) {
+      console.error("Error sending files:", err);
+      alert("Failed to send files.");
+      setIsSending(false);
+    }
   };
 
   const startReceiveFlow = () => {
     if (!receiveCode) return alert("Please enter a transfer code.");
+    if (!receiveName) return alert("Please enter your name.");
+    
     setRole("receiver");
     setReceiveState("connecting");
 
@@ -81,14 +139,30 @@ export const DataTransferSection = () => {
       connRef.current = conn;
       
       conn.on("open", () => {
-        setReceiveState("active");
-        conn.send({ type: "request-meta" });
+        conn.send({ type: "request-access", name: receiveName });
       });
 
-      conn.on("data", (data: unknown) => {
-        const d = data as { type: string, [key: string]: unknown };
-        if (d && d.type === "meta") {
-          setReceiveMeta(d as { transferName?: string; senderName?: string; files?: unknown[] });
+      conn.on("data", (data: any) => {
+        if (data.type === "meta") {
+          setReceiveState("active");
+          setReceiveMeta(data);
+        } else if (data.type === "progress") {
+          setReceiveProgress(data.progress);
+        } else if (data.type === "file-data") {
+          // Reconstruct file
+          const blob = new Blob([data.data], { type: data.fileType });
+          const url = URL.createObjectURL(blob);
+          setReceivedFiles(prev => [...prev, { name: data.name, url }]);
+        } else if (data.type === "done") {
+          setReceiveState("done");
+          setReceiveProgress(100);
+        }
+      });
+      
+      conn.on("close", () => {
+        if (receiveState !== "done") {
+          alert("Connection lost");
+          cancelTransfer();
         }
       });
     });
@@ -102,7 +176,10 @@ export const DataTransferSection = () => {
     setFilesToSend([]);
     setTransferId("");
     setReceiveMeta(null);
-    setPeerConnected(false);
+    setConnectedReceiver(null);
+    setSendProgress(0);
+    setIsSending(false);
+    setReceivedFiles([]);
   };
 
   const handleReset = () => {
@@ -170,8 +247,8 @@ export const DataTransferSection = () => {
                 )}
               </div>
             ) : (
-              <div style={{ display: 'flex', gap: '32px' }}>
-                <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
+                <div style={{ flex: '1 1 300px' }}>
                   <div style={{ padding: "16px", borderRadius: "8px", background: 'var(--bg)', border: '1px solid var(--line)', marginBottom: "20px" }}>
                     <div className="lb" style={{ marginBottom: "8px" }}>Transfer Info</div>
                     <div style={{ fontWeight: 600, marginBottom: "8px", fontSize: "16px", color: "var(--brand)" }}>{transferName || "File Transfer"}</div>
@@ -181,8 +258,37 @@ export const DataTransferSection = () => {
                   
                   <div className="lb" style={{ marginBottom: "12px" }}>Receivers</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                    {peerConnected ? (
-                      <div style={{ fontSize: "13px", color: "#43E098", background: 'rgba(67, 224, 152, 0.1)', padding: '12px', borderRadius: '8px' }}>Peer Connected! (Transfer logic simplified in migration)</div>
+                    {connectedReceiver ? (
+                      <div style={{ background: 'var(--bg)', border: '1px solid var(--line)', padding: '16px', borderRadius: '8px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: isSending ? '12px' : '0' }}>
+                          <div>
+                            <div style={{ fontWeight: 600, color: '#43E098' }}>{connectedReceiver.name}</div>
+                            <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '4px' }}>Ready to receive</div>
+                          </div>
+                          {!isSending && sendProgress === 0 && (
+                            <button onClick={approveAndSend} style={{ background: 'var(--brand)', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '6px', fontWeight: 600, cursor: 'pointer' }}>
+                              Accept & Send
+                            </button>
+                          )}
+                        </div>
+                        
+                        {isSending && (
+                          <div>
+                            <div style={{ height: "6px", background: "var(--line)", borderRadius: "4px", overflow: "hidden" }}>
+                              <div style={{ height: "100%", width: `${sendProgress}%`, background: "var(--brand)", borderRadius: "4px", transition: "width 0.2s ease" }}></div>
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "8px", fontSize: "12px", fontFamily: "var(--font-mono)", color: 'var(--muted)' }}>
+                              <span>Sending data...</span>
+                              <span>{sendProgress}%</span>
+                            </div>
+                          </div>
+                        )}
+                        {sendProgress === 100 && !isSending && (
+                          <div style={{ marginTop: '12px', fontSize: '13px', color: '#43E098', fontWeight: 600 }}>
+                            Transfer Complete!
+                          </div>
+                        )}
+                      </div>
                     ) : (
                       <div className="checkered-bg" style={{ fontSize: "13px", textAlign: "center", padding: "20px 0", borderRadius: '8px', border: '1px solid var(--line)' }}>Waiting for connections...</div>
                     )}
@@ -191,7 +297,7 @@ export const DataTransferSection = () => {
                   <button className="pb" onClick={cancelTransfer} style={{ marginTop: "24px", color: '#ff3b30', borderColor: 'rgba(255, 59, 48, 0.5)' }}>Cancel Transfer</button>
                 </div>
 
-                <div style={{ width: '200px', textAlign: "center", background: 'var(--bg)', border: '1px solid var(--line)', borderRadius: '12px', padding: '24px' }}>
+                <div style={{ width: '200px', textAlign: "center", background: 'var(--bg)', border: '1px solid var(--line)', borderRadius: '12px', padding: '24px', alignSelf: 'flex-start' }}>
                   <div style={{ fontSize: "12px", marginBottom: "12px", color: 'var(--muted)' }}>Transfer Code</div>
                   <div style={{ fontFamily: "var(--font-mono)", fontSize: "28px", letterSpacing: "2px", fontWeight: 700, marginBottom: '20px' }}>{transferId}</div>
                   <canvas ref={qrCanvasRef} style={{ borderRadius: "8px", background: "white", padding: "8px", width: "120px", height: "120px", margin: "0 auto", display: "block" }}></canvas>
@@ -208,7 +314,7 @@ export const DataTransferSection = () => {
         </div>
 
         {role !== "sender" && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', flex: 1 }}>
             {receiveState === "setup" && (
               <>
                 <div>
@@ -232,7 +338,7 @@ export const DataTransferSection = () => {
               </div>
             )}
             
-            {receiveState === "active" && (
+            {(receiveState === "active" || receiveState === "done") && (
               <>
                 <div style={{ padding: "16px", borderRadius: "8px", background: 'var(--bg)', border: '1px solid var(--line)', marginBottom: "20px" }}>
                   <div className="lb" style={{ marginBottom: "8px" }}>Incoming Transfer</div>
@@ -241,18 +347,32 @@ export const DataTransferSection = () => {
                   <div style={{ fontSize: "13px", fontFamily: "var(--font-mono)", color: 'var(--muted)' }}>{receiveMeta?.files?.length} files</div>
                 </div>
                 
-                <div>
-                  <div style={{ height: "6px", background: "var(--line)", borderRadius: "4px", overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: `${receiveProgress}%`, background: "#43E098", borderRadius: "4px", transition: "width 0.2s ease" }}></div>
+                {receiveState !== "done" ? (
+                  <div>
+                    <div style={{ height: "6px", background: "var(--line)", borderRadius: "4px", overflow: "hidden" }}>
+                      <div style={{ height: "100%", width: `${receiveProgress}%`, background: "#43E098", borderRadius: "4px", transition: "width 0.2s ease" }}></div>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginTop: "12px", fontSize: "12px", fontFamily: "var(--font-mono)", color: 'var(--muted)' }}>
+                      <span>Receiving data...</span>
+                      <span>{receiveProgress}%</span>
+                    </div>
                   </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginTop: "12px", fontSize: "12px", fontFamily: "var(--font-mono)", color: 'var(--muted)' }}>
-                    <span>Waiting for data...</span>
-                    <span>{receiveProgress}%</span>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <div style={{ color: '#43E098', fontWeight: 600, marginBottom: '8px' }}>✓ Transfer Complete</div>
+                    {receivedFiles.map((file, i) => (
+                      <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: 'var(--bg)', border: '1px solid var(--line)', borderRadius: '8px' }}>
+                        <span style={{ fontSize: '13px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px' }}>{file.name}</span>
+                        <a href={file.url} download={file.name} className="dl" style={{ textDecoration: 'none', background: 'var(--line)', padding: '6px 12px', color: 'var(--text)', border: 'none' }}>Download</a>
+                      </div>
+                    ))}
                   </div>
-                </div>
+                )}
                 
                 <div style={{ marginTop: 'auto', paddingTop: '20px' }}>
-                  <button className="pb" onClick={cancelTransfer} style={{ width: "100%", color: '#ff3b30', borderColor: 'rgba(255, 59, 48, 0.5)' }}>Cancel Transfer</button>
+                  <button className="pb" onClick={cancelTransfer} style={{ width: "100%", color: '#ff3b30', borderColor: 'rgba(255, 59, 48, 0.5)' }}>
+                    {receiveState === "done" ? "Close" : "Cancel Transfer"}
+                  </button>
                 </div>
               </>
             )}
@@ -262,3 +382,4 @@ export const DataTransferSection = () => {
     </div>
   );
 };
+
