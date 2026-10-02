@@ -16,9 +16,10 @@ export const AuthScreen = () => {
     setError("");
     setLoading(true);
 
-    if (email === "admin@neepank.com" && password === "admin") {
+    if (email.trim().toLowerCase() === "admin@neepank.com" && password === "admin") {
       localStorage.setItem("dummy_user", "true");
       login({ id: "dummy", email: "admin@neepank.com" });
+      setLoading(false);
       return;
     }
 
