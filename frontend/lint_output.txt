@@ -1,0 +1,126 @@
+
+> frontend@0.1.0 lint
+> eslint
+
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/HomeView.tsx
+  32:62  warning  'id' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/auth/AuthScreen.tsx
+  35:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/layout/TopBar.tsx
+  25:5   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/layout/TopBar.tsx:25:5
+  23 |
+  24 |   useEffect(() => {
+> 25 |     setIsOnline(navigator.onLine);
+     |     ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  26 |     const handleOnline = () => setIsOnline(true);
+  27 |     const handleOffline = () => setIsOnline(false);
+  28 |  react-hooks/set-state-in-effect
+  53:7   warning  The attribute aria-selected is not supported by the role button. This role is implicit on the element button                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           jsx-a11y/role-supports-aria-props
+  66:11  warning  The attribute aria-selected is not supported by the role button. This role is implicit on the element button                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           jsx-a11y/role-supports-aria-props
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/tools/CustomShapesSection.tsx
+  101:6  warning  React Hook useEffect has a missing dependency: 'renderCanvas'. Either include it or remove the dependency array     react-hooks/exhaustive-deps
+  150:6  warning  React Hook useEffect has a missing dependency: 'handleMouseMove'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/tools/DataTransferSection.tsx
+  24:50  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/tools/FormatConverterSection.tsx
+  243:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/tools/ImageExtractorSection.tsx
+    3:35  warning  'useEffect' is defined but never used                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+   69:19  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  109:61  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  176:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  236:62  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/tools/MP4ToGIFSection.tsx
+    3:35  warning  'useEffect' is defined but never used                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+   28:10  warning  'statusChip' is assigned a value but never used                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  186:14  warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  207:14  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  394:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/tools/OCRSection.tsx
+    3:35  warning  'useEffect' is defined but never used                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+   76:25  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  100:25  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  105:25  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  110:25  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  136:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/tools/PDFConverterSection.tsx
+    3:35  warning  'useEffect' is defined but never used                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+   71:63  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  166:28  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  243:51  warning  'index' is defined but never used                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+  353:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  429:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/tools/PNGOverlaySection.tsx
+   40:5   error    Error: Cannot access variable before it is declared
+
+`renderPreview` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/tools/PNGOverlaySection.tsx:40:5
+  38 |
+  39 |   useEffect(() => {
+> 40 |     renderPreview();
+     |     ^^^^^^^^^^^^^ `renderPreview` accessed before it is declared
+  41 |   }, [uploadedImage, color, scale, offsetX, offsetY, flipH, flipV]);
+  42 |
+  43 |   function renderPreview() {
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/tools/PNGOverlaySection.tsx:43:3
+  41 |   }, [uploadedImage, color, scale, offsetX, offsetY, flipH, flipV]);
+  42 |
+> 43 |   function renderPreview() {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 44 |     if (!uploadedImage) return;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 45 |     
+     …
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 70 |     ctx.restore();
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 71 |   };
+     | ^^^^ `renderPreview` is declared here
+  72 |
+  73 |   const handleFiles = (fileList: FileList) => {
+  74 |     const validFiles = Array.from(fileList).filter((f) =>   react-hooks/immutability
+   41:6   warning  React Hook useEffect has a missing dependency: 'renderPreview'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                react-hooks/exhaustive-deps
+  157:6   warning  React Hook useEffect has a missing dependency: 'handleMouseMove'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              react-hooks/exhaustive-deps
+  347:21  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @next/next/no-img-element
+  347:21  warning  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       jsx-a11y/alt-text
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/tools/QRGeneratorSection.tsx
+    3:35  warning  'useEffect' is defined but never used                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+  257:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/tools/ShapeStudioCard.tsx
+   57:29  warning  'diagonalStrategy' is assigned a value but never used                                                               @typescript-eslint/no-unused-vars
+  139:6   warning  React Hook useEffect has a missing dependency: 'renderCanvas'. Either include it or remove the dependency array     react-hooks/exhaustive-deps
+  188:6   warning  React Hook useEffect has a missing dependency: 'handleMouseMove'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/components/tools/ShapeYourImageSection.tsx
+   94:6  warning  React Hook useEffect has a missing dependency: 'renderCanvas'. Either include it or remove the dependency array     react-hooks/exhaustive-deps
+  143:6  warning  React Hook useEffect has a missing dependency: 'handleMouseMove'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  161:9  warning  'handleRot' is assigned a value but never used                                                                      @typescript-eslint/no-unused-vars
+
+/Users/pankaj.k/Documents/Toolkit /frontend/src/store/AuthContext.tsx
+  55:14  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 45 problems (14 errors, 31 warnings)
+
