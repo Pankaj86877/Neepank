@@ -26,15 +26,15 @@ export const Sidebar = () => {
 
   const navItems = [
     { id: "home", label: "Home Workspace", icon: "⌂", color: "#8d8d96", category: "home" },
-    { id: "presets", label: "Shape Presets", icon: "◧", color: "#e8682f", category: "Images" },
-    { id: "custom", label: "Custom Shapes", icon: "⬡", color: "#3b82f6", category: "Images" },
-    { id: "shape-image", label: "Shape Your Image", icon: "◈", color: "#f59e0b", category: "Images" },
-    { id: "extractor", label: "Image Extractor", icon: "📥", color: "#10b981", category: "Images" },
-    { id: "png-overlay", label: "PNG Color Overlay", icon: "◐", color: "#ec4899", category: "Images" },
-    { id: "format-converter", label: "Format Converter", icon: "⇄", color: "#f43f5e", category: "Images" },
-    { id: "color-palette", label: "Color Palette", icon: "🎨", color: "#f43f5e", category: "Images" },
-    { id: "svg-optimizer", label: "SVG Optimizer", icon: "⚡️", color: "#eab308", category: "Images" },
-    { id: "photo-resizer", label: "Photo & Sig Resizer", icon: "📸", color: "#3b82f6", category: "Images" },
+    { id: "presets", label: "Shape Presets", icon: "◧", color: "#e8682f", category: "Image" },
+    { id: "custom", label: "Custom Shapes", icon: "⬡", color: "#3b82f6", category: "Image" },
+    { id: "shape-image", label: "Shape Your Image", icon: "◈", color: "#f59e0b", category: "Image" },
+    { id: "extractor", label: "Image Extractor", icon: "📥", color: "#10b981", category: "Image" },
+    { id: "png-overlay", label: "PNG Color Overlay", icon: "◐", color: "#ec4899", category: "Image" },
+    { id: "format-converter", label: "Format Converter", icon: "⇄", color: "#f43f5e", category: "Image" },
+    { id: "color-palette", label: "Color Palette", icon: "🎨", color: "#f43f5e", category: "Image" },
+    { id: "svg-optimizer", label: "SVG Optimizer", icon: "⚡️", color: "#eab308", category: "Image" },
+    { id: "photo-resizer", label: "Photo & Sig Resizer", icon: "📸", color: "#3b82f6", category: "Image" },
 
     { id: "mp4-to-gif", label: "MP4 to GIF", icon: "🎬", color: "#8b5cf6", category: "Video" },
 
@@ -89,10 +89,10 @@ export const Sidebar = () => {
       </div>
       
       <div style={{ flex: 1, overflowY: 'auto' }}>
-        {renderGroup("Images", "Images")}
-        {renderGroup("Video", "Video")}
-        {renderGroup("Data", "Data")}
         {renderGroup("Document", "Document")}
+        {renderGroup("Image", "Image")}
+        {renderGroup("Data", "Data")}
+        {renderGroup("Video", "Video")}
       </div>
 
       <div id="col" style={{ display: 'flex', alignItems: 'center' }}>

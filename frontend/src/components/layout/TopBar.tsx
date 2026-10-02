@@ -53,38 +53,42 @@ export const TopBar = () => {
   };
 
   return (
-    <div className="bar">
-      <button 
-        className="tab" 
-        aria-selected={activeSection === "home"} 
-        onClick={() => setActiveSection("home")}
-      >
-        <div className="mini" style={{ "--c": "#8d8d96" } as React.CSSProperties}>⌂</div> 
-        Home Workspace
-      </button>
+    <div className="bar" style={{ overflowX: 'hidden', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', paddingRight: '16px' }}>
+      <div style={{ display: 'flex', flex: 1, overflowX: 'auto', alignItems: 'flex-end', gap: '4px', paddingBottom: '0' }}>
+        <button 
+          className="tab" 
+          aria-selected={activeSection === "home"} 
+          onClick={() => setActiveSection("home")}
+          style={{ flexShrink: 0 }}
+        >
+          <div className="mini" style={{ "--c": "#8d8d96" } as React.CSSProperties}>⌂</div> 
+          Home Workspace
+        </button>
 
-      {openTabs.map(tabId => {
-        const data = sectionData[tabId];
-        if (!data) return null;
-        return (
-          <button 
-            key={tabId}
-            className="tab" 
-            aria-selected={activeSection === tabId}
-            onClick={() => setActiveSection(tabId)}
-          >
-            <div className="mini" style={{ "--c": data.color } as React.CSSProperties}>{data.icon}</div> 
-            {data.label}
-            <span className="x" onClick={(e) => closeTab(e, tabId)}>×</span>
-          </button>
-        );
-      })}
+        {openTabs.map(tabId => {
+          const data = sectionData[tabId];
+          if (!data) return null;
+          return (
+            <button 
+              key={tabId}
+              className="tab" 
+              aria-selected={activeSection === tabId}
+              onClick={() => setActiveSection(tabId)}
+              style={{ flexShrink: 0 }}
+            >
+              <div className="mini" style={{ "--c": data.color } as React.CSSProperties}>{data.icon}</div> 
+              {data.label}
+              <span className="x" onClick={(e) => closeTab(e, tabId)}>×</span>
+            </button>
+          );
+        })}
+      </div>
       
-      <div className="sp">
+      <div className="sp" style={{ flexShrink: 0, marginLeft: '16px', paddingBottom: '8px' }}>
         <div className="pill" style={!isOnline ? { background: '#2a1515', borderColor: '#7f1d1d', color: '#f87171' } : {}}>
           <i style={!isOnline ? { background: '#f87171' } : {}}></i> {isOnline ? "Online" : "Offline"}
         </div>
-        <button className="chip" onClick={toggleTheme} title="Toggle Theme">
+        <button className="chip" onClick={toggleTheme} title="Toggle Theme" style={{ padding: '4px 10px' }}>
           {theme === "dark" ? "◐" : "◑"}
         </button>
       </div>
