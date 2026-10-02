@@ -17,6 +17,9 @@ const FormatConverterSection = dynamic(() => import("./tools/FormatConverterSect
 const MP4ToGIFSection = dynamic(() => import("./tools/MP4ToGIFSection").then(m => m.MP4ToGIFSection), { ssr: false });
 const QRGeneratorSection = dynamic(() => import("./tools/QRGeneratorSection").then(m => m.QRGeneratorSection), { ssr: false });
 const DataTransferSection = dynamic(() => import("./tools/DataTransferSection").then(m => m.DataTransferSection), { ssr: false });
+const ColorPaletteSection = dynamic(() => import("./tools/ColorPaletteSection").then(m => m.ColorPaletteSection), { ssr: false });
+const SVGOptimizerSection = dynamic(() => import("./tools/SVGOptimizerSection").then(m => m.SVGOptimizerSection), { ssr: false });
+const ResizerSection = dynamic(() => import("./tools/ResizerSection").then(m => m.ResizerSection), { ssr: false });
 
 const SectionRouter = () => {
   const { activeSection } = useAppContext();
@@ -35,6 +38,9 @@ const SectionRouter = () => {
       <div className="pane" hidden={activeSection !== "mp4-to-gif"}><MP4ToGIFSection /></div>
       <div className="pane" hidden={activeSection !== "qr-generator"}><QRGeneratorSection /></div>
       <div className="pane" hidden={activeSection !== "data-transfer"}><DataTransferSection /></div>
+      <div className="pane" hidden={activeSection !== "color-palette"}><ColorPaletteSection /></div>
+      <div className="pane" hidden={activeSection !== "svg-optimizer"}><SVGOptimizerSection /></div>
+      <div className="pane" hidden={activeSection !== "photo-resizer"}><ResizerSection /></div>
     </>
   );
 };

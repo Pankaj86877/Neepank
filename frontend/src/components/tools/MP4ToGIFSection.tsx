@@ -317,16 +317,16 @@ export const MP4ToGIFSection = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div>
             <div className="lb">✂ Trim Video Timeline (Max 10s clip)</div>
-            <div className="two">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+              <div style={{ flex: '1 1 120px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <label style={{ fontSize: '13px', color: 'var(--muted)' }}>Start Time (s)</label>
-                <input type="number" min="0" step="0.1" value={startTime.toFixed(1)} onChange={(e) => handleTimeScrub(true, parseFloat(e.target.value))} style={{ background: 'var(--bg)', border: '1px solid var(--line)', color: 'var(--text)', padding: '8px', borderRadius: '6px' }} />
-                <input type="range" min="0" step="0.1" max={videoDuration} value={startTime} onChange={(e) => handleTimeScrub(true, parseFloat(e.target.value))} style={{ width: '100%', accentColor: 'var(--brand)' }} />
+                <input type="number" min="0" step="0.1" value={startTime.toFixed(1)} onChange={(e) => handleTimeScrub(true, parseFloat(e.target.value))} style={{ background: 'var(--bg)', border: '1px solid var(--line)', color: 'var(--text)', padding: '8px', borderRadius: '6px', width: '100%', boxSizing: 'border-box' }} />
+                <input type="range" min="0" step="0.1" max={videoDuration} value={startTime} onChange={(e) => handleTimeScrub(true, parseFloat(e.target.value))} style={{ width: '100%', accentColor: 'var(--brand)', boxSizing: 'border-box' }} />
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ flex: '1 1 120px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <label style={{ fontSize: '13px', color: 'var(--muted)' }}>End Time (s)</label>
-                <input type="number" min="0.1" step="0.1" value={endTime.toFixed(1)} onChange={(e) => handleTimeScrub(false, parseFloat(e.target.value))} style={{ background: 'var(--bg)', border: '1px solid var(--line)', color: 'var(--text)', padding: '8px', borderRadius: '6px' }} />
-                <input type="range" min="0.1" step="0.1" max={videoDuration} value={endTime} onChange={(e) => handleTimeScrub(false, parseFloat(e.target.value))} style={{ width: '100%', accentColor: 'var(--brand)' }} />
+                <input type="number" min="0.1" step="0.1" value={endTime.toFixed(1)} onChange={(e) => handleTimeScrub(false, parseFloat(e.target.value))} style={{ background: 'var(--bg)', border: '1px solid var(--line)', color: 'var(--text)', padding: '8px', borderRadius: '6px', width: '100%', boxSizing: 'border-box' }} />
+                <input type="range" min="0.1" step="0.1" max={videoDuration} value={endTime} onChange={(e) => handleTimeScrub(false, parseFloat(e.target.value))} style={{ width: '100%', accentColor: 'var(--brand)', boxSizing: 'border-box' }} />
               </div>
             </div>
           </div>
@@ -342,14 +342,14 @@ export const MP4ToGIFSection = () => {
 
           <div>
             <div className="lb">↔ Dimensions (px)</div>
-            <div className="two">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+              <div style={{ flex: '1 1 120px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <label style={{ fontSize: '13px', color: 'var(--muted)' }}>Width</label>
-                <input type="number" min="1" max="2000" value={resizeW} onChange={(e) => handleResizeWChange(e.target.value)} style={{ background: 'var(--bg)', border: '1px solid var(--line)', color: 'var(--text)', padding: '8px', borderRadius: '6px' }} />
+                <input type="number" min="1" max="2000" value={resizeW} onChange={(e) => handleResizeWChange(e.target.value)} style={{ background: 'var(--bg)', border: '1px solid var(--line)', color: 'var(--text)', padding: '8px', borderRadius: '6px', width: '100%', boxSizing: 'border-box' }} />
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ flex: '1 1 120px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <label style={{ fontSize: '13px', color: 'var(--muted)' }}>Height</label>
-                <input type="number" min="1" max="2000" value={resizeH} onChange={(e) => handleResizeHChange(e.target.value)} style={{ background: 'var(--bg)', border: '1px solid var(--line)', color: 'var(--text)', padding: '8px', borderRadius: '6px' }} />
+                <input type="number" min="1" max="2000" value={resizeH} onChange={(e) => handleResizeHChange(e.target.value)} style={{ background: 'var(--bg)', border: '1px solid var(--line)', color: 'var(--text)', padding: '8px', borderRadius: '6px', width: '100%', boxSizing: 'border-box' }} />
               </div>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "12px" }}>

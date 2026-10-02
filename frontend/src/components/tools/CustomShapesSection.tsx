@@ -7,6 +7,7 @@ import { UploadOverlay } from "./UploadOverlay";
 export const CustomShapesSection = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [w, setW] = useState(1000);
   const [h, setH] = useState(1000);
@@ -45,7 +46,6 @@ export const CustomShapesSection = () => {
       setR(20);
       setColor("#43E098");
       setDiagonalStrategy("primary");
-      setShowUploadOverlay(false);
     }
   };
 
@@ -82,6 +82,14 @@ export const CustomShapesSection = () => {
 
     drawPath();
     ctx.fill();
+
+    if (!uploadedImage) {
+      ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+      ctx.font = "bold 64px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("Click to upload", w / 2, h / 2);
+    }
 
     if (uploadedImage) {
       ctx.save();
@@ -135,8 +143,8 @@ export const CustomShapesSection = () => {
   };
 
   const handleContainerClick = () => {
-    if (!hasDragged.current) {
-      setShowUploadOverlay(true);
+    if (!hasDragged.current && !uploadedImage) {
+      fileInputRef.current?.click();
     }
   };
 
@@ -179,16 +187,24 @@ export const CustomShapesSection = () => {
         onMouseDown={handleMouseDown}
         onWheel={handleWheel}
         onClick={handleContainerClick}
-        style={{ position: 'relative' }}
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => {
+          e.preventDefault();
+          if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            processFile(e.dataTransfer.files[0]);
+          }
+        }}
+        style={{ position: 'relative', cursor: !uploadedImage ? 'pointer' : 'default' }}
       >
-        <UploadOverlay 
-          show={showUploadOverlay || !uploadedImage} 
-          onUpload={handleImageUpload} 
-          onDropFile={processFile}
-          onClose={() => setShowUploadOverlay(false)} 
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          accept="image/*" 
+          onChange={handleImageUpload} 
+          style={{ display: 'none' }} 
         />
         <canvas ref={canvasRef} width={w} height={h}></canvas>
-        <div className="hint" style={{ position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)', background: 'var(--card)', padding: '8px 16px', borderRadius: '20px', border: '1px solid var(--line)' }}>
+        <div className="hint" style={{ position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)', background: 'var(--card)', padding: '8px 16px', borderRadius: '20px', border: '1px solid var(--line)', pointerEvents: 'none' }}>
           💡 Drag to reposition · Scroll to zoom
         </div>
       </div>

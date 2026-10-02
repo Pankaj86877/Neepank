@@ -17,6 +17,7 @@ export type ShapeConfig = {
 export const ShapeStudioCard = ({ config }: { config: ShapeConfig }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [uploadedImage, setUploadedImage] = useState<HTMLImageElement | null>(null);
   const [originalFilename, setOriginalFilename] = useState<string>("image");
@@ -44,7 +45,6 @@ export const ShapeStudioCard = ({ config }: { config: ShapeConfig }) => {
       setFlipH(false);
       setFlipV(false);
       setImageRotation(0);
-      setShowUploadOverlay(false);
     }
   };
 
@@ -121,6 +121,14 @@ export const ShapeStudioCard = ({ config }: { config: ShapeConfig }) => {
     drawPath();
     ctx.fill();
 
+    if (!uploadedImage) {
+      ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+      ctx.font = "bold 64px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("Click to upload", w / 2, h / 2);
+    }
+
     if (uploadedImage) {
       ctx.save();
       drawPath();
@@ -173,8 +181,8 @@ export const ShapeStudioCard = ({ config }: { config: ShapeConfig }) => {
   };
 
   const handleContainerClick = () => {
-    if (!hasDragged.current) {
-      setShowUploadOverlay(true);
+    if (!hasDragged.current && !uploadedImage) {
+      fileInputRef.current?.click();
     }
   };
 
@@ -223,13 +231,21 @@ export const ShapeStudioCard = ({ config }: { config: ShapeConfig }) => {
         onMouseDown={handleMouseDown}
         onWheel={handleWheel}
         onClick={handleContainerClick}
-        style={{ position: 'relative', height: '240px', padding: 0, borderRadius: '12px', border: '1px solid var(--line)', overflow: 'hidden' }}
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => {
+          e.preventDefault();
+          if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            processFile(e.dataTransfer.files[0]);
+          }
+        }}
+        style={{ position: 'relative', height: '240px', padding: 0, borderRadius: '12px', border: '1px solid var(--line)', overflow: 'hidden', cursor: !uploadedImage ? 'pointer' : 'default' }}
       >
-        <UploadOverlay 
-          show={showUploadOverlay || !uploadedImage} 
-          onUpload={handleImageUpload} 
-          onDropFile={processFile}
-          onClose={() => setShowUploadOverlay(false)} 
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          accept="image/*" 
+          onChange={handleImageUpload} 
+          style={{ display: 'none' }} 
         />
         <canvas ref={canvasRef} width={config.w} height={config.h} style={{ maxHeight: '100%', maxWidth: '100%' }}></canvas>
       </div>

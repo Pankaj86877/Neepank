@@ -333,16 +333,16 @@ export const PNGOverlaySection = () => {
               )}
             </div>
             
-            <div style={{ display: "flex", gap: "10px", overflowX: "auto", padding: "10px 0", minHeight: "80px", border: '1px dashed var(--line)', borderRadius: '8px', background: 'var(--bg)', alignItems: 'center' }}>
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", padding: "10px", minHeight: "80px", border: '1px dashed var(--line)', borderRadius: '8px', background: 'var(--bg)', alignItems: 'flex-start', alignContent: 'flex-start' }}>
               {files.length === 0 ? (
-                <div style={{ width: "100%", textAlign: "center", color: "var(--muted)", fontSize: "12px", fontFamily: "var(--font-mono)" }}>No files added yet</div>
+                <div style={{ width: "100%", textAlign: "center", color: "var(--muted)", fontSize: "12px", fontFamily: "var(--font-mono)", alignSelf: "center" }}>No files added yet</div>
               ) : (
                 files.map((f, idx) => (
                   <div
                     key={f.id}
                     onClick={() => setActiveIndex(idx)}
                     className="checkered-bg"
-                    style={{ position: "relative", minWidth: "60px", width: "60px", height: "60px", borderRadius: "8px", overflow: "hidden", cursor: "pointer", border: idx === activeIndex ? "2px solid var(--brand)" : "1px solid var(--line)", marginLeft: idx === 0 ? '10px' : 0, marginRight: idx === files.length - 1 ? '10px' : 0 }}
+                    style={{ position: "relative", width: "60px", height: "60px", borderRadius: "8px", overflow: "hidden", cursor: "pointer", border: idx === activeIndex ? "2px solid var(--brand)" : "1px solid var(--line)" }}
                   >
                     <img src={f.url} style={{ width: "100%", height: "100%", objectFit: "contain", pointerEvents: "none" }} />
                     <button

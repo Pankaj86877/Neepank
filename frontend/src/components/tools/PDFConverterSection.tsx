@@ -17,6 +17,8 @@ export const PDFConverterSection = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [files, setFiles] = useState<FileItem[]>([]);
+  const [compMode, setCompMode] = useState<"quality" | "target">("quality");
+  const [targetMb, setTargetMb] = useState<number>(3);
   const [quality, setQuality] = useState(80);
   const [pageSize, setPageSize] = useState("fit");
   const [orientation, setOrientation] = useState("auto");
@@ -131,8 +133,66 @@ export const PDFConverterSection = () => {
     };
 
     let pdf: jsPDF | null = null;
+    let finalQualityVal = quality / 100;
 
     try {
+      if (compMode === "target" && targetMb > 0) {
+        setStatusText("Calculating optimal compression for target size...");
+        await new Promise(r => setTimeout(r, 100)); // UI yield
+        
+        const targetBytesTotal = targetMb * 1024 * 1024;
+        // Leave a small 10% buffer for PDF metadata overhead
+        const targetBytesPerPage = (targetBytesTotal * 0.90) / files.length;
+        
+        const testFile = files[0].file;
+        const rawImgData = await fileToDataUrl(testFile);
+        const img = await loadImage(rawImgData);
+
+        const cvs = document.createElement("canvas");
+        cvs.width = img.width;
+        cvs.height = img.height;
+        const ctx = cvs.getContext("2d");
+        
+        if (ctx) {
+          ctx.fillStyle = "#FFFFFF";
+          ctx.fillRect(0, 0, img.width, img.height);
+          ctx.drawImage(img, 0, 0, img.width, img.height);
+          
+          let minQ = 0.1;
+          let maxQ = 0.95;
+          let currentQ = 0.95;
+          let bestQ = 0.95;
+          let bestSize = Infinity;
+          let closestQ = 0;
+          let iters = 0;
+          
+          while (iters < 8 && minQ <= maxQ) {
+            iters++;
+            const testData = cvs.toDataURL("image/jpeg", currentQ);
+            const base64Length = testData.length - (testData.indexOf(",") + 1);
+            const sizeBytes = base64Length * 0.75;
+            
+            setStatusText(`Estimating... trying quality ${(currentQ*100).toFixed(0)}%`);
+            await new Promise(r => setTimeout(r, 20));
+            
+            if (sizeBytes <= targetBytesPerPage) {
+              closestQ = currentQ;
+              minQ = currentQ + 0.05;
+            } else {
+              maxQ = currentQ - 0.05;
+            }
+            
+            if (sizeBytes < bestSize) {
+               bestSize = sizeBytes;
+               bestQ = currentQ;
+            }
+            currentQ = (minQ + maxQ) / 2;
+          }
+          
+          finalQualityVal = closestQ > 0 ? closestQ : bestQ;
+        }
+      }
+
       for (let i = 0; i < files.length; i++) {
         setStatusText(`Processing image ${i + 1} of ${files.length}...`);
         setProgress((i / files.length) * 100);
@@ -150,7 +210,7 @@ export const PDFConverterSection = () => {
         ctx.drawImage(img, 0, 0, img.width, img.height);
 
         let mimeType = file.type === "image/png" ? "image/png" : "image/jpeg";
-        const qualityVal = quality / 100;
+        const qualityVal = finalQualityVal;
 
         if (qualityVal < 1.0 && mimeType === "image/png") {
           mimeType = "image/jpeg";
@@ -262,6 +322,8 @@ export const PDFConverterSection = () => {
     if (window.confirm("Are you sure you want to reset this tool? All unsaved work will be lost.")) {
       files.forEach((f) => URL.revokeObjectURL(f.url));
       setFiles([]);
+      setCompMode("quality");
+      setTargetMb(3);
       setQuality(80);
       setPageSize("fit");
       setOrientation("auto");
@@ -274,94 +336,115 @@ export const PDFConverterSection = () => {
 
   return (
     <div className="ws">
-      <div className="stage" style={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '24px', overflowY: 'auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="stage" style={{ display: 'flex', flexDirection: 'column', padding: '24px', overflowY: 'auto' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
           <div>
             <h2 style={{ margin: '0 0 8px 0' }}>Upload Images</h2>
             <p className="dim-badge" style={{ margin: 0 }}>{files.length} files</p>
           </div>
         </div>
 
-        <div
-          className={`dz-upload-zone ${isDragOver ? "drag-over" : ""}`}
-          onClick={() => fileInputRef.current?.click()}
-          onDragEnter={(e) => { e.preventDefault(); setIsDragOver(true); }}
-          onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
-          onDragLeave={(e) => { e.preventDefault(); setIsDragOver(false); }}
-          onDrop={(e) => {
-            e.preventDefault();
-            setIsDragOver(false);
-            if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
-          }}
-          style={{
-            border: '2px dashed var(--line)',
-            borderRadius: '12px',
-            padding: '40px 24px',
-            textAlign: 'center',
-            cursor: 'pointer',
-            background: 'var(--card)',
-            transition: 'all 0.2s ease',
-            borderColor: isDragOver ? 'var(--brand)' : 'var(--line)'
-          }}
-        >
-          <div style={{ fontSize: '32px', marginBottom: '12px' }}>📄</div>
-          <div style={{ fontWeight: 600, marginBottom: '8px' }}>Drop images here or click to browse</div>
-          <div style={{ fontSize: '13px', color: 'var(--muted)' }}>JPG · PNG · WEBP · PDF (extracts pages)</div>
-          <input
-            type="file"
-            ref={fileInputRef}
-            accept="image/png,image/jpeg,image/jpg,image/webp,application/pdf,.pdf"
-            multiple
-            style={{ display: "none" }}
-            onChange={(e) => { if (e.target.files) handleFiles(e.target.files); }}
-          />
-        </div>
+        <div style={{ display: 'flex', gap: '32px', flex: 1 }}>
+          {/* Left: Upload Zone */}
+          <div style={{ flex: '0 0 320px', display: 'flex', flexDirection: 'column' }}>
+            <div
+              className={`dz-upload-zone ${isDragOver ? "drag-over" : ""}`}
+              onClick={() => fileInputRef.current?.click()}
+              onDragEnter={(e) => { e.preventDefault(); setIsDragOver(true); }}
+              onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
+              onDragLeave={(e) => { e.preventDefault(); setIsDragOver(false); }}
+              onDrop={(e) => {
+                e.preventDefault();
+                setIsDragOver(false);
+                if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
+              }}
+              style={{
+                border: '2px dashed var(--line)',
+                borderRadius: '12px',
+                padding: '40px 24px',
+                textAlign: 'center',
+                cursor: 'pointer',
+                background: 'var(--card)',
+                transition: 'all 0.2s ease',
+                borderColor: isDragOver ? 'var(--brand)' : 'var(--line)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '200px'
+              }}
+            >
+              <div style={{ fontSize: '32px', marginBottom: '12px' }}>📄</div>
+              <div style={{ fontWeight: 600, marginBottom: '8px' }}>Drop images here or click to browse</div>
+              <div style={{ fontSize: '13px', color: 'var(--muted)' }}>JPG · PNG · WEBP · PDF (extracts pages)</div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                accept="image/png,image/jpeg,image/jpg,image/webp,application/pdf,.pdf"
+                multiple
+                style={{ display: "none" }}
+                onChange={(e) => { if (e.target.files) handleFiles(e.target.files); }}
+              />
+            </div>
+          </div>
 
-        <div>
-          {files.length === 0 ? (
-            <div style={{ 
-              textAlign: 'center', 
-              padding: '40px', 
-              border: '1px solid var(--line)', 
-              borderRadius: '12px', 
-              color: 'var(--muted)',
-              background: 'var(--bg)' 
-            }}>
-              <div style={{ fontSize: '24px', marginBottom: '12px' }}>🖼️</div>
-              <p style={{ margin: 0 }}>No images uploaded yet.<br />Files can be reordered by dragging.</p>
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {files.map((fileObj, idx) => (
-                <div
-                  key={fileObj.id}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, idx)}
-                  onDragOver={(e) => handleDragOverItem(e, idx)}
-                  onDrop={(e) => handleDropItem(e, idx)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '16px',
-                    padding: '12px 16px',
-                    background: 'var(--card)',
-                    border: '1px solid var(--line)',
-                    borderRadius: '8px',
-                    cursor: 'grab'
-                  }}
-                >
-                  <div style={{ color: 'var(--muted)', cursor: 'grab', userSelect: 'none' }}>≡</div>
-                  <div style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', borderRadius: '4px', fontSize: '12px', color: 'var(--muted)' }}>{idx + 1}</div>
-                  <img src={fileObj.url} style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '4px', border: '1px solid var(--line)' }} alt={fileObj.file.name} />
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 500, fontSize: '14px' }}>{fileObj.file.name}</div>
-                    <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '4px' }}>{(fileObj.file.size / 1024).toFixed(1)} KB</div>
+          {/* Right: File List Preview */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingRight: '8px' }}>
+            {files.length === 0 ? (
+              <div style={{ 
+                textAlign: 'center', 
+                padding: '40px', 
+                border: '1px solid var(--line)', 
+                borderRadius: '12px', 
+                color: 'var(--muted)',
+                background: 'var(--bg)',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                <div style={{ fontSize: '24px', marginBottom: '12px' }}>🖼️</div>
+                <p style={{ margin: 0 }}>No images uploaded yet.<br />Files can be reordered by dragging.</p>
+              </div>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '16px' }}>
+                {files.map((fileObj, idx) => (
+                  <div
+                    key={fileObj.id}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, idx)}
+                    onDragOver={(e) => handleDragOverItem(e, idx)}
+                    onDrop={(e) => handleDropItem(e, idx)}
+                    style={{
+                      position: 'relative',
+                      aspectRatio: '1',
+                      background: 'var(--card)',
+                      border: '1px solid var(--line)',
+                      borderRadius: '8px',
+                      cursor: 'grab',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+                    }}
+                  >
+                    <img src={fileObj.url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={`Page ${idx + 1}`} />
+                    
+                    {/* Top Overlay: Number & Delete */}
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, padding: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                       <div style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.6)', color: '#fff', borderRadius: '6px', fontSize: '12px', fontWeight: 600, backdropFilter: 'blur(4px)' }}>
+                         {idx + 1}
+                       </div>
+                       <button onClick={(e) => { e.stopPropagation(); removeFile(idx); }} style={{ width: '24px', height: '24px', background: 'rgba(239, 68, 68, 0.9)', border: 'none', color: '#fff', cursor: 'pointer', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', backdropFilter: 'blur(4px)' }}>
+                         ✕
+                       </button>
+                    </div>
                   </div>
-                  <button onClick={() => removeFile(idx)} style={{ background: 'transparent', border: 'none', color: 'var(--muted)', cursor: 'pointer', padding: '8px', borderRadius: '4px' }}>✕</button>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -375,13 +458,29 @@ export const PDFConverterSection = () => {
           <div>
             <div className="lb">⚙ PDF Options</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', background: 'var(--card)', border: '1px solid var(--line)', padding: '16px', borderRadius: '8px' }}>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                  <label style={{ fontSize: '13px', fontWeight: 500 }}>Quality</label>
-                  <span style={{ fontSize: '13px', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{quality}%</span>
-                </div>
-                <input type="range" min="10" max="100" value={quality} onChange={(e) => setQuality(parseInt(e.target.value))} style={{ width: '100%', accentColor: 'var(--brand)' }} />
+              
+              <div style={{ display: 'flex', gap: '8px', background: 'var(--bg)', padding: '4px', borderRadius: '8px', border: '1px solid var(--line)' }}>
+                <button style={{ flex: 1, padding: '6px', border: 'none', background: compMode === 'quality' ? 'var(--card)' : 'transparent', color: 'var(--text)', borderRadius: '6px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', boxShadow: compMode === 'quality' ? '0 2px 8px rgba(0,0,0,0.05)' : 'none' }} onClick={() => setCompMode('quality')}>Manual Quality</button>
+                <button style={{ flex: 1, padding: '6px', border: 'none', background: compMode === 'target' ? 'var(--card)' : 'transparent', color: 'var(--text)', borderRadius: '6px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', boxShadow: compMode === 'target' ? '0 2px 8px rgba(0,0,0,0.05)' : 'none' }} onClick={() => setCompMode('target')}>Target Size</button>
               </div>
+
+              {compMode === 'quality' ? (
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <label style={{ fontSize: '13px', fontWeight: 500 }}>Quality</label>
+                    <span style={{ fontSize: '13px', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{quality}%</span>
+                  </div>
+                  <input type="range" min="10" max="100" value={quality} onChange={(e) => setQuality(parseInt(e.target.value))} style={{ width: '100%', accentColor: 'var(--brand)' }} />
+                </div>
+              ) : (
+                <div>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, marginBottom: '8px' }}>Target File Size (MB)</label>
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                    <input type="number" min="0.1" step="0.1" value={targetMb} onChange={(e) => setTargetMb(parseFloat(e.target.value) || 0)} style={{ flex: 1, background: 'var(--bg)', border: '1px solid var(--line)', color: 'var(--text)', padding: '10px', borderRadius: '6px', fontSize: '14px' }} />
+                    <div style={{ background: 'var(--bg)', border: '1px solid var(--line)', color: 'var(--text)', padding: '10px 16px', borderRadius: '6px', display: 'flex', alignItems: 'center', fontWeight: 600 }}>MB</div>
+                  </div>
+                </div>
+              )}
               
               <div>
                 <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, marginBottom: '8px' }}>Page Size</label>

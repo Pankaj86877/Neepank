@@ -15,6 +15,9 @@ export const sectionData: Record<string, { label: string; icon: string; color: s
   "mp4-to-gif": { label: "MP4 to GIF", icon: "🎬", color: "#8b5cf6", desc: "Video to GIF animation", category: "Video" },
   "qr-generator": { label: "QR Generator", icon: "📱", color: "#06b6d4", desc: "Generate QR codes", category: "Data" },
   "data-transfer": { label: "Data Transfer", icon: "📡", color: "#84cc16", desc: "P2P file sharing", category: "Data" },
+  "color-palette": { label: "Color Palette", icon: "🎨", color: "#f43f5e", desc: "Extract and edit palettes", category: "Images" },
+  "svg-optimizer": { label: "SVG Optimizer", icon: "✨", color: "#10b981", desc: "Compress & clean SVGs", category: "Images" },
+  "photo-resizer": { label: "Photo & Sig Resizer", icon: "📐", color: "#3b82f6", desc: "Resize and crop precisely", category: "Images" },
 };
 
 const categories = ["All", "Images", "Video", "Data", "Document"];
@@ -37,8 +40,8 @@ export const HomeView = () => {
 
   return (
     <div className="pane home">
-      <h1>Hi, <b>Creative</b></h1>
-      <p className="sub">Welcome to your studio toolbox.</p>
+      <h1>Your tools</h1>
+      <p className="sub">Welcome to your Neepank Toolbox.</p>
       
       <div className="tools">
         <input 

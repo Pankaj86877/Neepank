@@ -1,0 +1,1 @@
+export { ColorPaletteV2 as ColorPaletteSection } from "./color-palette-v2";

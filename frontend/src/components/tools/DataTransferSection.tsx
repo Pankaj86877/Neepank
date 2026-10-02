@@ -247,8 +247,8 @@ export const DataTransferSection = () => {
                 )}
               </div>
             ) : (
-              <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
-                <div style={{ flex: '1 1 300px' }}>
+              <div style={{ display: 'flex', gap: '32px' }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ padding: "16px", borderRadius: "8px", background: 'var(--bg)', border: '1px solid var(--line)', marginBottom: "20px" }}>
                     <div className="lb" style={{ marginBottom: "8px" }}>Transfer Info</div>
                     <div style={{ fontWeight: 600, marginBottom: "8px", fontSize: "16px", color: "var(--brand)" }}>{transferName || "File Transfer"}</div>
