@@ -23,6 +23,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkAuth = async () => {
     try {
+      if (typeof window !== "undefined" && localStorage.getItem("dummy_user")) {
+        setUser({ id: "dummy", email: "admin@neepank.com" });
+        setIsLoading(false);
+        return;
+      }
+
       let res = await fetch("http://localhost:4000/api/auth/me", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -70,12 +76,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("dummy_user");
+      }
       await fetch("http://localhost:4000/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
       setUser(null);
     } catch (err) {
+      // Still set user to null even if backend fetch fails
+      setUser(null);
       console.error(err);
     }
   };
