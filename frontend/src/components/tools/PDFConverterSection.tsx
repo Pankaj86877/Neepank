@@ -1,11 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import jsPDF from "jspdf";
-import * as pdfjsLib from "pdfjs-dist";
-
-// Initialize PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;
+// PDF modules will be dynamically imported to avoid main bundle bloat
 
 type FileItem = {
   id: string;
@@ -54,6 +50,8 @@ export const PDFConverterSection = () => {
 
     try {
       const arrayBuffer = await file.arrayBuffer();
+      const pdfjsLib = await import("pdfjs-dist");
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
       const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
       const totalPages = pdfDoc.numPages;
 
@@ -132,7 +130,7 @@ export const PDFConverterSection = () => {
       legal: [215.9, 355.6],
     };
 
-    let pdf: jsPDF | null = null;
+    let pdf: any = null;
     let finalQualityVal = quality / 100;
 
     try {
@@ -269,6 +267,7 @@ export const PDFConverterSection = () => {
         const orientStr = isLandscape ? "l" : "p";
 
         if (i === 0) {
+          const jsPDF = (await import("jspdf")).default;
           pdf = new jsPDF({ orientation: orientStr as "p" | "l", unit: "mm", format: currentFormat });
         } else {
           pdf?.addPage(currentFormat, orientStr as "p" | "l");

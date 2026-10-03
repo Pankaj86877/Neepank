@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import Tesseract from "tesseract.js";
+
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
@@ -56,13 +56,17 @@ export const OCRSection = () => {
     setExtractedText("");
 
     try {
+      // Dynamically import Tesseract to keep it out of the main bundle
+      const Tesseract = (await import("tesseract.js")).default;
+      
       const result = await Tesseract.recognize(src, "eng", {
-        logger: (m) => {
+        logger: (m: any) => {
           if (m.status === "recognizing text") {
             setProgressLabel(`Extracting... (${Math.floor(m.progress * 100)}%)`);
           }
         },
       });
+      
       setExtractedText(result.data.text.trim() || "[No text identified in image.]");
     } catch (err) {
       console.error(err);

@@ -22,25 +22,28 @@ const SVGOptimizerSection = dynamic(() => import("./tools/SVGOptimizerSection").
 const ResizerSection = dynamic(() => import("./tools/ResizerSection").then(m => m.ResizerSection), { ssr: false });
 
 const SectionRouter = () => {
-  const { activeSection } = useAppContext();
+  const { activeSection, openTabs } = useAppContext();
+
+  // Helper to check if a tab should be mounted (opened at least once)
+  const isMounted = (id: string) => openTabs.includes(id) || activeSection === id;
 
   return (
     <>
       <div className="pane" hidden={activeSection !== "home"}><HomeView /></div>
-      <div className="pane" hidden={activeSection !== "presets"}><PresetsSection /></div>
-      <div className="pane" hidden={activeSection !== "custom"}><CustomShapesSection /></div>
-      <div className="pane" hidden={activeSection !== "shape-image"}><ShapeYourImageSection /></div>
-      <div className="pane" hidden={activeSection !== "extractor"}><ImageExtractorSection /></div>
-      <div className="pane" hidden={activeSection !== "ocr"}><OCRSection /></div>
-      <div className="pane" hidden={activeSection !== "png-overlay"}><PNGOverlaySection /></div>
-      <div className="pane" hidden={activeSection !== "pdf-converter"}><PDFConverterSection /></div>
-      <div className="pane" hidden={activeSection !== "format-converter"}><FormatConverterSection /></div>
-      <div className="pane" hidden={activeSection !== "mp4-to-gif"}><MP4ToGIFSection /></div>
-      <div className="pane" hidden={activeSection !== "qr-generator"}><QRGeneratorSection /></div>
-      <div className="pane" hidden={activeSection !== "data-transfer"}><DataTransferSection /></div>
-      <div className="pane" hidden={activeSection !== "color-palette"}><ColorPaletteSection /></div>
-      <div className="pane" hidden={activeSection !== "svg-optimizer"}><SVGOptimizerSection /></div>
-      <div className="pane" hidden={activeSection !== "photo-resizer"}><ResizerSection /></div>
+      {isMounted("presets") && <div className="pane" hidden={activeSection !== "presets"}><PresetsSection /></div>}
+      {isMounted("custom") && <div className="pane" hidden={activeSection !== "custom"}><CustomShapesSection /></div>}
+      {isMounted("shape-image") && <div className="pane" hidden={activeSection !== "shape-image"}><ShapeYourImageSection /></div>}
+      {isMounted("extractor") && <div className="pane" hidden={activeSection !== "extractor"}><ImageExtractorSection /></div>}
+      {isMounted("ocr") && <div className="pane" hidden={activeSection !== "ocr"}><OCRSection /></div>}
+      {isMounted("png-overlay") && <div className="pane" hidden={activeSection !== "png-overlay"}><PNGOverlaySection /></div>}
+      {isMounted("pdf-converter") && <div className="pane" hidden={activeSection !== "pdf-converter"}><PDFConverterSection /></div>}
+      {isMounted("format-converter") && <div className="pane" hidden={activeSection !== "format-converter"}><FormatConverterSection /></div>}
+      {isMounted("mp4-to-gif") && <div className="pane" hidden={activeSection !== "mp4-to-gif"}><MP4ToGIFSection /></div>}
+      {isMounted("qr-generator") && <div className="pane" hidden={activeSection !== "qr-generator"}><QRGeneratorSection /></div>}
+      {isMounted("data-transfer") && <div className="pane" hidden={activeSection !== "data-transfer"}><DataTransferSection /></div>}
+      {isMounted("color-palette") && <div className="pane" hidden={activeSection !== "color-palette"}><ColorPaletteSection /></div>}
+      {isMounted("svg-optimizer") && <div className="pane" hidden={activeSection !== "svg-optimizer"}><SVGOptimizerSection /></div>}
+      {isMounted("photo-resizer") && <div className="pane" hidden={activeSection !== "photo-resizer"}><ResizerSection /></div>}
     </>
   );
 };

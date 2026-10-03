@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-// @ts-expect-error No type declarations available
-import gifshot from "gifshot";
 
 export const MP4ToGIFSection = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -192,6 +190,10 @@ export const MP4ToGIFSection = () => {
     }
 
     setProcessingStatus("Generating GIF...");
+
+    // Dynamically import gifshot
+    // @ts-expect-error No type declarations available
+    const gifshot = ((await import("gifshot")).default || await import("gifshot")) as any;
 
     gifshot.createGIF({
       images: images,
