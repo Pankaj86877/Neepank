@@ -52,7 +52,7 @@ h1{font-size:clamp(32px,5vw,50px);margin:0 0 6px;font-weight:800;line-height:1.0
 .tile .st{font-size:11px;color:var(--muted)}
 .ws{display:flex;height:100%}
 .stage{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:22px;background:repeating-conic-gradient(var(--c2) 0 25%,transparent 0 50%) 0 0/20px 20px}
-.stage canvas{max-width:100%;max-height:calc(100vh - 170px);box-shadow:0 20px 60px #0007;touch-action:none;cursor:grab;background:transparent}
+.stage canvas{max-width:100%;max-height:calc(100vh - 170px);box-shadow:0 10px 30px rgba(0,0,0,0.5);touch-action:none;cursor:grab;background:transparent}
 .hint{color:var(--muted);font-size:11px}
 .panel{width:310px;flex-shrink:0;border-left:1px solid var(--line);background:var(--side);padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
 .panel h3{margin:0;display:flex;align-items:center;gap:10px;font-size:18px}

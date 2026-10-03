@@ -433,10 +433,10 @@ export const PDFConverterSection = () => {
                     
                     {/* Top Overlay: Number & Delete */}
                     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, padding: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                       <div style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.6)', color: '#fff', borderRadius: '6px', fontSize: '12px', fontWeight: 600, backdropFilter: 'blur(4px)' }}>
+                       <div style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.8)', color: '#fff', borderRadius: '6px', fontSize: '12px', fontWeight: 600 }}>
                          {idx + 1}
                        </div>
-                       <button onClick={(e) => { e.stopPropagation(); removeFile(idx); }} style={{ width: '24px', height: '24px', background: 'rgba(239, 68, 68, 0.9)', border: 'none', color: '#fff', cursor: 'pointer', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', backdropFilter: 'blur(4px)' }}>
+                       <button onClick={(e) => { e.stopPropagation(); removeFile(idx); }} style={{ width: '24px', height: '24px', background: 'rgba(239, 68, 68, 0.9)', border: 'none', color: '#fff', cursor: 'pointer', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px' }}>
                          ✕
                        </button>
                     </div>

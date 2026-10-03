@@ -174,7 +174,7 @@ export const ImageExtractorSection: React.FC<Props> = ({ globalPalette, setGloba
                   <div style={{ display: 'grid', gridTemplateColumns: `repeat(${globalPalette.length}, 1fr)`, height: '180px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', border: '1px solid var(--line)' }}>
                     {globalPalette.map((hex, i) => (
                       <div key={i} style={{ background: hex, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                        <div style={{ background: 'rgba(0,0,0,0.6)', color: '#fff', padding: '12px', textAlign: 'center', backdropFilter: 'blur(4px)' }}>
+                        <div style={{ background: 'rgba(0,0,0,0.8)', color: '#fff', padding: '12px', textAlign: 'center' }}>
                           <div style={{ fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{hex.toUpperCase()}</div>
                           <button id={`btn-img-${hex}`} onClick={() => copyToClipboard(hex)} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: '#fff', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', marginTop: '4px', cursor: 'pointer', width: '100%' }}>Copy</button>
                         </div>
