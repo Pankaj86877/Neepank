@@ -209,7 +209,7 @@ export const ImageToCssSection = () => {
     } else if (outputMode === "svg") {
       code = `<svg width="${shapeWidth}" height="${shapeHeight}" viewBox="0 0 ${uploadedImg?.width || 100} ${uploadedImg?.height || 100}" xmlns="http://www.w3.org/2000/svg">\n  <path d="${svgPathStr.replace("path('", "").replace("')", "")}" fill="${shapeColor}" />\n</svg>`;
     } else if (outputMode === "html-css") {
-      code = `<!-- HTML -->\n<div class="shape"></div>\n\n/* CSS */\n.shape {\n  width: ${shapeWidth}px;\n  height: ${shapeHeight}px;\n  background: ${shapeColor};\n  clip-path: ${outputMode === "css-path" ? svgPathStr : polygonStr};\n}`;
+      code = `<!-- HTML -->\n<div class="shape"></div>\n\n/* CSS */\n.shape {\n  width: ${shapeWidth}px;\n  height: ${shapeHeight}px;\n  background: ${shapeColor};\n  clip-path: ${polygonStr};\n}`;
     }
     setGeneratedCode(code);
   }, [outputMode, shapeWidth, shapeHeight, shapeColor, polygonStr, svgPathStr, imgDataUrl]);
