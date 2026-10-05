@@ -20,6 +20,8 @@ const DataTransferSection = dynamic(() => import("./tools/DataTransferSection").
 const ColorPaletteSection = dynamic(() => import("./tools/ColorPaletteSection").then(m => m.ColorPaletteSection), { ssr: false });
 const SVGOptimizerSection = dynamic(() => import("./tools/SVGOptimizerSection").then(m => m.SVGOptimizerSection), { ssr: false });
 const ResizerSection = dynamic(() => import("./tools/ResizerSection").then(m => m.ResizerSection), { ssr: false });
+const JSONDateConverterSection = dynamic(() => import("./tools/JSONDateConverterSection").then(m => m.JSONDateConverterSection), { ssr: false });
+const ImageToCssSection = dynamic(() => import("./tools/ImageToCssSection").then(m => m.ImageToCssSection), { ssr: false });
 
 const SectionRouter = () => {
   const { activeSection, openTabs } = useAppContext();
@@ -41,6 +43,8 @@ const SectionRouter = () => {
       {isMounted("mp4-to-gif") && <div className="pane" hidden={activeSection !== "mp4-to-gif"}><MP4ToGIFSection /></div>}
       {isMounted("qr-generator") && <div className="pane" hidden={activeSection !== "qr-generator"}><QRGeneratorSection /></div>}
       {isMounted("data-transfer") && <div className="pane" hidden={activeSection !== "data-transfer"}><DataTransferSection /></div>}
+      {isMounted("json-date") && <div className="pane" hidden={activeSection !== "json-date"}><JSONDateConverterSection /></div>}
+      {isMounted("image-to-css") && <div className="pane" hidden={activeSection !== "image-to-css"}><ImageToCssSection /></div>}
       {isMounted("color-palette") && <div className="pane" hidden={activeSection !== "color-palette"}><ColorPaletteSection /></div>}
       {isMounted("svg-optimizer") && <div className="pane" hidden={activeSection !== "svg-optimizer"}><SVGOptimizerSection /></div>}
       {isMounted("photo-resizer") && <div className="pane" hidden={activeSection !== "photo-resizer"}><ResizerSection /></div>}

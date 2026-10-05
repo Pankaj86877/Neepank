@@ -222,11 +222,17 @@ export const QRGeneratorSection = () => {
             <div style={{ display: 'flex', gap: '12px', alignItems: 'center', background: 'var(--bg)', padding: '8px', borderRadius: '8px', border: '1px solid var(--line)' }}>
               <input 
                 type="color" 
+                value={/^#[0-9A-Fa-f]{6}$/i.test(fgColor) ? fgColor : "#000000"} 
+                onChange={(e) => setFgColor(e.target.value)}
+                style={{ width: '32px', height: '32px', border: 'none', borderRadius: '4px', cursor: 'pointer', padding: 0, background: 'transparent', flexShrink: 0 }}
+              />
+              <input 
+                type="text" 
                 value={fgColor} 
                 onChange={(e) => setFgColor(e.target.value)}
-                style={{ width: '32px', height: '32px', border: 'none', borderRadius: '4px', cursor: 'pointer', padding: 0, background: 'transparent' }}
+                style={{ flex: 1, border: 'none', background: 'transparent', fontSize: '13px', fontFamily: 'var(--font-mono)', color: 'var(--text)', outline: 'none', textTransform: 'uppercase' }}
+                placeholder="#000000"
               />
-              <span style={{ fontSize: '13px', fontFamily: 'var(--font-mono)', color: 'var(--text)' }}>{fgColor.toUpperCase()}</span>
             </div>
           </div>
           <div>

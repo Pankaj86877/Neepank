@@ -76,7 +76,7 @@ export const LivePreviewSection: React.FC<Props> = ({ globalPalette, savedPalett
       <div style={{ padding: '32px', background: 'var(--bg)', borderRadius: '12px', border: '1px solid var(--line)', display: 'flex', justifyContent: 'center' }}>
         
         {template === "website" && (
-          <div style={{ width: '100%', maxWidth: '800px', background: bg1, borderRadius: '8px', overflow: 'hidden', boxShadow: '0 12px 32px rgba(0,0,0,0.1)', fontFamily: 'sans-serif' }}>
+          <div style={{ width: '100%', maxWidth: '800px', background: bg1, borderRadius: '8px', overflow: 'hidden', boxShadow: '0 12px 32px rgba(0,0,0,0.1)', fontFamily: 'var(--font-body)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px', borderBottom: `1px solid ${bg2}` }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <div style={{ width: '24px', height: '24px', borderRadius: '4px', background: primary }}></div>
@@ -114,7 +114,7 @@ export const LivePreviewSection: React.FC<Props> = ({ globalPalette, savedPalett
         )}
 
         {template === "cafe" && (
-          <div style={{ width: '100%', maxWidth: '800px', display: 'flex', gap: '24px', fontFamily: 'serif' }}>
+          <div style={{ width: '100%', maxWidth: '800px', display: 'flex', gap: '24px', fontFamily: 'var(--font-body)' }}>
              <div style={{ flex: 1, background: primary, color: bg1, padding: '48px', borderRadius: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', boxShadow: '0 12px 32px rgba(0,0,0,0.1)' }}>
                 <div style={{ width: '80px', height: '80px', border: `4px solid ${accent}`, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
                   <span style={{ fontSize: '32px', color: accent }}>☕</span>
@@ -144,7 +144,7 @@ export const LivePreviewSection: React.FC<Props> = ({ globalPalette, savedPalett
                 <div style={{ background: accent, padding: '32px', borderRadius: '8px', color: primary, textAlign: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
                   <h3 style={{ margin: '0 0 8px 0', fontSize: '24px' }}>Join our club</h3>
                   <p style={{ margin: '0 0 16px 0', fontSize: '14px', opacity: 0.9 }}>Get 10% off your first bag of beans.</p>
-                  <button style={{ background: primary, color: bg1, border: 'none', padding: '10px 20px', borderRadius: '4px', fontFamily: 'sans-serif', fontWeight: 600, cursor: 'pointer', width: '100%' }}>Subscribe</button>
+                  <button style={{ background: primary, color: bg1, border: 'none', padding: '10px 20px', borderRadius: '4px', fontFamily: 'var(--font-body)', fontWeight: 600, cursor: 'pointer', width: '100%' }}>Subscribe</button>
                 </div>
              </div>
           </div>

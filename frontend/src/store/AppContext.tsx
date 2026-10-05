@@ -17,6 +17,10 @@ type AppState = {
   setSidebarCollapsed: (collapsed: boolean) => void;
   isMobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
+  recentTools: string[];
+  setRecentTools: (tools: string[]) => void;
+  myTools: string[];
+  setMyTools: (tools: string[]) => void;
 };
 
 const AppContext = createContext<AppState | undefined>(undefined);
@@ -29,6 +33,37 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState("dark");
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [recentTools, setRecentTools] = useState<string[]>([]);
+  const [myTools, setMyTools] = useState<string[]>([]);
+
+  useEffect(() => {
+    const savedRecent = localStorage.getItem("neepank_recent_tools");
+    if (savedRecent) {
+      try { setRecentTools(JSON.parse(savedRecent)); } catch (e) {}
+    }
+    const savedMyTools = localStorage.getItem("neepank_my_tools");
+    if (savedMyTools) {
+      try { setMyTools(JSON.parse(savedMyTools)); } catch (e) {}
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("neepank_recent_tools", JSON.stringify(recentTools));
+  }, [recentTools]);
+
+  useEffect(() => {
+    localStorage.setItem("neepank_my_tools", JSON.stringify(myTools));
+  }, [myTools]);
+
+  const handleSetActiveSection = (section: string) => {
+    setActiveSection(section);
+    if (section !== "home" && section !== "settings") {
+      setRecentTools(prev => {
+        const filtered = prev.filter(t => t !== section);
+        return [section, ...filtered].slice(0, 6);
+      });
+    }
+  };
 
   useEffect(() => {
     const isLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
@@ -44,7 +79,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     <AppContext.Provider
       value={{
         activeSection,
-        setActiveSection,
+        setActiveSection: handleSetActiveSection,
         openTabs,
         setOpenTabs,
         searchQuery,
@@ -57,6 +92,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setSidebarCollapsed,
         isMobileMenuOpen,
         setMobileMenuOpen,
+        recentTools,
+        setRecentTools,
+        myTools,
+        setMyTools,
       }}
     >
       {children}

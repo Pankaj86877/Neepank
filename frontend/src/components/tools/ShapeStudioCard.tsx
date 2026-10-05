@@ -28,6 +28,8 @@ export const ShapeStudioCard = ({ config }: { config: ShapeConfig }) => {
   const [flipH, setFlipH] = useState(false);
   const [flipV, setFlipV] = useState(false);
   const [imageRotation, setImageRotation] = useState(0);
+  const [shapeColor, setShapeColor] = useState(config.color);
+  const [exportName, setExportName] = useState("");
   
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
@@ -45,6 +47,8 @@ export const ShapeStudioCard = ({ config }: { config: ShapeConfig }) => {
       setFlipH(false);
       setFlipV(false);
       setImageRotation(0);
+      setShapeColor(config.color);
+      setExportName("");
     }
   };
 
@@ -54,12 +58,12 @@ export const ShapeStudioCard = ({ config }: { config: ShapeConfig }) => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const { w, h, r, color, diagonalStrategy } = config;
+    const { w, h, r, diagonalStrategy } = config;
 
     ctx.clearRect(0, 0, w, h);
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
-    ctx.fillStyle = color;
+    ctx.fillStyle = shapeColor;
 
     const drawPath = () => {
       const { shapeType, diagonalStrategy } = config;
@@ -144,7 +148,7 @@ export const ShapeStudioCard = ({ config }: { config: ShapeConfig }) => {
 
   useEffect(() => {
     renderCanvas();
-  }, [uploadedImage, scale, offsetX, offsetY, imageOpacity, flipH, flipV, imageRotation, config]);
+  }, [uploadedImage, scale, offsetX, offsetY, imageOpacity, flipH, flipV, imageRotation, config, shapeColor]);
 
   const onUploadSuccess = (img: HTMLImageElement, filename: string) => {
     setOriginalFilename(filename);
@@ -205,8 +209,8 @@ export const ShapeStudioCard = ({ config }: { config: ShapeConfig }) => {
   const exportImage = () => {
     if (!canvasRef.current) return;
     const link = document.createElement("a");
-    const safeName = originalFilename.split(".")[0] || "image";
-    link.download = `${safeName}_shaped.png`;
+    const safeName = exportName.trim() || `${originalFilename.split(".")[0] || "image"}_shaped`;
+    link.download = `${safeName}.png`;
     link.href = canvasRef.current.toDataURL("image/png", 1.0);
     link.click();
   };
@@ -215,7 +219,7 @@ export const ShapeStudioCard = ({ config }: { config: ShapeConfig }) => {
     <div style={{ background: 'var(--card)', border: '1px solid var(--line)', borderRadius: '16px', padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }} id={config.id}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: '1px solid var(--line)', paddingBottom: '14px' }}>
         <div>
-          <span style={{ color: config.color, fontSize: '16px', fontWeight: 700 }}>
+          <span style={{ color: shapeColor, fontSize: '16px', fontWeight: 700 }}>
             {config.title}
           </span>
           <span style={{ fontSize: '11px', background: 'var(--bg)', border: '1px solid var(--line)', padding: '5px 10px', borderRadius: '7px', marginLeft: '10px', fontFamily: 'var(--font-mono)' }}>
@@ -341,9 +345,31 @@ export const ShapeStudioCard = ({ config }: { config: ShapeConfig }) => {
           />
         </div>
         
+        <div className="two">
+          <div>
+            <div className="lb">Shape Color</div>
+            <input
+              type="color"
+              value={shapeColor}
+              onChange={(e) => setShapeColor(e.target.value)}
+              style={{ width: '100%', height: '36px', border: '1px solid var(--line)', borderRadius: '6px', background: 'var(--card)', cursor: 'pointer', padding: 0 }}
+            />
+          </div>
+          <div>
+            <div className="lb">File Name</div>
+            <input
+              type="text"
+              placeholder="e.g. my_shape"
+              value={exportName}
+              onChange={(e) => setExportName(e.target.value)}
+              style={{ width: '100%', padding: '9px 12px', border: '1px solid var(--line)', borderRadius: '6px', background: 'var(--card)', color: 'var(--text)', fontSize: '13px', outline: 'none' }}
+            />
+          </div>
+        </div>
+        
         <button
           className="dl"
-          style={{ background: config.color, filter: 'brightness(0.9)', border: 'none', color: '#fff' }}
+          style={{ background: shapeColor, filter: 'brightness(0.9)', border: 'none', color: '#fff' }}
           onClick={exportImage}
         >
           ⬇ Download Shape ({config.w}x{config.h})

@@ -19,7 +19,7 @@ export const FormatConverterSection = () => {
   const [outFormat, setOutFormat] = useState("image/png");
   const [outExt, setOutExt] = useState("png");
   const [compMode, setCompMode] = useState<"quality" | "target">("quality");
-  const [targetKb, setTargetKb] = useState<number>(500);
+  const [targetKb, setTargetKb] = useState<number | "">(500);
   const [quality, setQuality] = useState(92);
   const [resizeW, setResizeW] = useState<number | "">("");
   const [resizeH, setResizeH] = useState<number | "">("");
@@ -141,7 +141,7 @@ export const FormatConverterSection = () => {
        let bestSize = Infinity;
        let closestValidUrl = "";
        let iters = 0;
-       const targetBytes = targetKb * 1024;
+       const targetBytes = (typeof targetKb === "number" ? targetKb : 500) * 1024;
        
        while (iters < 8 && minQ <= maxQ) {
          iters++;
@@ -307,28 +307,30 @@ export const FormatConverterSection = () => {
             </div>
           </div>
 
-          <div style={{ background: 'var(--bg)', border: '1px solid var(--line)', borderRadius: '12px', padding: '16px' }}>
-            <div className="lb" style={{ marginBottom: '12px' }}>Quality & Compression</div>
-            
-            <div style={{ display: 'flex', gap: '8px', background: 'var(--card)', padding: '4px', borderRadius: '8px', border: '1px solid var(--line)', marginBottom: '12px' }}>
-                <button style={{ flex: 1, padding: '6px', border: 'none', background: compMode === 'quality' ? 'var(--bg)' : 'transparent', color: 'var(--text)', borderRadius: '6px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', boxShadow: compMode === 'quality' ? '0 2px 8px rgba(0,0,0,0.05)' : 'none' }} onClick={() => setCompMode('quality')}>Manual Quality</button>
-                <button style={{ flex: 1, padding: '6px', border: 'none', background: compMode === 'target' ? 'var(--bg)' : 'transparent', color: 'var(--text)', borderRadius: '6px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', boxShadow: compMode === 'target' ? '0 2px 8px rgba(0,0,0,0.05)' : 'none' }} onClick={() => setCompMode('target')}>Target Size</button>
-            </div>
+          {outFormat !== "image/png" && (
+            <div style={{ background: 'var(--bg)', border: '1px solid var(--line)', borderRadius: '12px', padding: '16px' }}>
+              <div className="lb" style={{ marginBottom: '12px' }}>Quality & Compression</div>
+              
+              <div style={{ display: 'flex', gap: '8px', background: 'var(--card)', padding: '4px', borderRadius: '8px', border: '1px solid var(--line)', marginBottom: '12px' }}>
+                  <button style={{ flex: 1, padding: '6px', border: 'none', background: compMode === 'quality' ? 'var(--bg)' : 'transparent', color: 'var(--text)', borderRadius: '6px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', boxShadow: compMode === 'quality' ? '0 2px 8px rgba(0,0,0,0.05)' : 'none' }} onClick={() => setCompMode('quality')}>Manual Quality</button>
+                  <button style={{ flex: 1, padding: '6px', border: 'none', background: compMode === 'target' ? 'var(--bg)' : 'transparent', color: 'var(--text)', borderRadius: '6px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', boxShadow: compMode === 'target' ? '0 2px 8px rgba(0,0,0,0.05)' : 'none' }} onClick={() => { setCompMode('target'); if (outFormat === 'image/png') { setOutFormat('image/jpeg'); setOutExt('jpg'); } }}>Target Size</button>
+              </div>
 
-            {compMode === 'quality' ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                <input type="range" min="1" max="100" value={quality} onChange={(e) => setQuality(parseInt(e.target.value))} style={{ flex: 1, accentColor: 'var(--brand)' }} />
-                <div style={{ width: '40px', textAlign: 'right', fontWeight: 600, fontFamily: 'var(--font-mono)', fontSize: '14px' }}>{quality}%</div>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', gap: '12px', marginBottom: '8px' }}>
-                <input type="number" min="1" value={targetKb} onChange={(e) => setTargetKb(parseInt(e.target.value) || 0)} style={{ flex: 1, background: 'var(--card)', border: '1px solid var(--line)', color: 'var(--text)', padding: '10px', borderRadius: '6px', fontSize: '14px' }} placeholder="Target size in KB" />
-                <div style={{ background: 'var(--card)', border: '1px solid var(--line)', color: 'var(--text)', padding: '10px 16px', borderRadius: '6px', display: 'flex', alignItems: 'center', fontWeight: 600 }}>KB</div>
-              </div>
-            )}
-            
-            <div style={{ fontSize: "11px", color: "var(--muted)" }}>{compMode === 'quality' ? "Quality affects JPG & WEBP output size. PNG is vector/lossless processes." : "Target size is approximate and only applies to JPG & WEBP outputs."}</div>
-          </div>
+              {compMode === 'quality' ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                  <input type="range" min="1" max="100" value={quality} onChange={(e) => setQuality(parseInt(e.target.value))} style={{ flex: 1, accentColor: 'var(--brand)' }} />
+                  <div style={{ width: '40px', textAlign: 'right', fontWeight: 600, fontFamily: 'var(--font-mono)', fontSize: '14px' }}>{quality}%</div>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', gap: '12px', marginBottom: '8px' }}>
+                  <input type="number" min="1" value={targetKb} onChange={(e) => setTargetKb(e.target.value === "" ? "" : parseInt(e.target.value) || 0)} style={{ flex: 1, background: 'var(--card)', border: '1px solid var(--line)', color: 'var(--text)', padding: '10px', borderRadius: '6px', fontSize: '14px' }} placeholder="Target size in KB" />
+                  <div style={{ background: 'var(--card)', border: '1px solid var(--line)', color: 'var(--text)', padding: '10px 16px', borderRadius: '6px', display: 'flex', alignItems: 'center', fontWeight: 600 }}>KB</div>
+                </div>
+              )}
+              
+              <div style={{ fontSize: "11px", color: "var(--muted)" }}>{compMode === 'quality' ? "Quality affects JPG & WEBP output size." : "Target size is approximate and only applies to JPG & WEBP outputs."}</div>
+            </div>
+          )}
 
           <div style={{ background: 'var(--bg)', border: '1px solid var(--line)', borderRadius: '12px', padding: '16px' }}>
             <div className="lb" style={{ marginBottom: '12px' }}>Resize (optional)</div>
