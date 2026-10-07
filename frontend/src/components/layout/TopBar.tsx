@@ -11,7 +11,7 @@ const sectionData: Record<string, { label: string; icon: string; color: string }
   "ocr": { label: "Image to Text / OCR", icon: "⎘", color: "#6366f1" },
   "png-overlay": { label: "PNG Color Overlay", icon: "◐", color: "#ec4899" },
   "pdf-converter": { label: "PDF Converter", icon: "⬚", color: "#14b8a6" },
-  "format-converter": { label: "Format Converter", icon: "⇄", color: "#f43f5e" },
+  "format-converter": { label: "Image Converter", icon: "⇄", color: "#f43f5e" },
   "mp4-to-gif": { label: "MP4 to GIF", icon: "🎬", color: "#8b5cf6" },
   "qr-generator": { label: "QR Generator", icon: "📱", color: "#06b6d4" },
   "data-transfer": { label: "Data Transfer", icon: "📡", color: "#84cc16" },

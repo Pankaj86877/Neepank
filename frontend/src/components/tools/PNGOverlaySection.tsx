@@ -242,7 +242,7 @@ export const PNGOverlaySection = () => {
 
   return (
     <div className="ws">
-      <div className="stage" style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '24px', overflowY: 'auto' }}>
+      <div className="stage" style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '24px', overflowY: 'auto', justifyContent: 'flex-start', alignItems: 'stretch' }}>
         <div 
           className={`checkered-bg ${isDropzoneHover ? "drag-over" : ""}`}
           style={{ 

@@ -2,27 +2,28 @@
 
 import React from "react";
 import { useAppContext } from "@/store/AppContext";
+import { toolIcons } from "@/components/icons/toolIcons";
 
 export const sectionData: Record<string, { label: string; icon: string; color: string; desc: string; category: string }> = {
-  "presets": { label: "Shape Presets", icon: "◧", color: "#e8682f", desc: "Predefined output formats", category: "Image" },
-  "custom": { label: "Custom Shapes", icon: "⬡", color: "#3b82f6", desc: "Advanced Geometries", category: "Image" },
-  "shape-image": { label: "Shape Your Image", icon: "◈", color: "#f59e0b", desc: "Image Cropping & Transformation", category: "Image" },
-  "extractor": { label: "Image Extractor", icon: "📥", color: "#10b981", desc: "Bulk Asset Extraction", category: "Image" },
-  "ocr": { label: "Image to Text / OCR", icon: "⎘", color: "#6366f1", desc: "Optical Character Recognition", category: "Data" },
-  "png-overlay": { label: "PNG Color Overlay", icon: "◐", color: "#ec4899", desc: "Tinting and Opacity", category: "Image" },
-  "pdf-converter": { label: "PDF Converter", icon: "⬚", color: "#14b8a6", desc: "High-Quality Image to PDF", category: "Document" },
-  "format-converter": { label: "Format Converter", icon: "⇄", color: "#f43f5e", desc: "Convert & Trace Images", category: "Image" },
-  "mp4-to-gif": { label: "MP4 to GIF", icon: "🎬", color: "#8b5cf6", desc: "Video to GIF animation", category: "Video" },
-  "qr-generator": { label: "QR Generator", icon: "📱", color: "#06b6d4", desc: "Generate QR codes", category: "Data" },
-  "data-transfer": { label: "Data Transfer", icon: "📡", color: "#84cc16", desc: "P2P file sharing", category: "Data" },
-  "json-date": { label: "JSON Data Converter", icon: "Jd", color: "#7CFFB2", desc: "Format dates and export JSON data", category: "Data" },
-  "color-palette": { label: "Color Palette", icon: "🎨", color: "#f43f5e", desc: "Extract and edit palettes", category: "Image" },
-  "svg-optimizer": { label: "SVG Optimizer", icon: "✨", color: "#10b981", desc: "Compress & clean SVGs", category: "Image" },
-  "photo-resizer": { label: "Photo & Sig Resizer", icon: "📐", color: "#3b82f6", desc: "Resize and crop precisely", category: "Image" },
-  "image-to-css": { label: "Image to CSS", icon: "✂️", color: "#8b5cf6", desc: "Convert images to CSS shapes", category: "Developer" },
+  "presets": { label: "Shape Presets", icon: "shapePresets", color: "#e8682f", desc: "Predefined output formats", category: "Crop & Resize" },
+  "custom": { label: "Custom Shapes", icon: "customShapes", color: "#3b82f6", desc: "Advanced Geometries", category: "Crop & Resize" },
+  "shape-image": { label: "Shape Your Image", icon: "shapeYourImage", color: "#f59e0b", desc: "Image Cropping & Transformation", category: "Crop & Resize" },
+  "extractor": { label: "Image Extractor", icon: "imageExtractor", color: "#10b981", desc: "Bulk Asset Extraction", category: "Extraction" },
+  "ocr": { label: "Image to Text / OCR", icon: "ocr", color: "#6366f1", desc: "Optical Character Recognition", category: "Extraction" },
+  "png-overlay": { label: "PNG Color Overlay", icon: "pngColorOverlay", color: "#ec4899", desc: "Tinting and Opacity", category: "Colors" },
+  "pdf-converter": { label: "PDF Converter", icon: "pdfConverter", color: "#14b8a6", desc: "High-Quality Image to PDF", category: "Formats" },
+  "format-converter": { label: "Image Converter", icon: "imageConverter", color: "#f43f5e", desc: "Convert & Trace Images", category: "Formats" },
+  "mp4-to-gif": { label: "MP4 to GIF", icon: "mp4ToGif", color: "#8b5cf6", desc: "Video to GIF animation", category: "Formats" },
+  "qr-generator": { label: "QR Generator", icon: "qrGenerator", color: "#06b6d4", desc: "Generate QR codes", category: "Sharing" },
+  "data-transfer": { label: "Data Transfer", icon: "dataTransfer", color: "#84cc16", desc: "P2P file sharing", category: "Sharing" },
+  "json-date": { label: "JSON Data Converter", icon: "jsonConverter", color: "#7CFFB2", desc: "Format dates and export JSON data", category: "Formats" },
+  "color-palette": { label: "Color Palette", icon: "colorPalette", color: "#f43f5e", desc: "Extract and edit palettes", category: "Colors" },
+  "svg-optimizer": { label: "SVG Optimizer", icon: "svgOptimizer", color: "#10b981", desc: "Compress & clean SVGs", category: "Code" },
+  "photo-resizer": { label: "Photo & Sig Resizer", icon: "photoSigResizer", color: "#3b82f6", desc: "Resize and crop precisely", category: "Crop & Resize" },
+  "image-to-css": { label: "Image to CSS", icon: "imageToCss", color: "#8b5cf6", desc: "Convert images to CSS shapes", category: "Code" },
 };
 
-const categories = ["All", "Document", "Image", "Data", "Video", "Developer"];
+const categories = ["All", "Formats", "Crop & Resize", "Extraction", "Sharing", "Colors", "Code"];
 
 export const HomeView = () => {
   const { searchQuery, setSearchQuery, activeCategory, setActiveCategory, setActiveSection, openTabs, setOpenTabs } = useAppContext();
@@ -72,7 +73,7 @@ export const HomeView = () => {
             style={{ "--c": data.color } as React.CSSProperties}
             onClick={() => handleOpenTool(id)}
           >
-            <div className="ico" style={{ "--c": data.color } as React.CSSProperties}>{data.icon}</div>
+            <div className="ico" style={{ "--c": data.color } as React.CSSProperties} dangerouslySetInnerHTML={{ __html: toolIcons[data.icon] || data.icon }} />
             <div>
               <h2>{data.label}</h2>
               <p>{data.desc}</p>

@@ -320,7 +320,7 @@ export const ResizerSection = () => {
 
   return (
     <div className="ws">
-      <div className="stage" style={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '24px', overflowY: 'auto' }}>
+      <div className="stage" style={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '24px', overflowY: 'auto', justifyContent: 'flex-start', alignItems: 'stretch' }}>
         
         {!fileData ? (
           <div style={{ display: 'flex', gap: '32px', height: '100%', minHeight: '400px', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>

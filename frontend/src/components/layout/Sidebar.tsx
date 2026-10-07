@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "@/store/AppContext";
+import { toolIcons } from "@/components/icons/toolIcons";
 
 export const Sidebar = () => {
   const { 
@@ -21,6 +22,22 @@ export const Sidebar = () => {
 
   const [isAddingTool, setIsAddingTool] = useState(false);
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
+  const [collapsedCategories, setCollapsedCategories] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("neepank-sidebar-collapsed");
+      if (saved) setCollapsedCategories(JSON.parse(saved));
+    } catch(e) {}
+  }, []);
+
+  const toggleCategory = (cat: string) => {
+    setCollapsedCategories(prev => {
+      const next = { ...prev, [cat]: !prev[cat] };
+      localStorage.setItem("neepank-sidebar-collapsed", JSON.stringify(next));
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (isSidebarCollapsed) {
@@ -31,23 +48,29 @@ export const Sidebar = () => {
   }, [isSidebarCollapsed]);
 
   const navItems = [
-    { id: "home", label: "Home Workspace", icon: "⌂", color: "#8d8d96", category: "home" },
-    { id: "presets", label: "Shape Presets", icon: "◧", color: "#e8682f", category: "Image" },
-    { id: "custom", label: "Custom Shapes", icon: "⬡", color: "#3b82f6", category: "Image" },
-    { id: "shape-image", label: "Shape Your Image", icon: "◈", color: "#f59e0b", category: "Image" },
-    { id: "extractor", label: "Image Extractor", icon: "📥", color: "#10b981", category: "Image" },
-    { id: "png-overlay", label: "PNG Color Overlay", icon: "◐", color: "#ec4899", category: "Image" },
-    { id: "format-converter", label: "Format Converter", icon: "⇄", color: "#f43f5e", category: "Image" },
-    { id: "color-palette", label: "Color Palette", icon: "🎨", color: "#f43f5e", category: "Image" },
-    { id: "svg-optimizer", label: "SVG Optimizer", icon: "⚡️", color: "#eab308", category: "Image" },
-    { id: "photo-resizer", label: "Photo & Sig Resizer", icon: "📸", color: "#3b82f6", category: "Image" },
-    { id: "mp4-to-gif", label: "MP4 to GIF", icon: "🎬", color: "#8b5cf6", category: "Video" },
-    { id: "ocr", label: "Image to Text / OCR", icon: "⎘", color: "#6366f1", category: "Data" },
-    { id: "qr-generator", label: "QR Generator", icon: "📱", color: "#06b6d4", category: "Data" },
-    { id: "data-transfer", label: "Data Transfer", icon: "📡", color: "#84cc16", category: "Data" },
-    { id: "json-date", label: "JSON Data Converter", icon: "Jd", color: "#7CFFB2", category: "Data" },
-    { id: "pdf-converter", label: "PDF Converter", icon: "⬚", color: "#14b8a6", category: "Document" },
-    { id: "image-to-css", label: "Image to CSS", icon: "✂️", color: "#8b5cf6", category: "Developer" },
+    { id: "home", label: "Home Workspace", icon: "home", color: "#8d8d96", category: "home" },
+    
+    { id: "format-converter", label: "Image Converter", icon: "imageConverter", color: "#f43f5e", category: "Formats" },
+    { id: "pdf-converter", label: "PDF Converter", icon: "pdfConverter", color: "#14b8a6", category: "Formats" },
+    { id: "mp4-to-gif", label: "MP4 to GIF", icon: "mp4ToGif", color: "#8b5cf6", category: "Formats" },
+    { id: "json-date", label: "JSON Data Converter", icon: "jsonConverter", color: "#7CFFB2", category: "Formats" },
+    
+    { id: "photo-resizer", label: "Photo & Sig Resizer", icon: "photoSigResizer", color: "#3b82f6", category: "Crop & Resize" },
+    { id: "shape-image", label: "Shape Your Image", icon: "shapeYourImage", color: "#f59e0b", category: "Crop & Resize" },
+    { id: "presets", label: "Shape Presets", icon: "shapePresets", color: "#e8682f", category: "Crop & Resize" },
+    { id: "custom", label: "Custom Shapes", icon: "customShapes", color: "#3b82f6", category: "Crop & Resize" },
+    
+    { id: "ocr", label: "Image to Text / OCR", icon: "ocr", color: "#6366f1", category: "Extraction" },
+    { id: "extractor", label: "Image Extractor", icon: "imageExtractor", color: "#10b981", category: "Extraction" },
+    
+    { id: "qr-generator", label: "QR Generator", icon: "qrGenerator", color: "#06b6d4", category: "Sharing" },
+    { id: "data-transfer", label: "Data Transfer", icon: "dataTransfer", color: "#84cc16", category: "Sharing" },
+    
+    { id: "color-palette", label: "Color Palette", icon: "colorPalette", color: "#f43f5e", category: "Colors" },
+    { id: "png-overlay", label: "PNG Color Overlay", icon: "pngColorOverlay", color: "#ec4899", category: "Colors" },
+    
+    { id: "svg-optimizer", label: "SVG Optimizer", icon: "svgOptimizer", color: "#eab308", category: "Code" },
+    { id: "image-to-css", label: "Image to CSS", icon: "imageToCss", color: "#8b5cf6", category: "Code" },
   ];
 
   const handleNavClick = (id: string) => {
@@ -98,9 +121,7 @@ export const Sidebar = () => {
                 className={isMyTools ? "dnd-item" : ""}
                 style={{ position: 'relative' }}
               >
-                <div className="mini" style={{ "--c": item.color } as React.CSSProperties}>
-                  {item.icon}
-                </div>
+                <div className="mini" style={{ "--c": item.color } as React.CSSProperties} dangerouslySetInnerHTML={{ __html: toolIcons[item.icon] || item.icon }} />
                 <span>{item.label}</span>
                 {isMyTools && (
                   <div 
@@ -156,24 +177,65 @@ export const Sidebar = () => {
   const renderGroup = (title: string, category: string) => {
     const items = navItems.filter(i => i.category === category);
     if (items.length === 0) return null;
+    
+    const isCollapsed = collapsedCategories[category] || false;
+    const hasActiveChild = items.some(i => i.id === activeSection);
+    const visuallyCollapsed = isSidebarCollapsed ? false : isCollapsed;
+    
     return (
       <div key={title} className="nav-group" style={{ marginBottom: '16px' }}>
-        <div className="sl mono" style={{ marginTop: '0', display: isSidebarCollapsed ? 'none' : 'block' }}>{title.toUpperCase()}</div>
-        <nav>
-          {items.map((item) => (
-            <button
-              key={item.id}
-              aria-current={activeSection === item.id}
-              onClick={() => handleNavClick(item.id)}
-              title={item.label}
-            >
-              <div className="mini" style={{ "--c": item.color } as React.CSSProperties}>
-                {item.icon}
-              </div>
-              <span>{item.label}</span>
-            </button>
-          ))}
-        </nav>
+        <button 
+          className="sl mono" 
+          onClick={() => toggleCategory(category)}
+          aria-expanded={!isCollapsed}
+          aria-controls={`group-${category.replace(/[^a-z0-9]/gi, '')}`}
+          style={{ 
+            marginTop: '0', 
+            display: isSidebarCollapsed ? 'none' : 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center',
+            width: '100%',
+            background: 'none',
+            border: 'none',
+            textAlign: 'left',
+            paddingRight: '12px',
+            cursor: 'pointer',
+            color: (hasActiveChild && isCollapsed) ? 'var(--text)' : 'var(--muted)',
+            fontWeight: (hasActiveChild && isCollapsed) ? '900' : '700',
+          }}
+        >
+          <span>{title.toUpperCase()}</span>
+          <span style={{ 
+             transition: 'transform 0.2s', 
+             transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)',
+             fontSize: '10px'
+          }}>▼</span>
+        </button>
+        
+        <div 
+          id={`group-${category.replace(/[^a-z0-9]/gi, '')}`}
+          style={{ 
+            display: 'grid', 
+            gridTemplateRows: visuallyCollapsed ? '0fr' : '1fr',
+            transition: 'grid-template-rows 0.25s ease-in-out'
+          }}
+        >
+          <div style={{ overflow: 'hidden' }}>
+            <nav style={{ overflowY: 'visible', overflowX: 'hidden' }}>
+              {items.map((item) => (
+                <button
+                  key={item.id}
+                  aria-current={activeSection === item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  title={item.label}
+                >
+                  <div className="mini" style={{ "--c": item.color } as React.CSSProperties} dangerouslySetInnerHTML={{ __html: toolIcons[item.icon] || item.icon }} />
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </nav>
+          </div>
+        </div>
       </div>
     );
   };
@@ -190,11 +252,12 @@ export const Sidebar = () => {
       
       <div className="nav-scroll" style={{ flex: 1, overflowY: 'auto' }}>
         {renderCustomGroup("My Tools", myTools, true)}
-        {renderGroup("Document", "Document")}
-        {renderGroup("Image", "Image")}
-        {renderGroup("Data", "Data")}
-        {renderGroup("Video", "Video")}
-        {renderGroup("Developer", "Developer")}
+        {renderGroup("Formats", "Formats")}
+        {renderGroup("Crop & Resize", "Crop & Resize")}
+        {renderGroup("Extraction", "Extraction")}
+        {renderGroup("Sharing", "Sharing")}
+        {renderGroup("Colors", "Colors")}
+        {renderGroup("Code", "Code")}
       </div>
 
       <div id="col" style={{ display: 'flex', alignItems: 'center' }}>

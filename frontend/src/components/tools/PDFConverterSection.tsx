@@ -335,7 +335,7 @@ export const PDFConverterSection = () => {
 
   return (
     <div className="ws">
-      <div className="stage" style={{ display: 'flex', flexDirection: 'column', padding: '24px', overflowY: 'auto' }}>
+      <div className="stage" style={{ display: 'flex', flexDirection: 'column', padding: '24px', overflowY: 'auto', justifyContent: 'flex-start', alignItems: 'stretch' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
           <div>
             <h2 style={{ margin: '0 0 8px 0' }}>Upload Images</h2>

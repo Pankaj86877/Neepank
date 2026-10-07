@@ -116,7 +116,7 @@ export const SVGOptimizerSection = () => {
 
   return (
     <div className="ws">
-      <div className="stage" style={{ padding: '24px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div className="stage" style={{ padding: '24px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '24px', justifyContent: 'flex-start', alignItems: 'stretch' }}>
         <div>
           <h2 style={{ margin: '0 0 8px 0' }}>SVG Optimizer</h2>
           <p className="dim-badge" style={{ margin: 0 }}>Minify and clean up bulky SVG files for the web</p>

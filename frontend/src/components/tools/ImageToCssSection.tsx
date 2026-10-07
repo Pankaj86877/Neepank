@@ -225,7 +225,7 @@ export const ImageToCssSection = () => {
   return (
     <div className="ws" style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%' }}>
       {/* Left Stage */}
-      <div className="stage" style={{ flex: 2, padding: '24px', display: 'flex', flexDirection: 'column', overflowY: 'auto', background: 'var(--bg)', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="stage" style={{ flex: 2, padding: '24px', display: 'flex', flexDirection: 'column', overflowY: 'auto', background: 'var(--bg)', alignItems: 'stretch', justifyContent: 'flex-start' }}>
         {!uploadedImg ? (
           <div style={{ width: '400px', height: '400px', maxWidth: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px dashed var(--line)', borderRadius: '16px', cursor: 'pointer' }} onClick={() => fileInputRef.current?.click()}>
             <div style={{ textAlign: 'center', color: 'var(--muted)' }}>

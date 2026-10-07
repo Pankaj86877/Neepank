@@ -16,7 +16,7 @@ aside{width:230px;background:var(--side);border-right:1px solid var(--line);disp
 .brand{display:flex;align-items:center;gap:12px;padding:18px 18px;border-bottom:1px solid var(--line)}
 .logo{width:32px;height:32px;border-radius:50%;background:#fff;color:var(--brand);display:grid;place-items:center;font-weight:800;flex-shrink:0}
 .brand b{display:block;font-size:19px;font-weight:800;line-height:1.1}.brand small{color:var(--muted);font-size:10px;letter-spacing:.2em}
-.sl{padding:18px 18px 8px;color:var(--muted);font-size:10.5px;letter-spacing:.22em}
+.sl{padding:18px 18px 8px;color:var(--muted);font-size:12.5px;font-weight:700;letter-spacing:.12em}
 nav{padding:0 12px;display:flex;flex-direction:column;gap:2px;flex:1;overflow-y:auto}
 nav button{display:flex;align-items:center;gap:12px;background:none;border:0;padding:7px 8px;border-radius:10px;color:var(--muted);text-align:left;white-space:nowrap;font-weight:500;font-size:13.5px}
 nav button:hover,nav button[aria-current=true]{background:var(--c2);color:var(--text)}
@@ -24,6 +24,8 @@ nav button:hover,nav button[aria-current=true]{background:var(--c2);color:var(--
 .dnd-item:active { cursor: grabbing; }
 .remove-btn:hover { color: #f43f5e; opacity: 1 !important; }
 .mini{width:26px;height:26px;border-radius:7px;background:var(--tile);border:1.5px solid var(--c);color:var(--c);display:grid;place-items:center;font-size:10.5px;font-weight:800;flex-shrink:0}
+.mini svg{width:14px;height:14px;}
+.ico svg{width:26px;height:26px;}
 #col{margin:12px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 14px;text-align:left;color:var(--muted);white-space:nowrap;font-size:12.5px}
 body.col aside{width:68px}body.col .brand>div:last-child,body.col .sl,body.col nav button span:last-child,body.col #col span{display:none}body.col nav button{justify-content:center}
 main{flex:1;min-width:0;display:flex;flex-direction:column}
