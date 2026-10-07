@@ -51,25 +51,25 @@ export const Sidebar = () => {
     { id: "home", label: "Home Workspace", icon: "home", color: "#8d8d96", category: "home" },
     
     { id: "format-converter", label: "Image Converter", icon: "imageConverter", color: "#f43f5e", category: "Formats" },
-    { id: "pdf-converter", label: "PDF Converter", icon: "pdfConverter", color: "#14b8a6", category: "Formats" },
+    { id: "pdf-converter", label: "PDF Converter", icon: "pdfConverter", color: "#14b8a6", light: "#0d9488", category: "Formats" },
     { id: "mp4-to-gif", label: "MP4 to GIF", icon: "mp4ToGif", color: "#8b5cf6", category: "Formats" },
-    { id: "json-date", label: "JSON Data Converter", icon: "jsonConverter", color: "#7CFFB2", category: "Formats" },
-    { id: "extractor", label: "PDF/PPT/DOC to Image", icon: "imageExtractor", color: "#10b981", category: "Formats" },
+    { id: "json-date", label: "JSON Data Converter", icon: "jsonConverter", color: "#7CFFB2", light: "#16a34a", category: "Formats" },
+    { id: "extractor", label: "PDF/PPT/DOC to Image", icon: "imageExtractor", color: "#10b981", light: "#059669", category: "Formats" },
     
     { id: "photo-resizer", label: "Photo & Sig Resizer", icon: "photoSigResizer", color: "#3b82f6", category: "Crop & Resize" },
-    { id: "shape-image", label: "Shape Your Image", icon: "shapeYourImage", color: "#f59e0b", category: "Crop & Resize" },
+    { id: "shape-image", label: "Shape Your Image", icon: "shapeYourImage", color: "#f59e0b", light: "#d97706", category: "Crop & Resize" },
     { id: "presets", label: "Shape Presets", icon: "shapePresets", color: "#e8682f", category: "Crop & Resize" },
     { id: "custom", label: "Custom Shapes", icon: "customShapes", color: "#3b82f6", category: "Crop & Resize" },
     
     { id: "ocr", label: "Image to Text / OCR", icon: "ocr", color: "#6366f1", category: "Extraction" },
     
-    { id: "qr-generator", label: "QR Generator", icon: "qrGenerator", color: "#06b6d4", category: "Sharing" },
-    { id: "data-transfer", label: "Data Transfer", icon: "dataTransfer", color: "#84cc16", category: "Sharing" },
+    { id: "qr-generator", label: "QR Generator", icon: "qrGenerator", color: "#06b6d4", light: "#0891b2", category: "Sharing" },
+    { id: "data-transfer", label: "Data Transfer", icon: "dataTransfer", color: "#84cc16", light: "#65a30d", category: "Sharing" },
     
     { id: "color-palette", label: "Color Palette", icon: "colorPalette", color: "#f43f5e", category: "Colors" },
     { id: "png-overlay", label: "Icon Recolor", icon: "pngColorOverlay", color: "#ec4899", category: "Colors" },
     
-    { id: "svg-optimizer", label: "SVG Optimizer", icon: "svgOptimizer", color: "#eab308", category: "Code" },
+    { id: "svg-optimizer", label: "SVG Optimizer", icon: "svgOptimizer", color: "#10b981", light: "#059669", category: "Code" },
     { id: "image-to-css", label: "Image to CSS", icon: "imageToCss", color: "#8b5cf6", category: "Code" },
   ];
 
@@ -121,7 +121,7 @@ export const Sidebar = () => {
                 className={isMyTools ? "dnd-item" : ""}
                 style={{ position: 'relative' }}
               >
-                <div className="mini" style={{ "--c": item.color } as React.CSSProperties} dangerouslySetInnerHTML={{ __html: toolIcons[item.icon] || item.icon }} />
+                <div className="mini" style={{ "--c": item.color, ...(item.light ? { "--cl": item.light } : {}) } as React.CSSProperties} dangerouslySetInnerHTML={{ __html: toolIcons[item.icon] || item.icon }} />
                 <span>{item.label}</span>
                 {isMyTools && (
                   <div 
@@ -229,7 +229,7 @@ export const Sidebar = () => {
                   onClick={() => handleNavClick(item.id)}
                   title={item.label}
                 >
-                  <div className="mini" style={{ "--c": item.color } as React.CSSProperties} dangerouslySetInnerHTML={{ __html: toolIcons[item.icon] || item.icon }} />
+                  <div className="mini" style={{ "--c": item.color, ...(item.light ? { "--cl": item.light } : {}) } as React.CSSProperties} dangerouslySetInnerHTML={{ __html: toolIcons[item.icon] || item.icon }} />
                   <span>{item.label}</span>
                 </button>
               ))}

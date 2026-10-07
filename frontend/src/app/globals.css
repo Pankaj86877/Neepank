@@ -23,7 +23,22 @@ nav button:hover,nav button[aria-current=true]{background:var(--c2);color:var(--
 .dnd-item { cursor: grab; }
 .dnd-item:active { cursor: grabbing; }
 .remove-btn:hover { color: #f43f5e; opacity: 1 !important; }
-.mini{width:26px;height:26px;border-radius:7px;background:var(--tile);border:1.5px solid var(--c);color:var(--c);display:grid;place-items:center;font-size:10.5px;font-weight:800;flex-shrink:0}
+.mini, .ico { --tone: var(--c); border-color: var(--tone); color: var(--tone); background: var(--tile); }
+
+@media(prefers-color-scheme:light){
+  :root:not([data-theme=dark]) .mini, :root:not([data-theme=dark]) .ico {
+    --tone: var(--cl, var(--c));
+    background: #ffffff;
+    background: color-mix(in srgb, var(--tone) 10%, #ffffff);
+  }
+}
+:root[data-theme=light] .mini, :root[data-theme=light] .ico {
+  --tone: var(--cl, var(--c));
+  background: #ffffff;
+  background: color-mix(in srgb, var(--tone) 10%, #ffffff);
+}
+
+.mini{width:26px;height:26px;border-radius:7px;border-width:1.5px;border-style:solid;display:grid;place-items:center;font-size:10.5px;font-weight:800;flex-shrink:0}
 .mini svg{width:14px;height:14px;}
 .ico svg{width:26px;height:26px;}
 #col{margin:12px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 14px;text-align:left;color:var(--muted);white-space:nowrap;font-size:12.5px}
@@ -32,7 +47,7 @@ main{flex:1;min-width:0;display:flex;flex-direction:column}
 .bar{display:flex;align-items:flex-end;gap:4px;padding:8px 12px 0;border-bottom:1px solid var(--line);background:var(--side);overflow-x:auto;flex-shrink:0}
 .tab{display:flex;align-items:center;gap:8px;padding:8px 10px 8px 12px;border:1px solid transparent;border-bottom:0;border-radius:10px 10px 0 0;background:none;color:var(--muted);font-size:13px;white-space:nowrap;font-weight:500}
 .tab:hover{color:var(--text)}
-.tab[aria-selected=true]{background:var(--bg);border-color:var(--line);color:var(--text);box-shadow:inset 0 2px 0 var(--c,var(--brand))}
+.tab[aria-selected=true]{background:var(--bg);border-color:var(--line);color:var(--text);box-shadow:inset 0 2px 0 var(--tone,var(--brand))}
 .tab .mini{width:20px;height:20px;font-size:8.5px;border-radius:5px}
 .x{border:0;background:none;color:var(--muted);width:20px;height:20px;border-radius:5px;line-height:1;padding:0}.x:hover{background:var(--c2);color:var(--text)}
 .sp{margin-left:auto;display:flex;gap:8px;align-items:center;padding:0 6px 8px}
@@ -48,9 +63,9 @@ h1{font-size:clamp(32px,5vw,50px);margin:0 0 6px;font-weight:800;line-height:1.0
 .tools input{background:var(--card);border:1px solid var(--line);color:var(--text);padding:9px 14px;border-radius:9px;min-width:220px;font-size:12.5px; outline:none;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
 .tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:16px;text-align:left;position:relative;overflow:hidden;transition:all .2s;width:100%}
-.tile::after{content:"";position:absolute;inset:auto -30% -60% -30%;height:70%;background:radial-gradient(closest-side,var(--c),transparent);opacity:.12;pointer-events:none}
-.tile:hover:not(.edit-mode){border-color:var(--c)}
-.ico{width:58px;height:58px;border-radius:14px;background:var(--tile);border:2.5px solid var(--c);color:var(--c);display:grid;place-items:center;font-weight:800;font-size:24px;letter-spacing:-.03em;transition:transform .25s}
+.tile::after{content:"";position:absolute;inset:auto -30% -60% -30%;height:70%;background:radial-gradient(closest-side,var(--tone),transparent);opacity:.12;pointer-events:none}
+.tile:hover:not(.edit-mode){border-color:var(--tone)}
+.ico{width:58px;height:58px;border-radius:14px;border-width:2.5px;border-style:solid;display:grid;place-items:center;font-weight:800;font-size:24px;letter-spacing:-.03em;transition:transform .25s}
 .tile:hover:not(.edit-mode) .ico{transform:rotate(-5deg) scale(1.06)}
 .tile h2{margin:0;font-size:17px}.tile p{margin:4px 0 0;color:var(--muted);font-size:11.5px}
 .tile .st{font-size:11px;color:var(--muted)}
