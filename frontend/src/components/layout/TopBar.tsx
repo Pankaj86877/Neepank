@@ -10,7 +10,7 @@ const sectionData: Record<string, { label: string; icon: string; color: string }
   "shape-image": { label: "Shape Your Image", icon: "shapeYourImage", color: "#f59e0b" },
   "extractor": { label: "PDF/PPT/DOC to Image", icon: "imageExtractor", color: "#10b981" },
   "ocr": { label: "Image to Text / OCR", icon: "ocr", color: "#6366f1" },
-  "png-overlay": { label: "PNG Color Overlay", icon: "pngColorOverlay", color: "#ec4899" },
+  "png-overlay": { label: "Icon Recolor", icon: "pngColorOverlay", color: "#ec4899" },
   "pdf-converter": { label: "PDF Converter", icon: "pdfConverter", color: "#14b8a6" },
   "format-converter": { label: "Image Converter", icon: "imageConverter", color: "#f43f5e" },
   "mp4-to-gif": { label: "MP4 to GIF", icon: "mp4ToGif", color: "#8b5cf6" },

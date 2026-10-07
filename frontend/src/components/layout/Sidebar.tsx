@@ -67,7 +67,7 @@ export const Sidebar = () => {
     { id: "data-transfer", label: "Data Transfer", icon: "dataTransfer", color: "#84cc16", category: "Sharing" },
     
     { id: "color-palette", label: "Color Palette", icon: "colorPalette", color: "#f43f5e", category: "Colors" },
-    { id: "png-overlay", label: "PNG Color Overlay", icon: "pngColorOverlay", color: "#ec4899", category: "Colors" },
+    { id: "png-overlay", label: "Icon Recolor", icon: "pngColorOverlay", color: "#ec4899", category: "Colors" },
     
     { id: "svg-optimizer", label: "SVG Optimizer", icon: "svgOptimizer", color: "#eab308", category: "Code" },
     { id: "image-to-css", label: "Image to CSS", icon: "imageToCss", color: "#8b5cf6", category: "Code" },

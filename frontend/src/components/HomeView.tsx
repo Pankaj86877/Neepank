@@ -10,7 +10,7 @@ export const sectionData: Record<string, { label: string; icon: string; color: s
   "shape-image": { label: "Shape Your Image", icon: "shapeYourImage", color: "#f59e0b", desc: "Image Cropping & Transformation", category: "Crop & Resize" },
   "extractor": { label: "PDF/PPT/DOC to Image", icon: "imageExtractor", color: "#10b981", desc: "Extract images from PDF, PPT & DOC files.", category: "Formats" },
   "ocr": { label: "Image to Text / OCR", icon: "ocr", color: "#6366f1", desc: "Optical Character Recognition", category: "Extraction" },
-  "png-overlay": { label: "PNG Color Overlay", icon: "pngColorOverlay", color: "#ec4899", desc: "Tinting and Opacity", category: "Colors" },
+  "png-overlay": { label: "Icon Recolor", icon: "pngColorOverlay", color: "#ec4899", desc: "Change the color of multiple icons at once", category: "Colors" },
   "pdf-converter": { label: "PDF Converter", icon: "pdfConverter", color: "#14b8a6", desc: "High-Quality Image to PDF", category: "Formats" },
   "format-converter": { label: "Image Converter", icon: "imageConverter", color: "#f43f5e", desc: "Convert & Trace Images", category: "Formats" },
   "mp4-to-gif": { label: "MP4 to GIF", icon: "mp4ToGif", color: "#8b5cf6", desc: "Video to GIF animation", category: "Formats" },
