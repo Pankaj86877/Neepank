@@ -47,13 +47,24 @@ h1{font-size:clamp(32px,5vw,50px);margin:0 0 6px;font-weight:800;line-height:1.0
 .tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
 .tools input{background:var(--card);border:1px solid var(--line);color:var(--text);padding:9px 14px;border-radius:9px;min-width:220px;font-size:12.5px; outline:none;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
-.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:16px;text-align:left;position:relative;overflow:hidden;transition:border-color .2s;width:100%}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:16px;text-align:left;position:relative;overflow:hidden;transition:all .2s;width:100%}
 .tile::after{content:"";position:absolute;inset:auto -30% -60% -30%;height:70%;background:radial-gradient(closest-side,var(--c),transparent);opacity:.12;pointer-events:none}
-.tile:hover{border-color:var(--c)}
+.tile:hover:not(.edit-mode){border-color:var(--c)}
 .ico{width:58px;height:58px;border-radius:14px;background:var(--tile);border:2.5px solid var(--c);color:var(--c);display:grid;place-items:center;font-weight:800;font-size:24px;letter-spacing:-.03em;transition:transform .25s}
-.tile:hover .ico{transform:rotate(-5deg) scale(1.06)}
+.tile:hover:not(.edit-mode) .ico{transform:rotate(-5deg) scale(1.06)}
 .tile h2{margin:0;font-size:17px}.tile p{margin:4px 0 0;color:var(--muted);font-size:11.5px}
 .tile .st{font-size:11px;color:var(--muted)}
+
+.tile.edit-mode { cursor: default; }
+.drag-handle { position: absolute; top: 10px; right: 10px; padding: 4px; color: var(--muted); cursor: grab; border-radius: 4px; touch-action: none; display: flex; z-index: 2; }
+.drag-handle:hover { color: var(--text); background: var(--c2); }
+.drag-handle:active { cursor: grabbing; color: var(--text); }
+.tile.dragging { opacity: 0.5; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transform: scale(1.02); z-index: 10; border-color: var(--brand); }
+.tile.drag-over { border: 2px dashed var(--brand); background: rgba(232, 104, 47, 0.05); }
+.a11y-controls { position: absolute; bottom: 10px; right: 10px; display: flex; gap: 4px; z-index: 2; }
+.reorder-btn { background: var(--c2); border: 1px solid var(--line); color: var(--muted); padding: 4px 8px; border-radius: 6px; font-size: 14px; line-height: 1; transition: all 0.2s; }
+.reorder-btn:hover:not(:disabled) { background: var(--card); color: var(--text); border-color: var(--brand); }
+.reorder-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 .ws{display:flex;height:100%}
 .stage{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:22px;background:repeating-conic-gradient(var(--c2) 0 25%,transparent 0 50%) 0 0/20px 20px}
 .stage canvas{max-width:100%;max-height:calc(100vh - 170px);box-shadow:0 10px 30px rgba(0,0,0,0.5);touch-action:none;cursor:grab;background:transparent}

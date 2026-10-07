@@ -13,6 +13,7 @@
     "browser-image-compression": "^2.0.2",
     "cropperjs": "^1.6.2",
     "gifshot": "^0.4.5",
+    "heic-to": "^1.6.5",
     "imagetracerjs": "^1.2.6",
     "jspdf": "^4.2.1",
     "jszip": "^3.10.2",

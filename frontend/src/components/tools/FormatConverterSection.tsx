@@ -32,28 +32,54 @@ export const FormatConverterSection = () => {
   const [statusChip, setStatusChip] = useState<"Ready" | "Processing..." | "Done" | "Error">("Ready");
 
   const handleFiles = async (fileList: FileList | File[]) => {
+    setStatusChip("Processing...");
+    setIsProcessing(true);
     const loadPromises: Promise<void>[] = [];
     const newFiles: FileObj[] = [];
 
     for (let i = 0; i < fileList.length; i++) {
-      const file = fileList[i];
-      if (!file.type.startsWith("image/")) continue;
+      let file = fileList[i];
+      const isHeic = file.name.toLowerCase().endsWith(".heic") || file.name.toLowerCase().endsWith(".heif") || file.type === "image/heic" || file.type === "image/heif";
+      
+      if (!file.type.startsWith("image/") && !isHeic) continue;
 
-      const promise = new Promise<void>((resolve) => {
-        const url = URL.createObjectURL(file);
-        const img = new Image();
-        img.onload = () => {
-          newFiles.push({
-            id: Date.now().toString() + Math.random().toString().slice(2, 6),
-            file: file,
-            img: img,
-            url: url,
-            width: img.width,
-            height: img.height,
-          });
+      const promise = new Promise<void>(async (resolve) => {
+        try {
+          if (isHeic) {
+            const heicModule = await import("heic-to");
+            const heicTo = heicModule.heicTo || (heicModule as any).default?.heicTo;
+            
+            const convertedBlob = await (heicTo as any)({ blob: file, toType: "image/jpeg", quality: 0.9 });
+            const blobArray = Array.isArray(convertedBlob) ? convertedBlob : [convertedBlob];
+            
+            if (!blobArray[0]) throw new Error("HEIC conversion returned empty blob");
+            
+            file = new File([blobArray[0]], file.name.replace(/\.heic$|\.heif$/i, ".jpg"), { type: "image/jpeg" });
+          }
+
+          const url = URL.createObjectURL(file);
+          const img = new Image();
+          img.onload = () => {
+            newFiles.push({
+              id: Date.now().toString() + Math.random().toString().slice(2, 6),
+              file: file,
+              img: img,
+              url: url,
+              width: img.width,
+              height: img.height,
+            });
+            resolve();
+          };
+          img.onerror = (e) => {
+            console.error("Image load error on canvas:", e);
+            resolve();
+          };
+          img.src = url;
+        } catch (e: any) {
+          console.error("Image loading/conversion failed:", e?.message || e);
+          alert(`Failed to process ${file.name}. ${e?.message || "It might be corrupted or unsupported."}`);
           resolve();
-        };
-        img.src = url;
+        }
       });
       loadPromises.push(promise);
     }
@@ -68,6 +94,9 @@ export const FormatConverterSection = () => {
       }
       return combined;
     });
+    
+    setIsProcessing(false);
+    setStatusChip("Ready");
   };
 
   const removeFile = (id: string) => {
@@ -268,8 +297,8 @@ export const FormatConverterSection = () => {
         >
           <div style={{ fontSize: '32px', marginBottom: '12px' }}>🖼</div>
           <div style={{ fontWeight: 600, marginBottom: '8px' }}>Drop image(s) or click to browse</div>
-          <div style={{ fontSize: '12px', color: 'var(--muted)' }}>JPG · PNG · WEBP · GIF · BMP</div>
-          <input type="file" ref={fileInputRef} accept="image/*" multiple style={{ display: "none" }} onChange={(e) => { if (e.target.files) handleFiles(e.target.files); }} />
+          <div style={{ fontSize: '12px', color: 'var(--muted)' }}>HEIC · JPG · PNG · WEBP · GIF · BMP</div>
+          <input type="file" ref={fileInputRef} accept="image/*,.heic,.heif" multiple style={{ display: "none" }} onChange={(e) => { if (e.target.files) handleFiles(e.target.files); }} />
         </div>
 
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>

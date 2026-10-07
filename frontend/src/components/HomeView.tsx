@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAppContext } from "@/store/AppContext";
 import { toolIcons } from "@/components/icons/toolIcons";
 
@@ -28,6 +28,56 @@ const categories = ["All", "Formats", "Crop & Resize", "Extraction", "Sharing", 
 export const HomeView = () => {
   const { searchQuery, setSearchQuery, activeCategory, setActiveCategory, setActiveSection, openTabs, setOpenTabs } = useAppContext();
 
+  // Reordering states
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [customOrder, setCustomOrder] = useState<string[]>([]);
+  const [draggedToolId, setDraggedToolId] = useState<string | null>(null);
+  const [dragOverToolId, setDragOverToolId] = useState<string | null>(null);
+  const [activeHandleId, setActiveHandleId] = useState<string | null>(null);
+  const [a11yMessage, setA11yMessage] = useState("");
+
+  const canEdit = activeCategory === "All" && !searchQuery;
+
+  useEffect(() => {
+    if (!canEdit && isEditMode) {
+      setIsEditMode(false);
+    }
+  }, [canEdit, isEditMode]);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("neepank-tool-order");
+      const defaultOrder = Object.keys(sectionData);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          const validOrder = parsed.filter(id => sectionData[id]);
+          const missing = defaultOrder.filter(id => !validOrder.includes(id));
+          setCustomOrder([...validOrder, ...missing]);
+          return;
+        }
+      }
+      setCustomOrder(defaultOrder);
+    } catch (e) {
+      setCustomOrder(Object.keys(sectionData));
+    }
+  }, []);
+
+  const saveOrder = (newOrder: string[]) => {
+    setCustomOrder(newOrder);
+    try {
+      localStorage.setItem("neepank-tool-order", JSON.stringify(newOrder));
+    } catch (e) {
+      console.error("Failed to save tool order", e);
+    }
+  };
+
+  const handleResetOrder = () => {
+    const defaultOrder = Object.keys(sectionData);
+    saveOrder(defaultOrder);
+    setA11yMessage("Tool order reset to default.");
+  };
+
   const handleOpenTool = (id: string) => {
     if (!openTabs.includes(id)) {
       setOpenTabs([...openTabs, id]);
@@ -35,7 +85,67 @@ export const HomeView = () => {
     setActiveSection(id);
   };
 
-  const filteredTools = Object.entries(sectionData).filter(([id, data]) => {
+  // Drag Handlers
+  const handleDragStart = (e: React.DragEvent, id: string) => {
+    setDraggedToolId(id);
+    e.dataTransfer.effectAllowed = "move";
+    // Required for Firefox
+    e.dataTransfer.setData("text/plain", id);
+  };
+
+  const handleDragEnter = (e: React.DragEvent, id: string) => {
+    e.preventDefault();
+    if (draggedToolId && draggedToolId !== id) {
+      setDragOverToolId(id);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  };
+
+  const handleDragEnd = () => {
+    setDraggedToolId(null);
+    setDragOverToolId(null);
+    setActiveHandleId(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, id: string) => {
+    e.preventDefault();
+    if (draggedToolId && draggedToolId !== id) {
+      const newOrder = [...customOrder];
+      const draggedIndex = newOrder.indexOf(draggedToolId);
+      const targetIndex = newOrder.indexOf(id);
+      
+      newOrder.splice(draggedIndex, 1);
+      newOrder.splice(targetIndex, 0, draggedToolId);
+      
+      saveOrder(newOrder);
+      setA11yMessage(`Moved ${sectionData[draggedToolId].label} to position ${targetIndex + 1}.`);
+    }
+    setDraggedToolId(null);
+    setDragOverToolId(null);
+    setActiveHandleId(null);
+  };
+
+  const moveTool = (id: string, direction: -1 | 1) => {
+    const newOrder = [...customOrder];
+    const idx = newOrder.indexOf(id);
+    if (idx === -1) return;
+    const newIdx = idx + direction;
+    if (newIdx < 0 || newIdx >= newOrder.length) return;
+    
+    newOrder.splice(idx, 1);
+    newOrder.splice(newIdx, 0, id);
+    saveOrder(newOrder);
+    setA11yMessage(`Moved ${sectionData[id].label} to position ${newIdx + 1}.`);
+  };
+
+  const orderedTools = customOrder.length > 0 ? customOrder.map(id => [id, sectionData[id]] as const) : Object.entries(sectionData);
+
+  const filteredTools = orderedTools.filter(([id, data]) => {
+    if (!data) return false;
     const matchesSearch = data.label.toLowerCase().includes(searchQuery.toLowerCase()) || data.desc.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = activeCategory === "All" || data.category === activeCategory;
     return matchesSearch && matchesCategory;
@@ -46,13 +156,29 @@ export const HomeView = () => {
       <h1>Your tools</h1>
       <p className="sub">Welcome to your Neepank Toolbox.</p>
       
-      <div className="tools">
+      <div className="tools" style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
         <input 
           type="text" 
           placeholder="Search tools..." 
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
+        {canEdit ? (
+          <button 
+            className={`chip ${isEditMode ? 'active' : ''}`} 
+            style={{ 
+              background: isEditMode ? 'var(--brand)' : 'var(--card)', 
+              color: isEditMode ? '#fff' : 'var(--text)',
+              fontWeight: 600
+            }}
+            onClick={() => setIsEditMode(!isEditMode)}
+          >
+            {isEditMode ? "Done" : "Customize"}
+          </button>
+        ) : (
+          isEditMode && <span style={{ fontSize: '12px', color: 'var(--muted)' }}>Switch to All to reorder.</span>
+        )}
+        
         {categories.map(cat => (
           <button 
             key={cat} 
@@ -64,22 +190,92 @@ export const HomeView = () => {
           </button>
         ))}
       </div>
+      
+      {isEditMode && canEdit && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
+           <button className="pb" onClick={handleResetOrder} style={{ fontSize: '13px', background: 'transparent', border: 'none', color: 'var(--muted)', cursor: 'pointer' }}>
+             ⟲ Reset order
+           </button>
+        </div>
+      )}
 
       <div className="grid">
-        {filteredTools.map(([id, data]) => (
-          <button 
+        {filteredTools.map(([id, data]) => {
+          const isDragging = draggedToolId === id;
+          const isDragOver = dragOverToolId === id;
+          const isDraggable = isEditMode && activeHandleId === id;
+          
+          return (
+          <div 
             key={id} 
-            className="tile" 
+            className={`tile ${isEditMode ? 'edit-mode' : ''} ${isDragging ? 'dragging' : ''} ${isDragOver ? 'drag-over' : ''}`} 
             style={{ "--c": data.color } as React.CSSProperties}
-            onClick={() => handleOpenTool(id)}
+            onClick={() => {
+              if (!isEditMode) handleOpenTool(id);
+            }}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                if (!isEditMode) handleOpenTool(id);
+              }
+            }}
+            draggable={isDraggable}
+            onDragStart={(e) => handleDragStart(e, id)}
+            onDragEnter={(e) => handleDragEnter(e, id)}
+            onDragOver={handleDragOver}
+            onDragEnd={handleDragEnd}
+            onDrop={(e) => handleDrop(e, id)}
           >
+            {isEditMode && (
+              <div 
+                className="drag-handle" 
+                aria-hidden="true" 
+                title="Drag to reorder" 
+                onPointerDown={(e) => setActiveHandleId(id)}
+                onPointerUp={() => setActiveHandleId(null)}
+                onPointerCancel={() => setActiveHandleId(null)}
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none">
+                  <circle cx="9" cy="5" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="15" cy="5" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="9" cy="12" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="15" cy="12" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="9" cy="19" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="15" cy="19" r="1.5" fill="currentColor" stroke="none" />
+                </svg>
+              </div>
+            )}
+            
             <div className="ico" style={{ "--c": data.color } as React.CSSProperties} dangerouslySetInnerHTML={{ __html: toolIcons[data.icon] || data.icon }} />
             <div>
               <h2>{data.label}</h2>
               <p>{data.desc}</p>
             </div>
-          </button>
-        ))}
+            
+            {isEditMode && (
+              <div className="a11y-controls" onClick={(e) => e.stopPropagation()}>
+                <button 
+                  className="reorder-btn" 
+                  aria-label={`Move ${data.label} earlier`} 
+                  onClick={() => moveTool(id, -1)}
+                  disabled={customOrder.indexOf(id) === 0}
+                >↑</button>
+                <button 
+                  className="reorder-btn" 
+                  aria-label={`Move ${data.label} later`} 
+                  onClick={() => moveTool(id, 1)}
+                  disabled={customOrder.indexOf(id) === customOrder.length - 1}
+                >↓</button>
+              </div>
+            )}
+          </div>
+        )})}
+      </div>
+      
+      <div aria-live="polite" className="sr-only" style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', borderWidth: 0 }}>
+        {a11yMessage}
       </div>
     </div>
   );
