@@ -150,12 +150,14 @@ export const DataTransferSection = () => {
       });
 
       let receivedBytesTotal = 0;
+      let totalBytesToReceive = 0;
       
       conn.on("data", (data: any) => {
         if (data.type === "meta") {
           setReceiveState("active");
           setReceiveMeta(data);
           receivedBytesTotal = 0;
+          totalBytesToReceive = data.totalBytes || 0;
           setReceiveProgress(0);
         } else if (data.type === "file-start") {
           incomingFilesRef.current[data.name] = { 
@@ -171,8 +173,8 @@ export const DataTransferSection = () => {
             fileData.receivedBytes += data.data.byteLength;
             receivedBytesTotal += data.data.byteLength;
             
-            if (receiveMeta && receiveMeta.totalBytes) {
-              const progress = Math.floor((receivedBytesTotal / receiveMeta.totalBytes) * 100);
+            if (totalBytesToReceive > 0) {
+              const progress = Math.floor((receivedBytesTotal / totalBytesToReceive) * 100);
               setReceiveProgress(progress);
             }
           }
