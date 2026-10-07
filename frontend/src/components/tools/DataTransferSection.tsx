@@ -23,12 +23,13 @@ export const DataTransferSection = () => {
   const [receiveName, setReceiveName] = useState("");
   const [receiveState, setReceiveState] = useState<"setup" | "connecting" | "active" | "done">("setup");
   const [receiveProgress, setReceiveProgress] = useState(0);
-  const [receiveMeta, setReceiveMeta] = useState<{ transferName?: string; senderName?: string; files?: any[] } | null>(null);
+  const [receiveMeta, setReceiveMeta] = useState<{ transferName?: string; senderName?: string; files?: any[]; totalBytes?: number } | null>(null);
   const [receivedFiles, setReceivedFiles] = useState<{name: string, url: string}[]>([]);
 
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
   const peerRef = useRef<Peer | null>(null);
   const connRef = useRef<DataConnection | null>(null);
+  const incomingFilesRef = useRef<{ [name: string]: { type: string, chunks: ArrayBuffer[], receivedBytes: number, totalBytes: number } }>({});
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -76,41 +77,47 @@ export const DataTransferSection = () => {
     const conn = connRef.current;
     
     setIsSending(true);
-    setSendProgress(10);
+    setSendProgress(0);
     
     // 1. Send Meta
+    const totalBytes = filesToSend.reduce((acc, f) => acc + f.size, 0);
     conn.send({
       type: "meta",
       transferName: transferName || "File Transfer",
       senderName,
+      totalBytes,
       files: filesToSend.map(f => ({ name: f.name, size: f.size, type: f.type }))
     });
     
-    // 2. Mock progress for UI (actual sending of large files is fast via datachannel, 
-    // but reading them takes a moment. For demo, we chunk or just send.)
-    let currentProgress = 20;
-    const interval = setInterval(() => {
-      currentProgress += 10;
-      if (currentProgress >= 90) clearInterval(interval);
-      setSendProgress(currentProgress);
-      conn.send({ type: "progress", progress: currentProgress });
-    }, 200);
+    const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+    const CHUNK_SIZE = 256 * 1024; // 256 KB
+    let sentBytesTotal = 0;
     
-    // 3. Read and Send files
+    // 3. Read and Send files chunk by chunk
     try {
       for (const file of filesToSend) {
-        const arrayBuffer = await file.arrayBuffer();
-        conn.send({
-          type: "file-data",
-          name: file.name,
-          fileType: file.type,
-          data: arrayBuffer
-        });
+        const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
+        conn.send({ type: "file-start", name: file.name, fileType: file.type, totalChunks, size: file.size });
+        
+        for (let i = 0; i < totalChunks; i++) {
+           const start = i * CHUNK_SIZE;
+           const chunk = await file.slice(start, start + CHUNK_SIZE).arrayBuffer();
+           
+           conn.send({ type: "file-chunk", name: file.name, chunkIndex: i, data: chunk });
+           sentBytesTotal += chunk.byteLength;
+           
+           // @ts-ignore
+           while (conn.dataChannel && conn.dataChannel.bufferedAmount > 1024 * 1024 * 2) {
+             await sleep(50); // Pause to let WebRTC drain buffer and avoid dropping connection
+           }
+           
+           const progress = Math.floor((sentBytesTotal / totalBytes) * 100);
+           setSendProgress(progress);
+        }
+        conn.send({ type: "file-end", name: file.name });
       }
       
-      clearInterval(interval);
       setSendProgress(100);
-      conn.send({ type: "progress", progress: 100 });
       conn.send({ type: "done" });
       
       setTimeout(() => {
@@ -142,17 +149,41 @@ export const DataTransferSection = () => {
         conn.send({ type: "request-access", name: receiveName });
       });
 
+      let receivedBytesTotal = 0;
+      
       conn.on("data", (data: any) => {
         if (data.type === "meta") {
           setReceiveState("active");
           setReceiveMeta(data);
-        } else if (data.type === "progress") {
-          setReceiveProgress(data.progress);
-        } else if (data.type === "file-data") {
-          // Reconstruct file
-          const blob = new Blob([data.data], { type: data.fileType });
-          const url = URL.createObjectURL(blob);
-          setReceivedFiles(prev => [...prev, { name: data.name, url }]);
+          receivedBytesTotal = 0;
+          setReceiveProgress(0);
+        } else if (data.type === "file-start") {
+          incomingFilesRef.current[data.name] = { 
+            type: data.fileType, 
+            chunks: new Array(data.totalChunks), 
+            receivedBytes: 0, 
+            totalBytes: data.size 
+          };
+        } else if (data.type === "file-chunk") {
+          const fileData = incomingFilesRef.current[data.name];
+          if (fileData) {
+            fileData.chunks[data.chunkIndex] = data.data;
+            fileData.receivedBytes += data.data.byteLength;
+            receivedBytesTotal += data.data.byteLength;
+            
+            if (receiveMeta && receiveMeta.totalBytes) {
+              const progress = Math.floor((receivedBytesTotal / receiveMeta.totalBytes) * 100);
+              setReceiveProgress(progress);
+            }
+          }
+        } else if (data.type === "file-end") {
+          const fileData = incomingFilesRef.current[data.name];
+          if (fileData) {
+            const blob = new Blob(fileData.chunks, { type: fileData.type });
+            const url = URL.createObjectURL(blob);
+            setReceivedFiles(prev => [...prev, { name: data.name, url }]);
+            delete incomingFilesRef.current[data.name];
+          }
         } else if (data.type === "done") {
           setReceiveState("done");
           setReceiveProgress(100);
