@@ -148,7 +148,7 @@ export const ImageExtractorSection = () => {
 
   return (
     <div className="ws">
-      <div className="stage" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', overflowY: 'auto' }}>
+      <div className="stage" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', overflowY: 'auto', justifyContent: 'flex-start', alignItems: 'stretch' }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: '1px solid var(--line)', paddingBottom: '16px' }}>
           <h3 style={{ margin: 0 }}>Extracted Asset Gallery</h3>
           <span style={{ 
