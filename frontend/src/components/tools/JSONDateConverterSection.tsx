@@ -191,53 +191,83 @@ export const JSONDateConverterSection = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const text = ev.target?.result as string;
+    if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+      setStatusMessage("Loading Excel file...");
       try {
-        const parsed = JSON.parse(text);
-        setRawJson(parsed);
-        const fieldsSet = scanForDatePaths(parsed);
-        const fieldsArr = Array.from(fieldsSet).sort();
-        setDetectedFields(fieldsArr);
-        setCheckedFields(new Set(fieldsArr)); // Check all by default
-        setConvertedData(null); // Clear previous output
-        setStatusMessage(`Loaded JSON. Detected ${fieldsArr.length} date fields.`);
+        const XLSX = await loadSheetJS();
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          try {
+            const data = new Uint8Array(ev.target?.result as ArrayBuffer);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            const json = XLSX.utils.sheet_to_json(worksheet);
+            
+            setRawJson(json);
+            const fieldsSet = scanForDatePaths(json);
+            const fieldsArr = Array.from(fieldsSet).sort();
+            setDetectedFields(fieldsArr);
+            setCheckedFields(new Set(fieldsArr));
+            setConvertedData(null);
+            setStatusMessage(`Loaded Excel Data. Detected ${fieldsArr.length} date fields.`);
+          } catch (err) {
+            setStatusMessage("Error: Could not parse Excel file.");
+          }
+        };
+        reader.readAsArrayBuffer(file);
       } catch (err) {
-        // Fallback: Handle Raw Data (CSV, TSV, or plain text)
-        const lines = text.split('\n').map(l => l.trim()).filter(l => l);
-        if (lines.length > 0 && (lines[0].includes(',') || lines[0].includes('\t'))) {
-          const delimiter = lines[0].includes('\t') ? '\t' : ',';
-          const headers = lines[0].split(delimiter);
-          const parsed = lines.slice(1).map(line => {
-            const values = line.split(delimiter);
-            const obj: any = {};
-            headers.forEach((h, i) => obj[h] = values[i]);
-            return obj;
-          });
+        setStatusMessage("Error: Could not load Excel library. Are you offline?");
+      }
+    } else {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const text = ev.target?.result as string;
+        try {
+          const parsed = JSON.parse(text);
           setRawJson(parsed);
           const fieldsSet = scanForDatePaths(parsed);
           const fieldsArr = Array.from(fieldsSet).sort();
           setDetectedFields(fieldsArr);
-          setCheckedFields(new Set(fieldsArr));
-          setConvertedData(null);
-          setStatusMessage(`Parsed Raw Data (CSV/TSV). Detected ${fieldsArr.length} date fields.`);
-        } else {
-          // Just raw text lines
-          const parsed = { raw_data: lines };
-          setRawJson(parsed);
-          setDetectedFields([]);
-          setCheckedFields(new Set());
-          setConvertedData(null);
-          setStatusMessage("Loaded Raw Text as JSON array.");
+          setCheckedFields(new Set(fieldsArr)); // Check all by default
+          setConvertedData(null); // Clear previous output
+          setStatusMessage(`Loaded JSON. Detected ${fieldsArr.length} date fields.`);
+        } catch (err) {
+          // Fallback: Handle Raw Data (CSV, TSV, or plain text)
+          const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+          if (lines.length > 0 && (lines[0].includes(',') || lines[0].includes('\t'))) {
+            const delimiter = lines[0].includes('\t') ? '\t' : ',';
+            const headers = lines[0].split(delimiter);
+            const parsed = lines.slice(1).map(line => {
+              const values = line.split(delimiter);
+              const obj: any = {};
+              headers.forEach((h, i) => obj[h] = values[i]);
+              return obj;
+            });
+            setRawJson(parsed);
+            const fieldsSet = scanForDatePaths(parsed);
+            const fieldsArr = Array.from(fieldsSet).sort();
+            setDetectedFields(fieldsArr);
+            setCheckedFields(new Set(fieldsArr));
+            setConvertedData(null);
+            setStatusMessage(`Parsed Raw Data (CSV/TSV). Detected ${fieldsArr.length} date fields.`);
+          } else {
+            // Just raw text lines
+            const parsed = { raw_data: lines };
+            setRawJson(parsed);
+            setDetectedFields([]);
+            setCheckedFields(new Set());
+            setConvertedData(null);
+            setStatusMessage("Loaded Raw Text as JSON array.");
+          }
         }
-      }
-    };
-    reader.readAsText(file);
+      };
+      reader.readAsText(file);
+    }
     e.target.value = "";
   };
 
@@ -396,8 +426,8 @@ export const JSONDateConverterSection = () => {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', flex: 1 }}>
           <div style={{ position: 'relative' }}>
-            <div className="pb" style={{ textAlign: 'center', cursor: 'pointer' }}>Upload JSON or Raw Data (CSV/TXT)...</div>
-            <input type="file" accept=".json,application/json,.csv,.txt,text/csv,text/plain" onChange={handleFileUpload} style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }} />
+            <div className="pb" style={{ textAlign: 'center', cursor: 'pointer' }}>Upload JSON, Excel, or Raw Data...</div>
+            <input type="file" accept=".json,application/json,.csv,.txt,text/csv,text/plain,.xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" onChange={handleFileUpload} style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }} />
           </div>
 
           <div>
