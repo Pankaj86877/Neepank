@@ -2,24 +2,25 @@
 
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "@/store/AppContext";
+import { toolIcons } from "@/components/icons/toolIcons";
 
 const sectionData: Record<string, { label: string; icon: string; color: string }> = {
-  "presets": { label: "Shape Presets", icon: "◧", color: "#e8682f" },
-  "custom": { label: "Custom Shapes", icon: "⬡", color: "#3b82f6" },
-  "shape-image": { label: "Shape Your Image", icon: "◈", color: "#f59e0b" },
-  "extractor": { label: "Image Extractor", icon: "📥", color: "#10b981" },
-  "ocr": { label: "Image to Text / OCR", icon: "⎘", color: "#6366f1" },
-  "png-overlay": { label: "PNG Color Overlay", icon: "◐", color: "#ec4899" },
-  "pdf-converter": { label: "PDF Converter", icon: "⬚", color: "#14b8a6" },
-  "format-converter": { label: "Image Converter", icon: "⇄", color: "#f43f5e" },
-  "mp4-to-gif": { label: "MP4 to GIF", icon: "🎬", color: "#8b5cf6" },
-  "qr-generator": { label: "QR Generator", icon: "📱", color: "#06b6d4" },
-  "data-transfer": { label: "Data Transfer", icon: "📡", color: "#84cc16" },
-  "json-date": { label: "JSON Data Converter", icon: "Jd", color: "#7CFFB2" },
-  "color-palette": { label: "Color Palette", icon: "🎨", color: "#f43f5e" },
-  "svg-optimizer": { label: "SVG Optimizer", icon: "✨", color: "#10b981" },
-  "photo-resizer": { label: "Photo & Sig Resizer", icon: "📐", color: "#3b82f6" },
-  "image-to-css": { label: "Image to CSS", icon: "✂️", color: "#8b5cf6" },
+  "presets": { label: "Shape Presets", icon: "shapePresets", color: "#e8682f" },
+  "custom": { label: "Custom Shapes", icon: "customShapes", color: "#3b82f6" },
+  "shape-image": { label: "Shape Your Image", icon: "shapeYourImage", color: "#f59e0b" },
+  "extractor": { label: "PDF/PPT/DOC to Image", icon: "imageExtractor", color: "#10b981" },
+  "ocr": { label: "Image to Text / OCR", icon: "ocr", color: "#6366f1" },
+  "png-overlay": { label: "PNG Color Overlay", icon: "pngColorOverlay", color: "#ec4899" },
+  "pdf-converter": { label: "PDF Converter", icon: "pdfConverter", color: "#14b8a6" },
+  "format-converter": { label: "Image Converter", icon: "imageConverter", color: "#f43f5e" },
+  "mp4-to-gif": { label: "MP4 to GIF", icon: "mp4ToGif", color: "#8b5cf6" },
+  "qr-generator": { label: "QR Generator", icon: "qrGenerator", color: "#06b6d4" },
+  "data-transfer": { label: "Data Transfer", icon: "dataTransfer", color: "#84cc16" },
+  "json-date": { label: "JSON Data Converter", icon: "jsonConverter", color: "#7CFFB2" },
+  "color-palette": { label: "Color Palette", icon: "colorPalette", color: "#f43f5e" },
+  "svg-optimizer": { label: "SVG Optimizer", icon: "svgOptimizer", color: "#10b981" },
+  "photo-resizer": { label: "Photo & Sig Resizer", icon: "photoSigResizer", color: "#3b82f6" },
+  "image-to-css": { label: "Image to CSS", icon: "imageToCss", color: "#8b5cf6" },
 };
 
 export const TopBar = () => {
@@ -63,7 +64,7 @@ export const TopBar = () => {
           onClick={() => setActiveSection("home")}
           style={{ flexShrink: 0 }}
         >
-          <div className="mini" style={{ "--c": "#8d8d96" } as React.CSSProperties}>⌂</div> 
+          <div className="mini" style={{ "--c": "#8d8d96" } as React.CSSProperties} dangerouslySetInnerHTML={{ __html: toolIcons["home"] || "⌂" }} /> 
           Home Workspace
         </button>
 
@@ -78,7 +79,7 @@ export const TopBar = () => {
               onClick={() => setActiveSection(tabId)}
               style={{ flexShrink: 0 }}
             >
-              <div className="mini" style={{ "--c": data.color } as React.CSSProperties}>{data.icon}</div> 
+              <div className="mini" style={{ "--c": data.color } as React.CSSProperties} dangerouslySetInnerHTML={{ __html: toolIcons[data.icon] || data.icon }} /> 
               {data.label}
               <span className="x" onClick={(e) => closeTab(e, tabId)}>×</span>
             </button>

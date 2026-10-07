@@ -54,6 +54,7 @@ export const Sidebar = () => {
     { id: "pdf-converter", label: "PDF Converter", icon: "pdfConverter", color: "#14b8a6", category: "Formats" },
     { id: "mp4-to-gif", label: "MP4 to GIF", icon: "mp4ToGif", color: "#8b5cf6", category: "Formats" },
     { id: "json-date", label: "JSON Data Converter", icon: "jsonConverter", color: "#7CFFB2", category: "Formats" },
+    { id: "extractor", label: "PDF/PPT/DOC to Image", icon: "imageExtractor", color: "#10b981", category: "Formats" },
     
     { id: "photo-resizer", label: "Photo & Sig Resizer", icon: "photoSigResizer", color: "#3b82f6", category: "Crop & Resize" },
     { id: "shape-image", label: "Shape Your Image", icon: "shapeYourImage", color: "#f59e0b", category: "Crop & Resize" },
@@ -61,7 +62,6 @@ export const Sidebar = () => {
     { id: "custom", label: "Custom Shapes", icon: "customShapes", color: "#3b82f6", category: "Crop & Resize" },
     
     { id: "ocr", label: "Image to Text / OCR", icon: "ocr", color: "#6366f1", category: "Extraction" },
-    { id: "extractor", label: "Image Extractor", icon: "imageExtractor", color: "#10b981", category: "Extraction" },
     
     { id: "qr-generator", label: "QR Generator", icon: "qrGenerator", color: "#06b6d4", category: "Sharing" },
     { id: "data-transfer", label: "Data Transfer", icon: "dataTransfer", color: "#84cc16", category: "Sharing" },

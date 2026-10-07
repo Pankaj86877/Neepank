@@ -8,7 +8,7 @@ export const sectionData: Record<string, { label: string; icon: string; color: s
   "presets": { label: "Shape Presets", icon: "shapePresets", color: "#e8682f", desc: "Predefined output formats", category: "Crop & Resize" },
   "custom": { label: "Custom Shapes", icon: "customShapes", color: "#3b82f6", desc: "Advanced Geometries", category: "Crop & Resize" },
   "shape-image": { label: "Shape Your Image", icon: "shapeYourImage", color: "#f59e0b", desc: "Image Cropping & Transformation", category: "Crop & Resize" },
-  "extractor": { label: "Image Extractor", icon: "imageExtractor", color: "#10b981", desc: "Bulk Asset Extraction", category: "Extraction" },
+  "extractor": { label: "PDF/PPT/DOC to Image", icon: "imageExtractor", color: "#10b981", desc: "Extract images from PDF, PPT & DOC files.", category: "Formats" },
   "ocr": { label: "Image to Text / OCR", icon: "ocr", color: "#6366f1", desc: "Optical Character Recognition", category: "Extraction" },
   "png-overlay": { label: "PNG Color Overlay", icon: "pngColorOverlay", color: "#ec4899", desc: "Tinting and Opacity", category: "Colors" },
   "pdf-converter": { label: "PDF Converter", icon: "pdfConverter", color: "#14b8a6", desc: "High-Quality Image to PDF", category: "Formats" },
