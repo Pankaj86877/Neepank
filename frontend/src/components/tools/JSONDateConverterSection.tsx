@@ -197,8 +197,9 @@ export const JSONDateConverterSection = () => {
     
     const reader = new FileReader();
     reader.onload = (ev) => {
+      const text = ev.target?.result as string;
       try {
-        const parsed = JSON.parse(ev.target?.result as string);
+        const parsed = JSON.parse(text);
         setRawJson(parsed);
         const fieldsSet = scanForDatePaths(parsed);
         const fieldsArr = Array.from(fieldsSet).sort();
@@ -207,8 +208,33 @@ export const JSONDateConverterSection = () => {
         setConvertedData(null); // Clear previous output
         setStatusMessage(`Loaded JSON. Detected ${fieldsArr.length} date fields.`);
       } catch (err) {
-        setStatusMessage("Error: Invalid JSON file.");
-        setRawJson(null);
+        // Fallback: Handle Raw Data (CSV, TSV, or plain text)
+        const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+        if (lines.length > 0 && (lines[0].includes(',') || lines[0].includes('\t'))) {
+          const delimiter = lines[0].includes('\t') ? '\t' : ',';
+          const headers = lines[0].split(delimiter);
+          const parsed = lines.slice(1).map(line => {
+            const values = line.split(delimiter);
+            const obj: any = {};
+            headers.forEach((h, i) => obj[h] = values[i]);
+            return obj;
+          });
+          setRawJson(parsed);
+          const fieldsSet = scanForDatePaths(parsed);
+          const fieldsArr = Array.from(fieldsSet).sort();
+          setDetectedFields(fieldsArr);
+          setCheckedFields(new Set(fieldsArr));
+          setConvertedData(null);
+          setStatusMessage(`Parsed Raw Data (CSV/TSV). Detected ${fieldsArr.length} date fields.`);
+        } else {
+          // Just raw text lines
+          const parsed = { raw_data: lines };
+          setRawJson(parsed);
+          setDetectedFields([]);
+          setCheckedFields(new Set());
+          setConvertedData(null);
+          setStatusMessage("Loaded Raw Text as JSON array.");
+        }
       }
     };
     reader.readAsText(file);
@@ -364,14 +390,14 @@ export const JSONDateConverterSection = () => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div className="mini" style={{ "--c": "#7CFFB2" } as React.CSSProperties}>Jd</div>
-            <h3 style={{ margin: 0 }}>JSON Date Converter</h3>
+            <h3 style={{ margin: 0 }}>JSON Data Converter</h3>
           </div>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', flex: 1 }}>
           <div style={{ position: 'relative' }}>
-            <div className="pb" style={{ textAlign: 'center', cursor: 'pointer' }}>Upload JSON File...</div>
-            <input type="file" accept=".json,application/json" onChange={handleFileUpload} style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }} />
+            <div className="pb" style={{ textAlign: 'center', cursor: 'pointer' }}>Upload JSON or Raw Data (CSV/TXT)...</div>
+            <input type="file" accept=".json,application/json,.csv,.txt,text/csv,text/plain" onChange={handleFileUpload} style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }} />
           </div>
 
           <div>

@@ -45,7 +45,7 @@ export const Sidebar = () => {
     { id: "ocr", label: "Image to Text / OCR", icon: "⎘", color: "#6366f1", category: "Data" },
     { id: "qr-generator", label: "QR Generator", icon: "📱", color: "#06b6d4", category: "Data" },
     { id: "data-transfer", label: "Data Transfer", icon: "📡", color: "#84cc16", category: "Data" },
-    { id: "json-date", label: "JSON Date Converter", icon: "Jd", color: "#7CFFB2", category: "Data" },
+    { id: "json-date", label: "JSON Data Converter", icon: "Jd", color: "#7CFFB2", category: "Data" },
     { id: "pdf-converter", label: "PDF Converter", icon: "⬚", color: "#14b8a6", category: "Document" },
     { id: "image-to-css", label: "Image to CSS", icon: "✂️", color: "#8b5cf6", category: "Developer" },
   ];
@@ -189,7 +189,6 @@ export const Sidebar = () => {
       </div>
       
       <div className="nav-scroll" style={{ flex: 1, overflowY: 'auto' }}>
-        {renderCustomGroup("Recent", recentTools)}
         {renderCustomGroup("My Tools", myTools, true)}
         {renderGroup("Document", "Document")}
         {renderGroup("Image", "Image")}
