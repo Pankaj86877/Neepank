@@ -52,10 +52,10 @@ const SectionRouter = () => {
   );
 };
 
-export const MainApplication = () => {
+export const MainApplication = ({ onBackToHome }: { onBackToHome?: () => void }) => {
   return (
     <AppProvider>
-      <WorkspaceLayout>
+      <WorkspaceLayout onBackToHome={onBackToHome}>
         <SectionRouter />
       </WorkspaceLayout>
     </AppProvider>

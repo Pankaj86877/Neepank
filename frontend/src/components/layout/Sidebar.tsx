@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useAppContext } from "@/store/AppContext";
 import { toolIcons } from "@/components/icons/toolIcons";
 
-export const Sidebar = () => {
+export const Sidebar = ({ onBackToHome }: { onBackToHome?: () => void }) => {
   const { 
     activeSection, 
     setActiveSection, 
@@ -242,12 +242,28 @@ export const Sidebar = () => {
 
   return (
     <aside style={isMobileMenuOpen ? { position: 'absolute', zIndex: 100, height: '100%' } : {}}>
-      <div className="brand" onClick={() => handleNavClick("home")} style={{ cursor: 'pointer', padding: '16px 20px', display: 'flex', justifyContent: 'center' }}>
+      <div 
+        className="brand" 
+        onClick={() => {
+          if (onBackToHome) {
+            onBackToHome();
+          } else {
+            window.location.href = "/";
+          }
+        }} 
+        title="Return to Neepank Home Page"
+        style={{ cursor: 'pointer', padding: '14px 18px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
+      >
         <img 
-          src={theme === "dark" ? "/logo-dark.png" : "/logo-light.png"} 
+          src={theme === "dark" ? "/neepank-logo.png" : "/logo-light.png"} 
           alt="Neepank Toolbox" 
-          style={{ width: isSidebarCollapsed ? '40px' : '140px', height: 'auto', transition: 'width 0.2s', objectFit: 'contain' }} 
+          style={{ width: isSidebarCollapsed ? '36px' : '135px', height: 'auto', transition: 'width 0.2s', objectFit: 'contain' }} 
         />
+        {!isSidebarCollapsed && (
+          <span style={{ fontSize: '11px', color: 'var(--brand)', opacity: 0.9 }}>
+            ← Home Page
+          </span>
+        )}
       </div>
       
       <div className="nav-scroll" style={{ flex: 1, overflowY: 'auto' }}>

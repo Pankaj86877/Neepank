@@ -4,12 +4,12 @@ import React, { ReactNode } from "react";
 import { Sidebar } from "./Sidebar";
 import { TopBar } from "./TopBar";
 
-export const WorkspaceLayout = ({ children }: { children: ReactNode }) => {
+export const WorkspaceLayout = ({ children, onBackToHome }: { children: ReactNode; onBackToHome?: () => void }) => {
   return (
     <>
-      <Sidebar />
+      <Sidebar onBackToHome={onBackToHome} />
       <main>
-        <TopBar />
+        <TopBar onBackToHome={onBackToHome} />
         <div className="views">
           {children}
         </div>

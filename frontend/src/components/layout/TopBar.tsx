@@ -23,7 +23,7 @@ const sectionData: Record<string, { label: string; icon: string; color: string; 
   "image-to-css": { label: "Image to CSS", icon: "imageToCss", color: "#8b5cf6" },
 };
 
-export const TopBar = () => {
+export const TopBar = ({ onBackToHome }: { onBackToHome?: () => void }) => {
   const { activeSection, setActiveSection, openTabs, setOpenTabs, theme, setTheme } = useAppContext();
   const [isOnline, setIsOnline] = useState(true);
 
@@ -58,6 +58,15 @@ export const TopBar = () => {
   return (
     <div className="bar" style={{ overflowX: 'hidden', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', paddingRight: '16px' }}>
       <div style={{ display: 'flex', flex: 1, overflowX: 'auto', alignItems: 'flex-end', gap: '4px', paddingBottom: '0' }}>
+        <button 
+          className="tab" 
+          onClick={onBackToHome || (() => { window.location.href = "/"; })}
+          title="Return to Home Landing Page"
+          style={{ flexShrink: 0, color: 'var(--brand)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+        >
+          <span>←</span> Home Page
+        </button>
+
         <button 
           className="tab" 
           aria-selected={activeSection === "home"} 
