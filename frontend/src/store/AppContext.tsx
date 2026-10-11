@@ -45,6 +45,16 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     if (savedMyTools) {
       try { setMyTools(JSON.parse(savedMyTools)); } catch (e) {}
     }
+
+    // Deep linking: check ?tool=... or #...
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const toolParam = params.get("tool") || window.location.hash.replace("#", "");
+      if (toolParam) {
+        setActiveSection(toolParam);
+        setOpenTabs([toolParam]);
+      }
+    } catch (e) {}
   }, []);
 
   useEffect(() => {

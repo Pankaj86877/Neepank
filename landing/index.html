@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Neepank Toolbox — Your Digital Toolbox</title>
+  <meta name="description" content="Create, convert and manage digital content with ease.">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Neepank Toolbox — Your Digital Toolbox">
+  <meta property="og:description" content="Create, convert and manage digital content with ease.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="./landing/assets/hero.webp">
+
+  <!-- Preconnect & Fonts: Space Grotesk (700) + Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/webp" href="./landing/assets/neepank-mark.webp">
+
+  <!-- Preload Critical LCP Hero Image -->
+  <link rel="preload" href="./landing/assets/hero.webp" as="image" type="image/webp" fetchpriority="high">
+
+  <!-- Scoped Landing Styles -->
+  <link rel="stylesheet" href="./landing/landing.css">
+  <style>
+    /* Custom Icon Box matching the modern app screenshot */
+    .nk-landing .nk-thumb-svg-icon {
+      width: 28px;
+      height: 28px;
+      stroke: var(--tool-color);
+      color: var(--tool-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nk-landing .nk-thumb-svg-icon svg {
+      width: 100%;
+      height: 100%;
+      stroke: currentColor;
+    }
+  </style>
+</head>
+<body>
+  <div class="nk-landing" id="top">
+
+    <!-- A) STICKY TOP NAV -->
+    <header class="nk-header" role="banner">
+      <div class="nk-container">
+        <div class="nk-nav-inner">
+          <a href="#top" class="nk-brand" aria-label="Neepank Toolbox Home">
+            <img src="./landing/assets/neepank-logo.png" alt="Neepank Toolbox" class="nk-brand-logo-img">
+          </a>
+          <nav class="nk-nav-links" aria-label="Main Navigation">
+            <a href="#tools" class="nk-nav-link">Tools</a>
+            <a href="#how-it-works" class="nk-nav-link">How it works</a>
+            <button type="button" class="nk-theme-toggle nk-nav-theme-btn" aria-label="Toggle dark/light theme" title="Toggle theme">
+              <svg class="nk-theme-svg nk-theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="12" y1="1" x2="12" y2="3"/>
+                <line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/>
+                <line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              </svg>
+              <svg class="nk-theme-svg nk-theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </button>
+            <a href="http://localhost:3005" class="nk-nav-cta">
+              Explore the tools <span class="nk-arrow-icon" aria-hidden="true">→</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- B) HERO SECTION (DARK) -->
+      <section class="nk-hero" aria-labelledby="hero-heading">
+        <!-- Glowing Light Wave Background -->
+        <div class="nk-hero-glow-wave" aria-hidden="true">
+          <div class="nk-glow-orb-1"></div>
+          <div class="nk-glow-orb-2"></div>
+          <svg class="nk-hero-wave-svg" viewBox="0 0 1440 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M-100 480C220 360 480 580 820 410C1160 240 1340 380 1540 320" stroke="url(#hero-wave-grad)" stroke-width="4" stroke-opacity="0.6"/>
+            <path d="M-100 520C280 410 540 600 880 440C1220 280 1380 400 1540 350" stroke="url(#hero-wave-grad)" stroke-width="2" stroke-opacity="0.35"/>
+            <defs>
+              <linearGradient id="hero-wave-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#3B82F6"/>
+                <stop offset="50%" stop-color="#7C3AED"/>
+                <stop offset="100%" stop-color="#D946EF"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <div class="nk-container">
+          <div class="nk-hero-grid">
+            <!-- Left: Hero Copy -->
+            <div class="nk-hero-content">
+              <div class="nk-eyebrow">
+                <span class="nk-eyebrow-dot" aria-hidden="true"></span>
+                <span>Neepank Toolbox</span>
+              </div>
+              <h1 id="hero-heading" class="nk-hero-title">YOUR DIGITAL TOOLBOX</h1>
+              <p class="nk-hero-sub">Create, convert and manage digital content with ease.</p>
+
+              <div class="nk-hero-actions">
+                <a href="http://localhost:3005" class="nk-btn nk-btn-primary">
+                  Explore the tools <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+                <a href="#tools" class="nk-btn nk-btn-ghost">
+                  See all tools <span class="nk-arrow-down-icon" aria-hidden="true">↓</span>
+                </a>
+              </div>
+
+              <!-- Trust Row -->
+              <div class="nk-trust-row" aria-label="Key Highlights">
+                <div class="nk-trust-item">
+                  <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>Runs in your browser</span>
+                </div>
+                <span class="nk-trust-dot" aria-hidden="true">·</span>
+                <div class="nk-trust-item">
+                  <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>Files stay on your device</span>
+                </div>
+                <span class="nk-trust-dot" aria-hidden="true">·</span>
+                <div class="nk-trust-item">
+                  <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>Zero setup</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Hero Visual (Monitor Mockup with 3D Parallax & Floating Badges) -->
+            <div class="nk-hero-visual-wrap">
+              <!-- Floating Pill 1 (Top-Left) -->
+              <div class="nk-hero-floating-badge nk-badge-top-left" aria-hidden="true">
+                <span class="nk-badge-pulse-dot"></span>
+                <span>100% Client-Side Engine</span>
+              </div>
+
+              <!-- Floating Pill 2 (Bottom-Right) -->
+              <div class="nk-hero-floating-badge nk-badge-bottom-right" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="nk-badge-icon">
+                  <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.351-.166-2.001A11.954 11.954 0 0110 1.944zM13.707 8.707a1 1 0 00-1.414-1.414L9 10.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span>Zero Cloud Uploads · 100% Private</span>
+              </div>
+
+              <div class="nk-hero-mockup-container">
+                <img
+                  src="./landing/assets/hero.webp"
+                  alt="Neepank Toolbox dashboard showing all tools"
+                  class="nk-hero-mockup-img"
+                  width="1024"
+                  height="576"
+                  fetchpriority="high"
+                  onerror="this.style.display='none'; document.getElementById('nk-hero-fallback').style.display='flex';"
+                >
+                <div id="nk-hero-fallback" class="nk-hero-mockup-fallback" style="display:none;" aria-hidden="true">
+                  <div style="font-size: 38px; margin-bottom: 12px;">✦</div>
+                  <h3 style="font-size: 24px; margin-bottom: 8px;">Neepank Toolbox Dashboard</h3>
+                  <p style="color: rgba(255,255,255,0.7); max-width: 320px; font-size: 13.5px;">Browser-based creative & utility suite ready to run instantly on your device.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Smooth Gradient Transition: Dark Hero to Light Tools -->
+      <div class="nk-section-transition" aria-hidden="true"></div>
+
+      <!-- C) TOOLS SECTION (LIGHT) -->
+      <section class="nk-tools-section" id="tools" aria-labelledby="tools-heading">
+        <div class="nk-container">
+          <!-- Section Header -->
+          <div class="nk-section-header">
+            <div class="nk-section-label-row">
+              <span id="tools-heading" class="nk-section-label">NEEPANK TOOLBOX — EXPLORE OUR TOOLS</span>
+              <div class="nk-header-controls-right">
+                <button type="button" class="nk-theme-toggle nk-section-theme-btn" aria-label="Toggle dark/light theme" title="Toggle dark/light mode">
+                  <svg class="nk-theme-svg nk-theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                  </svg>
+                  <svg class="nk-theme-svg nk-theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                  </svg>
+                  <span class="nk-theme-btn-label">Theme</span>
+                </button>
+                <span id="nk-tool-count" class="nk-tool-count-badge">16 Tools</span>
+              </div>
+            </div>
+
+            <!-- Search Input Bar & Category Filter Row -->
+            <div class="nk-controls-bar">
+              <div class="nk-search-box">
+                <svg class="nk-search-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <circle cx="8.5" cy="8.5" r="5.5" />
+                  <path d="M13 13L17.5 17.5" stroke-linecap="round" />
+                </svg>
+                <input 
+                  type="search" 
+                  id="nk-tool-search" 
+                  class="nk-search-input" 
+                  placeholder="Search all 16 tools (e.g. PDF, crop, SVG, OCR...)" 
+                  autocomplete="off" 
+                  aria-label="Search tools"
+                >
+                <button type="button" id="nk-search-clear" class="nk-search-clear-btn" aria-label="Clear search" hidden>×</button>
+                <kbd class="nk-search-kbd" title="Press / to focus search">/</kbd>
+              </div>
+
+              <!-- Filter Chip Row matching the actual app categories -->
+              <div class="nk-filter-row" role="group" aria-label="Filter tools by category">
+                <button type="button" class="nk-filter-chip nk-active" data-category="All" aria-pressed="true">All</button>
+                <button type="button" class="nk-filter-chip" data-category="Formats" aria-pressed="false">Formats</button>
+                <button type="button" class="nk-filter-chip" data-category="Crop & Resize" aria-pressed="false">Crop & Resize</button>
+                <button type="button" class="nk-filter-chip" data-category="Extraction" aria-pressed="false">Extraction</button>
+                <button type="button" class="nk-filter-chip" data-category="Sharing" aria-pressed="false">Sharing</button>
+                <button type="button" class="nk-filter-chip" data-category="Colors" aria-pressed="false">Colors</button>
+                <button type="button" class="nk-filter-chip" data-category="Code" aria-pressed="false">Code</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4-Column Responsive Grid with ALL 16 Tools -->
+          <div class="nk-tools-grid">
+
+            <!-- Tool 01: PDF Converter -->
+            <article class="nk-tool-card nk-reveal" data-category="Formats" data-stagger="1" style="--tool-color: #14b8a6; --tool-rgb: 20, 184, 166;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">01</span>
+                  <span class="nk-card-category">Formats</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">PDF Converter</h3>
+                <p class="nk-card-desc">High-Quality Image to PDF. Turn images into polished PDFs with custom page sizes and ordering.</p>
+                <a href="http://localhost:3005/?tool=pdf-converter" class="nk-card-btn" aria-label="Explore PDF Converter">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 02: Custom Shapes -->
+            <article class="nk-tool-card nk-reveal" data-category="Crop & Resize" data-stagger="2" style="--tool-color: #3b82f6; --tool-rgb: 59, 130, 246;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">02</span>
+                  <span class="nk-card-category">Crop & Resize</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9z"/><circle cx="12" cy="3" r="1.4" fill="currentColor"/><circle cx="19.8" cy="16.5" r="1.4" fill="currentColor"/><circle cx="4.2" cy="16.5" r="1.4" fill="currentColor"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">Custom Shapes</h3>
+                <p class="nk-card-desc">Advanced Geometries. Build your own shapes with custom corners, diagonals, size and precision controls.</p>
+                <a href="http://localhost:3005/?tool=custom" class="nk-card-btn" aria-label="Explore Custom Shapes">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 03: Shape Presets -->
+            <article class="nk-tool-card nk-reveal" data-category="Crop & Resize" data-stagger="3" style="--tool-color: #e8682f; --tool-rgb: 232, 104, 47;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">03</span>
+                  <span class="nk-card-category">Crop & Resize</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><circle cx="17" cy="7" r="4"/><path d="M7 14l4 7H3z"/><rect x="14" y="14" width="7" height="7" rx="3.5"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">Shape Presets</h3>
+                <p class="nk-card-desc">Predefined output formats. Circles, squares, 16:9, stories, and YouTube presets ready for your creative layouts.</p>
+                <a href="http://localhost:3005/?tool=presets" class="nk-card-btn" aria-label="Explore Shape Presets">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 04: Shape Your Image -->
+            <article class="nk-tool-card nk-reveal" data-category="Crop & Resize" data-stagger="4" style="--tool-color: #f59e0b; --tool-rgb: 245, 158, 11;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">04</span>
+                  <span class="nk-card-category">Crop & Resize</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M2 6h14a2 2 0 0 1 2 2v14"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">Shape Your Image</h3>
+                <p class="nk-card-desc">Image Cropping & Transformation. Place any photo inside custom shapes with adjustable zoom and position.</p>
+                <a href="http://localhost:3005/?tool=shape-image" class="nk-card-btn" aria-label="Explore Shape Your Image">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 05: PDF/PPT/DOC to Image -->
+            <article class="nk-tool-card nk-reveal" data-category="Formats" data-stagger="1" style="--tool-color: #10b981; --tool-rgb: 16, 185, 129;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">05</span>
+                  <span class="nk-card-category">Formats</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11"/><path d="M8 10l4 4 4-4"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">PDF/PPT/DOC to Image</h3>
+                <p class="nk-card-desc">Extract images from PDF, PPT & DOC files. Download assets individually or together as a clean ZIP package.</p>
+                <a href="http://localhost:3005/?tool=extractor" class="nk-card-btn" aria-label="Explore PDF/PPT/DOC to Image">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 06: Image to Text / OCR -->
+            <article class="nk-tool-card nk-reveal" data-category="Extraction" data-stagger="2" style="--tool-color: #6366f1; --tool-rgb: 99, 102, 241;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">06</span>
+                  <span class="nk-card-category">Extraction</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2"/><path d="M16 4h2a2 2 0 0 1 2 2v2"/><path d="M20 16v2a2 2 0 0 1-2 2h-2"/><path d="M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M8.5 9h7"/><path d="M12 9v7"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">Image to Text / OCR</h3>
+                <p class="nk-card-desc">Optical Character Recognition. Turn photos, scans, or screenshots into editable text with high accuracy.</p>
+                <a href="http://localhost:3005/?tool=ocr" class="nk-card-btn" aria-label="Explore Image to Text / OCR">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 07: Icon Recolor -->
+            <article class="nk-tool-card nk-reveal" data-category="Colors" data-stagger="3" style="--tool-color: #ec4899; --tool-rgb: 236, 72, 153;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">07</span>
+                  <span class="nk-card-category">Colors</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">Icon Recolor</h3>
+                <p class="nk-card-desc">Change the color of multiple icons at once. Tint transparent PNGs while preserving sharpness and alpha channels.</p>
+                <a href="http://localhost:3005/?tool=png-overlay" class="nk-card-btn" aria-label="Explore Icon Recolor">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 08: Image Converter -->
+            <article class="nk-tool-card nk-reveal" data-category="Formats" data-stagger="4" style="--tool-color: #f43f5e; --tool-rgb: 244, 63, 94;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">08</span>
+                  <span class="nk-card-category">Formats</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 4l3 3-3 3"/><path d="M20 7H8a4 4 0 0 0-4 4"/><path d="M7 20l-3-3 3-3"/><path d="M4 17h12a4 4 0 0 0 4-4"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">Image Converter</h3>
+                <p class="nk-card-desc">Convert & Trace Images. Switch between JPG, PNG, WEBP, SVG, and HEIC instantly right inside your browser.</p>
+                <a href="http://localhost:3005/?tool=format-converter" class="nk-card-btn" aria-label="Explore Image Converter">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 09: MP4 to GIF -->
+            <article class="nk-tool-card nk-reveal" data-category="Formats" data-stagger="1" style="--tool-color: #8b5cf6; --tool-rgb: 139, 92, 246;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">09</span>
+                  <span class="nk-card-category">Formats</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 5v14"/><path d="M16 5v14"/><path d="M3 9.5h5"/><path d="M3 14.5h5"/><path d="M16 9.5h5"/><path d="M16 14.5h5"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">MP4 to GIF</h3>
+                <p class="nk-card-desc">Video to GIF animation. Choose video segments, adjust frame rates, and render lightweight animated GIFs.</p>
+                <a href="http://localhost:3005/?tool=mp4-to-gif" class="nk-card-btn" aria-label="Explore MP4 to GIF">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 10: QR Generator -->
+            <article class="nk-tool-card nk-reveal" data-category="Sharing" data-stagger="2" style="--tool-color: #06b6d4; --tool-rgb: 6, 182, 212;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">10</span>
+                  <span class="nk-card-category">Sharing</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3z"/><path d="M20 14h1"/><path d="M14 20h1"/><path d="M18 20h3v-3"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">QR Generator</h3>
+                <p class="nk-card-desc">Generate QR codes. Create clean QR codes for URLs, contacts, and text with custom colors and center logos.</p>
+                <a href="http://localhost:3005/?tool=qr-generator" class="nk-card-btn" aria-label="Explore QR Generator">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 11: Data Transfer -->
+            <article class="nk-tool-card nk-reveal" data-category="Sharing" data-stagger="3" style="--tool-color: #84cc16; --tool-rgb: 132, 204, 22;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">11</span>
+                  <span class="nk-card-category">Sharing</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M8 12h8"/><path d="M13 9l3 3-3 3"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">Data Transfer</h3>
+                <p class="nk-card-desc">P2P file sharing. Send files directly between devices securely via WebRTC without any cloud uploads.</p>
+                <a href="http://localhost:3005/?tool=data-transfer" class="nk-card-btn" aria-label="Explore Data Transfer">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 12: JSON Data Converter -->
+            <article class="nk-tool-card nk-reveal" data-category="Formats" data-stagger="4" style="--tool-color: #7CFFB2; --tool-rgb: 124, 255, 178;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">12</span>
+                  <span class="nk-card-category">Formats</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H7a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2 2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1"/><path d="M16 3h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2 2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-1"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">JSON Data Converter</h3>
+                <p class="nk-card-desc">Format dates and export JSON data. Parse, clean, transform, and beautify data structures with ease.</p>
+                <a href="http://localhost:3005/?tool=json-date" class="nk-card-btn" aria-label="Explore JSON Data Converter">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 13: Color Palette -->
+            <article class="nk-tool-card nk-reveal" data-category="Colors" data-stagger="1" style="--tool-color: #f43f5e; --tool-rgb: 244, 63, 94;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">13</span>
+                  <span class="nk-card-category">Colors</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.3A3.7 3.7 0 0 0 21 11.7C21 6.9 17 3 12 3z"/><circle cx="7.5" cy="11" r="1" fill="currentColor"/><circle cx="11" cy="7" r="1" fill="currentColor"/><circle cx="16" cy="8" r="1" fill="currentColor"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">Color Palette</h3>
+                <p class="nk-card-desc">Extract and edit palettes. Sample colors from any image, generate harmonious palettes, and copy CSS values.</p>
+                <a href="http://localhost:3005/?tool=color-palette" class="nk-card-btn" aria-label="Explore Color Palette">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 14: SVG Optimizer -->
+            <article class="nk-tool-card nk-reveal" data-category="Code" data-stagger="2" style="--tool-color: #10b981; --tool-rgb: 16, 185, 129;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">14</span>
+                  <span class="nk-card-category">Code</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">SVG Optimizer</h3>
+                <p class="nk-card-desc">Compress & clean SVGs. Strip redundant metadata, minify paths, and reduce file weights for lightning-fast loads.</p>
+                <a href="http://localhost:3005/?tool=svg-optimizer" class="nk-card-btn" aria-label="Explore SVG Optimizer">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 15: Photo & Sig Resizer -->
+            <article class="nk-tool-card nk-reveal" data-category="Crop & Resize" data-stagger="3" style="--tool-color: #3b82f6; --tool-rgb: 59, 130, 246;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">15</span>
+                  <span class="nk-card-category">Crop & Resize</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">Photo & Sig Resizer</h3>
+                <p class="nk-card-desc">Resize and crop precisely. Fit portrait photos and signature scans to exact government or portal requirements.</p>
+                <a href="http://localhost:3005/?tool=photo-resizer" class="nk-card-btn" aria-label="Explore Photo & Sig Resizer">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Tool 16: Image to CSS -->
+            <article class="nk-tool-card nk-reveal" data-category="Code" data-stagger="4" style="--tool-color: #8b5cf6; --tool-rgb: 139, 92, 246;">
+              <div class="nk-card-thumb-wrap">
+                <div class="nk-thumb-badge-row">
+                  <span class="nk-card-num">16</span>
+                  <span class="nk-card-category">Code</span>
+                </div>
+                <div class="nk-card-thumb-fallback" aria-hidden="true">
+                  <div class="nk-thumb-pattern"></div>
+                  <div class="nk-thumb-icon-box">
+                    <span class="nk-thumb-svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4"/><path d="M16 8l4 4-4 4"/><path d="M13.5 6l-3 12"/></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-card-body">
+                <h3 class="nk-card-title">Image to CSS</h3>
+                <p class="nk-card-desc">Convert images to CSS shapes. Turn artwork and icons into pure CSS box-shadows or clip-paths with zero assets.</p>
+                <a href="http://localhost:3005/?tool=image-to-css" class="nk-card-btn" aria-label="Explore Image to CSS">
+                  Explore the tool <span class="nk-arrow-icon" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Empty Search State -->
+            <div id="nk-tools-empty-state" class="nk-empty-state" style="display: none;">
+              <div class="nk-empty-icon" aria-hidden="true">🔍</div>
+              <h3 class="nk-empty-title">No tools found matching &ldquo;<span class="nk-empty-query"></span>&rdquo;</h3>
+              <p class="nk-empty-sub">Try searching for &ldquo;PDF&rdquo;, &ldquo;image&rdquo;, &ldquo;resize&rdquo;, &ldquo;extract&rdquo;, or clear the search to see all tools.</p>
+              <button type="button" id="nk-empty-clear-btn" class="nk-empty-btn">Clear search</button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- D) HOW IT WORKS SECTION (LIGHT) -->
+      <section class="nk-how-section" id="how-it-works" aria-labelledby="how-heading">
+        <div class="nk-container">
+          <div class="nk-how-header">
+            <h2 id="how-heading" class="nk-how-title">How It Works</h2>
+            <p class="nk-how-sub">Fast, private, and effortless digital tools right inside your web browser.</p>
+          </div>
+
+          <div class="nk-how-grid">
+            <div class="nk-how-card nk-reveal" data-stagger="1">
+              <div class="nk-how-step-num">1</div>
+              <h3 class="nk-how-step-title">Pick a tool</h3>
+              <p class="nk-how-step-desc">Browse the toolbox and select the exact tool you need for your task.</p>
+            </div>
+
+            <div class="nk-how-card nk-reveal" data-stagger="2">
+              <div class="nk-how-step-num">2</div>
+              <h3 class="nk-how-step-title">Add your file</h3>
+              <p class="nk-how-step-desc">Upload or drop your images, documents, or media straight into the browser.</p>
+            </div>
+
+            <div class="nk-how-card nk-reveal" data-stagger="3">
+              <div class="nk-how-step-num">3</div>
+              <h3 class="nk-how-step-title">Download your result</h3>
+              <p class="nk-how-step-desc">Save high-quality output instantly without watermarks or waiting.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- E) FINAL CTA CONTAINER -->
+      <section class="nk-cta-section" aria-label="Call to Action">
+        <div class="nk-container">
+          <div class="nk-cta-box nk-reveal">
+            <div class="nk-cta-box-glow" aria-hidden="true"></div>
+            <div class="nk-cta-text-wrap">
+              <h2 class="nk-cta-headline">Your digital toolbox is ready.</h2>
+              <p class="nk-cta-subtext">Convert, create, extract, edit, and more all in one place.</p>
+            </div>
+            <div class="nk-cta-btn-wrap">
+              <a href="http://localhost:3005" class="nk-cta-large-btn">
+                Explore the tools <span class="nk-arrow-icon" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- F) FOOTER (MINIMAL) -->
+    <footer class="nk-footer" role="contentinfo">
+      <div class="nk-container">
+        <div class="nk-footer-inner">
+          <div class="nk-footer-brand">
+            <img src="./landing/assets/neepank-logo.png" alt="Neepank Toolbox" height="26" style="object-fit: contain; display: block;">
+          </div>
+          <p class="nk-footer-line">Built for creators, designers and teams.</p>
+          <a href="#top" class="nk-back-top">
+            <span>Back to top</span>
+            <span aria-hidden="true">↑</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Landing Interactive Scripts -->
+  <script src="./landing/landing.js"></script>
+</body>
+</html>

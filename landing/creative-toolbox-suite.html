@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Creative Toolbox</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#0a0a0b;--side:#0f0f11;--card:#151518;--c2:#1c1c20;--line:#26262b;--text:#f4f4f5;--muted:#8d8d96;--tile:#0a0a0b;--brand:#e8682f}
+@media(prefers-color-scheme:light){:root:not([data-theme=dark]){--bg:#f3f3f1;--side:#fff;--card:#fff;--c2:#efefec;--line:#dcdcd8;--text:#141416;--muted:#6b6b73}}
+:root[data-theme=light]{--bg:#f3f3f1;--side:#fff;--card:#fff;--c2:#efefec;--line:#dcdcd8;--text:#141416;--muted:#6b6b73}
+:root[data-theme=dark]{--bg:#0a0a0b;--side:#0f0f11;--card:#151518;--c2:#1c1c20;--line:#26262b;--text:#f4f4f5;--muted:#8d8d96}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box}
+body{margin:0;height:100%;background:var(--bg);color:var(--text);font:15px/1.5 Syne,system-ui,sans-serif;display:flex}
+button{font:inherit;color:inherit;cursor:pointer}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+aside{width:230px;background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column;flex-shrink:0;transition:width .25s;overflow:hidden}
+.brand{display:flex;align-items:center;gap:12px;padding:18px 18px;border-bottom:1px solid var(--line)}
+.logo{width:32px;height:32px;border-radius:50%;background:#fff;color:var(--brand);display:grid;place-items:center;font-weight:800;flex-shrink:0}
+.brand b{display:block;font-size:19px;font-weight:800;line-height:1.1}.brand small{color:var(--muted);font-size:10px;letter-spacing:.2em}
+.sl{padding:18px 18px 8px;color:var(--muted);font-size:10.5px;letter-spacing:.22em}
+nav{padding:0 12px;display:flex;flex-direction:column;gap:2px;flex:1;overflow-y:auto}
+nav button{display:flex;align-items:center;gap:12px;background:none;border:0;padding:7px 8px;border-radius:10px;color:var(--muted);text-align:left;white-space:nowrap;font-weight:500;font-size:13.5px}
+nav button:hover,nav button[aria-current=true]{background:var(--c2);color:var(--text)}
+.mini{width:26px;height:26px;border-radius:7px;background:var(--tile);border:1.5px solid var(--c);color:var(--c);display:grid;place-items:center;font-size:10.5px;font-weight:800;flex-shrink:0}
+#col{margin:12px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 14px;text-align:left;color:var(--muted);white-space:nowrap;font-size:12.5px}
+body.col aside{width:68px}body.col .brand>div:last-child,body.col .sl,body.col nav button span:last-child,body.col #col span{display:none}body.col nav button{justify-content:center}
+main{flex:1;min-width:0;display:flex;flex-direction:column}
+.bar{display:flex;align-items:flex-end;gap:4px;padding:8px 12px 0;border-bottom:1px solid var(--line);background:var(--side);overflow-x:auto;flex-shrink:0}
+.tab{display:flex;align-items:center;gap:8px;padding:8px 10px 8px 12px;border:1px solid transparent;border-bottom:0;border-radius:10px 10px 0 0;background:none;color:var(--muted);font-size:13px;white-space:nowrap;font-weight:500}
+.tab:hover{color:var(--text)}
+.tab[aria-selected=true]{background:var(--bg);border-color:var(--line);color:var(--text);box-shadow:inset 0 2px 0 var(--c,var(--brand))}
+.tab .mini{width:20px;height:20px;font-size:8.5px;border-radius:5px}
+.x{border:0;background:none;color:var(--muted);width:20px;height:20px;border-radius:5px;line-height:1;padding:0}.x:hover{background:var(--c2);color:var(--text)}
+.sp{margin-left:auto;display:flex;gap:8px;align-items:center;padding:0 6px 8px}
+.pill{display:flex;align-items:center;gap:7px;border:1px solid #1f4d33;background:#0f2a1c;color:#4ade80;padding:4px 10px;border-radius:8px;font-size:11px}.pill i{width:6px;height:6px;border-radius:50%;background:#4ade80}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:6px 12px;font-size:11.5px;color:var(--muted)}.chip:hover{color:var(--text)}
+.chip[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:#fff}
+.views{flex:1;min-height:0;position:relative}
+.pane{position:absolute;inset:0;overflow:auto}.pane[hidden]{display:none}
+.home{padding:clamp(18px,3vw,38px) clamp(16px,3vw,36px) 50px}
+h1{font-size:clamp(32px,5vw,50px);margin:0 0 6px;font-weight:800;line-height:1.05}
+.sub{color:var(--muted);font-size:13px;margin:0 0 22px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.tools input{background:var(--card);border:1px solid var(--line);color:var(--text);padding:9px 14px;border-radius:9px;min-width:220px;font-size:12.5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:16px;text-align:left;position:relative;overflow:hidden;transition:border-color .2s;width:100%}
+.tile::after{content:"";position:absolute;inset:auto -30% -60% -30%;height:70%;background:radial-gradient(closest-side,var(--c),transparent);opacity:.12;pointer-events:none}
+.tile:hover{border-color:var(--c)}
+.ico{width:58px;height:58px;border-radius:14px;background:var(--tile);border:2.5px solid var(--c);color:var(--c);display:grid;place-items:center;font-weight:800;font-size:24px;letter-spacing:-.03em;transition:transform .25s}
+.tile:hover .ico{transform:rotate(-5deg) scale(1.06)}
+.tile h2{margin:0;font-size:17px}.tile p{margin:4px 0 0;color:var(--muted);font-size:11.5px}
+.tile .st{font-size:11px;color:var(--muted)}
+.ws{display:flex;height:100%}
+.stage{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:22px;background:repeating-conic-gradient(var(--c2) 0 25%,transparent 0 50%) 0 0/20px 20px}
+.stage canvas{max-width:100%;max-height:calc(100vh - 170px);box-shadow:0 20px 60px #0007;touch-action:none;cursor:grab;background:transparent}
+.hint{color:var(--muted);font-size:11px}
+.panel{width:310px;flex-shrink:0;border-left:1px solid var(--line);background:var(--side);padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.panel h3{margin:0;display:flex;align-items:center;gap:10px;font-size:18px}
+.lb{display:flex;justify-content:space-between;font-size:10.5px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:5px}.lb b{color:#31a8ff;font-weight:500}
+.panel input[type=range]{width:100%;accent-color:var(--brand)}
+.panel select,.panel input[type=color]{width:100%;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:8px;font:inherit;font-size:12px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pb{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:9px;font-size:11.5px;letter-spacing:.08em}.pb:hover{border-color:var(--brand)}
+.dl{background:linear-gradient(#f07a3c,#e8682f);border:0;border-radius:11px;padding:13px;font-weight:800;color:#fff;font-size:13px;margin-top:auto}
+.dl:disabled{opacity:.4;cursor:not-allowed}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.ph{margin:auto;text-align:center;color:var(--muted);max-width:420px;padding:30px}.ph .ico{margin:0 auto 18px;width:84px;height:84px;font-size:34px}
+#toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--text);color:var(--bg);padding:9px 16px;border-radius:9px;opacity:0;transition:.2s;pointer-events:none;font-size:12px}#toast.on{opacity:1;transform:translate(-50%,0)}
+@media(max-width:820px){body{flex-direction:column}aside,body.col aside{width:100%;flex-direction:row;align-items:center;border-right:0;border-bottom:1px solid var(--line);overflow-x:auto}.brand{border:0;padding:10px 14px}.sl,#col{display:none}nav{flex-direction:row;padding:0 8px}body.col .brand>div:last-child{display:block}.ws{flex-direction:column}.panel{width:100%;border-left:0;border-top:1px solid var(--line)}.stage canvas{max-height:50vh}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<aside>
+  <div class="brand"><div class="logo">✦</div><div><b>Creative</b><small class="mono">TOOLBOX</small></div></div>
+  <div class="sl mono">STUDIO TOOLS</div>
+  <nav id="nav" aria-label="Tools"></nav>
+  <button id="col" class="mono">◧ <span>Collapse Panel</span></button>
+</aside>
+<main>
+  <div class="bar" id="bar" role="tablist"></div>
+  <div class="views" id="views"></div>
+</main>
+<div id="toast" class="mono" role="status"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.2/peerjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+var $=function(s,r){return(r||document).querySelector(s)};
+if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+function toast(m){var e=$("#toast");e.textContent=m;e.className="on";clearTimeout(toast.t);toast.t=setTimeout(function(){e.className=""},2200)}
+function loadFile(f,cb){var i=new Image();i.onload=function(){cb(i)};i.src=URL.createObjectURL(f)}
+function save(cv,name,type,q){cv.toBlob(function(b){var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;a.click()},type,q)}
+function pick(cb){var f=document.createElement("input");f.type="file";f.accept="image/*";f.onchange=function(){if(f.files[0])loadFile(f.files[0],cb)};f.click()}
+function rng(id,l,mn,mx,st,v,u){return '<div><div class="lb mono"><span>'+l+'</span><b id="'+id+'v">'+v+u+'</b></div><input type="range" id="'+id+'" min="'+mn+'" max="'+mx+'" step="'+st+'" value="'+v+'"></div>'}
+function head(t){return '<h3><span class="mini" style="--c:'+t.c+'">'+t.l+'</span>'+t.n+'</h3>'}
+
+/* ---------- Shape Presets ---------- */
+function shapes(el,t){
+  var P=[["Circle",1000,1000,"e","#6fd39a"],["Square",1000,1000,"r","#e0622f"],["Rectangle 4:3",1200,900,"r","#2c5364"],["Landscape 16:9",1920,1080,"r","#12233f"],["Portrait 3:4",900,1200,"r","#8a5cf6"],["Story 9:16",1080,1920,"r","#d6336c"],["YouTube",1280,720,"r","#eb1000"],["Rounded",1200,900,"o","#31a8ff"],["Oval",1200,900,"e","#ffb020"]];
+  var s={p:0,img:null,z:1,x:0,y:0,fh:0,fv:0,o:100};
+  el.innerHTML='<div class="ws"><div class="stage"><canvas></canvas><div class="hint mono">Drag to reposition · Scroll to zoom</div></div><div class="panel">'+head(t)+
+  '<div class="chips" id="ch">'+P.map(function(p,i){return '<button class="chip mono" data-i="'+i+'" aria-pressed="'+(i==0)+'">'+p[0]+'</button>'}).join("")+'</div>'+
+  '<div class="two"><button class="pb mono" id="fh">↔ FLIP H</button><button class="pb mono" id="fv">↕ FLIP V</button></div>'+
+  rng("z","Zoom",.5,3,.01,1,"x")+rng("x","X",-100,100,1,0,"%")+rng("y","Y",-100,100,1,0,"%")+rng("o","Mask opacity",0,100,1,100,"%")+
+  '<div class="two"><button class="pb mono" id="up">CHOOSE FILE…</button><button class="pb mono" id="rs">RESET</button></div><button class="dl" id="dl"></button></div></div>';
+  var cv=$("canvas",el),g=cv.getContext("2d");
+  function draw(){var q=P[s.p],w=q[1],h=q[2];cv.width=w;cv.height=h;g.clearRect(0,0,w,h);g.save();g.beginPath();
+    if(q[3]=="e")g.ellipse(w/2,h/2,w/2,h/2,0,0,7);else if(q[3]=="o")g.roundRect(0,0,w,h,Math.min(w,h)*.18);else g.rect(0,0,w,h);
+    g.clip();g.fillStyle=q[4];g.fillRect(0,0,w,h);
+    if(s.img){g.globalAlpha=s.o/100;var k=Math.max(w/s.img.width,h/s.img.height)*s.z,iw=s.img.width*k,ih=s.img.height*k;
+      g.translate(w/2+s.x/100*w,h/2+s.y/100*h);g.scale(s.fh?-1:1,s.fv?-1:1);g.drawImage(s.img,-iw/2,-ih/2,iw,ih)}
+    else{g.fillStyle="#fff";g.font="700 "+w*.05+"px Syne,sans-serif";g.textAlign="center";g.fillText("Click to upload",w/2,h/2)}
+    g.restore();$("#dl",el).textContent="↓ DOWNLOAD SHAPE ("+w+"×"+h+")"}
+  function sync(){["z","x","y","o"].forEach(function(k){var v=s[k];$("#"+k,el).value=v;$("#"+k+"v",el).textContent=(k=="z"?(+v).toFixed(2)+"x":v+"%")});draw()}
+  var up=function(){pick(function(i){s.img=i;draw()})};
+  $("#up",el).onclick=up;
+  ["z","x","y","o"].forEach(function(k){$("#"+k,el).oninput=function(){s[k]=+this.value;sync()}});
+  $("#fh",el).onclick=function(){s.fh^=1;draw()};$("#fv",el).onclick=function(){s.fv^=1;draw()};
+  $("#rs",el).onclick=function(){s.z=1;s.x=0;s.y=0;s.o=100;s.fh=0;s.fv=0;s.img=null;sync()};
+  $("#ch",el).onclick=function(e){var b=e.target.closest(".chip");if(!b)return;s.p=+b.dataset.i;
+    el.querySelectorAll("#ch .chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)});draw()};
+  var d=null;
+  cv.onpointerdown=function(e){if(!s.img){up();return}d=[e.clientX,e.clientY];cv.setPointerCapture(e.pointerId);cv.style.cursor="grabbing"};
+  cv.onpointermove=function(e){if(!d)return;var r=cv.getBoundingClientRect();
+    s.x=Math.max(-100,Math.min(100,s.x+(e.clientX-d[0])/r.width*100));s.y=Math.max(-100,Math.min(100,s.y+(e.clientY-d[1])/r.height*100));
+    s.x=Math.round(s.x);s.y=Math.round(s.y);d=[e.clientX,e.clientY];sync()};
+  cv.onpointerup=function(){d=null;cv.style.cursor="grab"};
+  cv.onwheel=function(e){e.preventDefault();s.z=Math.max(.5,Math.min(3,s.z-e.deltaY*.001));sync()};
+  $("#dl",el).onclick=function(){save(cv,P[s.p][0].toLowerCase().replace(/\W+/g,"-")+".png","image/png")};
+  sync();
+}
+
+/* ---------- Format Converter ---------- */
+function converter(el,t){
+  var img=null,cv;
+  el.innerHTML='<div class="ws"><div class="stage"><canvas></canvas><div class="hint mono" id="info">Choose an image to begin</div></div><div class="panel">'+head(t)+
+  '<div><div class="lb mono"><span>Output format</span></div><select id="f"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option><option value="image/webp">WebP</option></select></div>'+
+  rng("q","Quality",10,100,1,90,"%")+'<button class="pb mono" id="up">CHOOSE FILE…</button><button class="dl" id="dl" disabled>↓ CONVERT AND DOWNLOAD</button></div></div>';
+  cv=$("canvas",el);
+  function draw(){if(!img)return;cv.width=img.width;cv.height=img.height;var g=cv.getContext("2d");
+    if($("#f",el).value=="image/jpeg"){g.fillStyle="#fff";g.fillRect(0,0,cv.width,cv.height)}g.drawImage(img,0,0);
+    cv.toBlob(function(b){$("#info",el).textContent=img.width+"×"+img.height+" px · output about "+Math.round(b.size/1024)+" KB"},$("#f",el).value,$("#q",el).value/100)}
+  $("#up",el).onclick=function(){pick(function(i){img=i;$("#dl",el).disabled=false;draw()})};cv.onclick=$("#up",el).onclick;
+  $("#f",el).onchange=draw;$("#q",el).oninput=function(){$("#qv",el).textContent=this.value+"%";draw()};
+  $("#dl",el).onclick=function(){var f=$("#f",el).value;save(cv,"converted."+f.split("/")[1].replace("jpeg","jpg"),f,$("#q",el).value/100)};
+}
+
+/* ---------- PNG Color Overlay ---------- */
+function overlay(el,t){
+  var img=null,cv;
+  el.innerHTML='<div class="ws"><div class="stage"><canvas></canvas><div class="hint mono">Works best with transparent PNGs</div></div><div class="panel">'+head(t)+
+  '<div><div class="lb mono"><span>Overlay color</span></div><input type="color" id="c" value="#e8682f"></div>'+rng("s","Strength",0,100,1,100,"%")+
+  '<button class="pb mono" id="up">CHOOSE FILE…</button><button class="dl" id="dl" disabled>↓ DOWNLOAD PNG</button></div></div>';
+  cv=$("canvas",el);
+  function draw(){if(!img)return;cv.width=img.width;cv.height=img.height;var g=cv.getContext("2d");g.drawImage(img,0,0);
+    g.globalCompositeOperation="source-atop";g.globalAlpha=$("#s",el).value/100;g.fillStyle=$("#c",el).value;g.fillRect(0,0,cv.width,cv.height)}
+  $("#up",el).onclick=function(){pick(function(i){img=i;$("#dl",el).disabled=false;draw()})};cv.onclick=$("#up",el).onclick;
+  $("#c",el).oninput=draw;$("#s",el).oninput=function(){$("#sv",el).textContent=this.value+"%";draw()};
+  $("#dl",el).onclick=function(){save(cv,"color-overlay.png","image/png")};
+}
+
+/* ---------- Custom Shapes + Shape Your Image ---------- */
+function mask(el,t,diag){
+  var s={w:1000,h:1000,r:diag?250:0,st:0,img:null,z:1,x:0,y:0,fh:0,fv:0,rot:0,col:"#31a8ff"},U={w:"px",h:"px",r:"px",z:"x",x:"%",y:"%"};
+  el.innerHTML='<div class="ws"><div class="stage"><canvas></canvas><div class="hint mono">Drag to reposition · Scroll to zoom</div></div><div class="panel">'+head(t)+
+  (diag?'<div class="two"><button class="pb mono" id="s0">◤ TL + BR ◢</button><button class="pb mono" id="s1">◥ TR + BL ◣</button></div>':'')+
+  rng("w","Width",100,2000,1,1000,"px")+rng("h","Height",100,2000,1,1000,"px")+rng("r",diag?"Radius":"Roundness",0,1000,1,s.r,"px")+
+  '<div class="two"><button id="fh" class="pb mono">↔ FLIP H</button><button id="fv" class="pb mono">↕ FLIP V</button></div>'+
+  rng("z","Zoom",.5,3,.01,1,"x")+rng("x","X",-100,100,1,0,"%")+rng("y","Y",-100,100,1,0,"%")+
+  '<div class="two"><button id="rl" class="pb mono">↺ 90° LEFT</button><button id="rr" class="pb mono">↻ 90° RIGHT</button></div>'+
+  '<div><div class="lb mono"><span>Shape color</span></div><input type="color" id="c" value="#31a8ff"></div>'+
+  '<div class="two"><button id="up" class="pb mono">CHOOSE FILE…</button><button id="rs" class="pb mono">RESET</button></div><button class="dl" id="dl">↓ DOWNLOAD PNG</button></div></div>';
+  var cv=$("canvas",el),g=cv.getContext("2d");
+  function draw(){var w=s.w,h=s.h,r=Math.min(s.r,w/2,h/2),a=diag?(s.st?[0,1,0,1]:[1,0,1,0]):[1,1,1,1],c=a.map(function(v){return v?r:0});
+    cv.width=w;cv.height=h;g.clearRect(0,0,w,h);g.save();g.beginPath();g.moveTo(c[0],0);g.lineTo(w-c[1],0);g.arcTo(w,0,w,c[1],c[1]);g.lineTo(w,h-c[2]);g.arcTo(w,h,w-c[2],h,c[2]);
+    g.lineTo(c[3],h);g.arcTo(0,h,0,h-c[3],c[3]);g.lineTo(0,c[0]);g.arcTo(0,0,c[0],0,c[0]);g.closePath();g.clip();g.fillStyle=s.col;g.fillRect(0,0,w,h);
+    if(s.img){var sw=s.rot%180,iw=sw?s.img.height:s.img.width,ih=sw?s.img.width:s.img.height,k=Math.max(w/iw,h/ih)*s.z;
+      g.translate(w/2+s.x/100*w,h/2+s.y/100*h);g.rotate(s.rot*Math.PI/180);g.scale(s.fh?-1:1,s.fv?-1:1);g.drawImage(s.img,-s.img.width*k/2,-s.img.height*k/2,s.img.width*k,s.img.height*k)}
+    else{g.fillStyle="#fff";g.font="700 "+Math.min(w,h)*.06+"px Syne,sans-serif";g.textAlign="center";g.fillText("Click to upload",w/2,h/2)}
+    g.restore();$("#dl",el).textContent="↓ DOWNLOAD PNG ("+w+"×"+h+")"}
+  function sync(){for(var k in U){$("#"+k,el).value=s[k];$("#"+k+"v",el).textContent=(k=="z"?(+s[k]).toFixed(2):s[k])+U[k]}draw()}
+  for(var k in U)(function(k){$("#"+k,el).oninput=function(){s[k]=+this.value;sync()}})(k);
+  var up=function(){pick(function(i){s.img=i;draw()})};$("#up",el).onclick=up;
+  $("#c",el).oninput=function(){s.col=this.value;draw()};
+  $("#fh",el).onclick=function(){s.fh^=1;draw()};$("#fv",el).onclick=function(){s.fv^=1;draw()};
+  $("#rl",el).onclick=function(){s.rot=(s.rot+270)%360;draw()};$("#rr",el).onclick=function(){s.rot=(s.rot+90)%360;draw()};
+  if(diag){$("#s0",el).onclick=function(){s.st=0;draw()};$("#s1",el).onclick=function(){s.st=1;draw()}}
+  $("#rs",el).onclick=function(){s.z=1;s.x=0;s.y=0;s.fh=0;s.fv=0;s.rot=0;s.img=null;sync()};
+  var d=null;
+  cv.onpointerdown=function(e){if(!s.img){up();return}d=[e.clientX,e.clientY];cv.setPointerCapture(e.pointerId)};
+  cv.onpointermove=function(e){if(!d)return;var q=cv.getBoundingClientRect();
+    s.x=Math.round(Math.max(-100,Math.min(100,s.x+(e.clientX-d[0])/q.width*100)));s.y=Math.round(Math.max(-100,Math.min(100,s.y+(e.clientY-d[1])/q.height*100)));d=[e.clientX,e.clientY];sync()};
+  cv.onpointerup=function(){d=null};
+  cv.onwheel=function(e){e.preventDefault();s.z=Math.max(.5,Math.min(3,s.z-e.deltaY*.001));sync()};
+  $("#dl",el).onclick=function(){save(cv,"shape.png","image/png")};
+  sync();
+}
+function customShapes(el,t){mask(el,t,true)}
+function shapeImage(el,t){mask(el,t,false)}
+
+/* ---------- QR Generator (qrcode-generator from cdnjs) ---------- */
+function qr(el,t){
+  var logo=null,ok=false,inp='width:100%;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:10px;font:inherit;font-size:12.5px';
+  el.innerHTML='<div class="ws"><div class="stage"><canvas width="10" height="10"></canvas><div class="hint mono" id="inf">Enter a URL to generate a QR code</div></div><div class="panel">'+head(t)+
+  '<div><div class="lb mono"><span>Target URL / content</span></div><input id="tx" placeholder="https://" style="'+inp+'"></div>'+
+  '<div><div class="lb mono"><span>Foreground color</span></div><input type="color" id="fg" value="#000000"></div>'+
+  '<div class="two"><button class="pb mono" id="lg">CENTER LOGO…</button><button class="pb mono" id="nl">REMOVE LOGO</button></div>'+
+  '<div class="two"><button class="dl" id="p" style="margin:0" disabled>↓ PNG</button><button class="dl" id="j" style="margin:0" disabled>↓ JPG</button></div></div></div>';
+  var cv=$("canvas",el),g=cv.getContext("2d");
+  function draw(){var v=$("#tx",el).value.trim();ok=!!v&&window.qrcode;
+    $("#p",el).disabled=$("#j",el).disabled=!ok;
+    if(!v){cv.width=cv.height=10;$("#inf",el).textContent="Enter a URL to generate a QR code";return}
+    if(!window.qrcode){$("#inf",el).textContent="QR library failed to load. Check your connection.";return}
+    var q=qrcode(0,"H");q.addData(v);q.make();var n=q.getModuleCount(),S=1024,m=4,c=S/(n+2*m);cv.width=cv.height=S;
+    g.fillStyle="#fff";g.fillRect(0,0,S,S);g.fillStyle=$("#fg",el).value;
+    for(var r=0;r<n;r++)for(var k=0;k<n;k++)if(q.isDark(r,k))g.fillRect(Math.floor((k+m)*c),Math.floor((r+m)*c),Math.ceil(c),Math.ceil(c));
+    if(logo){var b=S*.22,sc=Math.min(b/logo.width,b/logo.height),w=logo.width*sc,h=logo.height*sc;g.fillStyle="#fff";g.fillRect((S-w)/2-10,(S-h)/2-10,w+20,h+20);g.drawImage(logo,(S-w)/2,(S-h)/2,w,h)}
+    $("#inf",el).textContent="Scan to test · "+n+"×"+n+" modules"}
+  $("#tx",el).oninput=draw;$("#fg",el).oninput=draw;
+  $("#lg",el).onclick=function(){pick(function(i){logo=i;draw()})};$("#nl",el).onclick=function(){logo=null;draw()};
+  $("#p",el).onclick=function(){save(cv,"qr.png","image/png")};$("#j",el).onclick=function(){save(cv,"qr.jpg","image/jpeg",.95)};
+}
+
+/* ---------- PDF Converter (jsPDF from cdnjs) ---------- */
+function pdf(el,t){
+  var L=[],sel='background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:8px;font:inherit;font-size:12px;width:100%';
+  el.innerHTML='<div class="ws"><div class="stage" style="justify-content:flex-start;overflow:auto"><div id="th" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"></div><div class="hint mono" id="inf">Add images to build a multi-page PDF</div></div><div class="panel">'+head(t)+
+  '<button class="pb mono" id="up">ADD IMAGES…</button>'+
+  '<div><div class="lb mono"><span>Page size</span></div><select id="sz" style="'+sel+'"><option value="fit">Fit (same as image)</option><option value="a4">A4</option><option value="a3">A3</option><option value="letter">Letter</option><option value="legal">Legal</option></select></div>'+
+  '<div><div class="lb mono"><span>Orientation</span></div><select id="or" style="'+sel+'"><option value="auto">Auto (per image)</option><option value="p">Always portrait</option><option value="l">Always landscape</option></select></div>'+
+  rng("q","Quality",10,100,1,80,"%")+rng("m","Margin",0,40,1,10,"mm")+
+  '<div class="two"><button class="pb mono" id="cl">CLEAR ALL</button><span></span></div><button class="dl" id="dl" disabled>↓ GENERATE PDF</button></div></div>';
+  function list(){$("#th",el).innerHTML=L.map(function(i){return '<img src="'+i.src+'" alt="" style="height:110px;border-radius:8px;border:1px solid var(--line)">'}).join("");
+    $("#inf",el).textContent=L.length?L.length+" page"+(L.length>1?"s":""):"Add images to build a multi-page PDF";$("#dl",el).disabled=!L.length}
+  $("#up",el).onclick=function(){var f=document.createElement("input");f.type="file";f.accept="image/*";f.multiple=true;
+    f.onchange=function(){Array.prototype.forEach.call(f.files,function(x){loadFile(x,function(i){L.push(i);list()})})};f.click()};
+  $("#cl",el).onclick=function(){L=[];list()};
+  $("#q",el).oninput=function(){$("#qv",el).textContent=this.value+"%"};$("#m",el).oninput=function(){$("#mv",el).textContent=this.value+"mm"};
+  $("#dl",el).onclick=function(){
+    if(!window.jspdf){toast("PDF library failed to load");return}
+    var D={a4:[210,297],a3:[297,420],letter:[215.9,279.4],legal:[215.9,355.6]},z=$("#sz",el).value,o=$("#or",el).value,mg=+$("#m",el).value,doc;
+    L.forEach(function(im,n){var pw,ph,m=mg;
+      if(z=="fit"){pw=im.width*.2646;ph=im.height*.2646;m=0}else{var d=D[z],l=o=="auto"?im.width>im.height:o=="l";pw=l?d[1]:d[0];ph=l?d[0]:d[1]}
+      var or=pw>ph?"l":"p";if(n)doc.addPage([pw,ph],or);else doc=new window.jspdf.jsPDF({unit:"mm",format:[pw,ph],orientation:or});
+      var k=Math.min((pw-2*m)/im.width,(ph-2*m)/im.height),w=im.width*k,h=im.height*k,c=document.createElement("canvas");c.width=im.width;c.height=im.height;
+      var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0);
+      doc.addImage(c.toDataURL("image/jpeg",$("#q",el).value/100),"JPEG",(pw-w)/2,(ph-h)/2,w,h)});
+    doc.save("images.pdf")};
+}
+
+/* ---------- PNG Color Overlay (batch) ---------- */
+function batchOverlay(el,t){
+  var F=[],idx=-1;
+  el.innerHTML='<div class="ws"><div class="stage"><canvas></canvas><div class="hint mono" id="inf">Upload PNGs, then Process All</div></div><div class="panel">'+head(t)+
+  '<button class="pb mono" id="up">UPLOAD PNG FILES…</button>'+
+  '<div id="q" style="display:flex;flex-direction:column;gap:6px;max-height:160px;overflow:auto"></div>'+
+  '<div><div class="lb mono"><span>Tint color</span></div><input type="color" id="c" value="#e8682f"></div>'+
+  rng("s","Strength",0,100,1,100,"%")+
+  '<div class="two"><button class="pb mono" id="pa">⚙ PROCESS ALL</button><button class="pb mono" id="cl">CLEAR ALL</button></div>'+
+  '<div class="two"><button class="dl" id="dz" style="margin:0" disabled>↓ ALL (ZIP)</button><button class="dl" id="dc" style="margin:0" disabled>↓ CURRENT</button></div></div></div>';
+  var cv=$("canvas",el),g=cv.getContext("2d");
+  function queue(){$("#q",el).innerHTML=F.length?F.map(function(f,i){return '<div class="pb mono" data-i="'+i+'" style="display:flex;justify-content:space-between;align-items:center;'+(i==idx?'border-color:var(--brand)':'')+'"><span>'+f.name.slice(0,20)+(f.done?" ✓":"")+'</span><button data-rm="'+i+'" style="background:none;border:0;color:var(--muted)">✕</button></div>'}).join(""):'<p class="mono" style="color:var(--muted);font-size:11px">No files added yet</p>';
+    $("#inf",el).textContent=F.length+" uploaded · "+F.filter(function(f){return f.done}).length+" processed"}
+  function preview(){if(idx<0||!F[idx]){cv.width=cv.height=0;return}var f=F[idx],im=f.done?f.out:f.img;cv.width=im.width;cv.height=im.height;g.clearRect(0,0,cv.width,cv.height);g.drawImage(im,0,0);$("#dc",el).disabled=false}
+  function process(f){var c=document.createElement("canvas");c.width=f.img.width;c.height=f.img.height;var x=c.getContext("2d");x.drawImage(f.img,0,0);
+    x.globalCompositeOperation="source-atop";x.globalAlpha=$("#s",el).value/100;x.fillStyle=$("#c",el).value;x.fillRect(0,0,c.width,c.height);
+    var o=new Image();o.src=c.toDataURL("image/png");f.out=o;f.done=true}
+  $("#s",el).oninput=function(){$("#sv",el).textContent=this.value+"%"};
+  $("#up",el).onclick=function(){var i=document.createElement("input");i.type="file";i.accept="image/png";i.multiple=true;
+    i.onchange=function(){Array.prototype.forEach.call(i.files,function(file){loadFile(file,function(img){F.push({name:file.name,img:img,done:false});if(idx<0)idx=0;queue();preview()})})};i.click()};
+  $("#q",el).onclick=function(e){var rm=e.target.closest("[data-rm]");if(rm){var i=+rm.dataset.rm;F.splice(i,1);if(idx>=F.length)idx=F.length-1;queue();preview();return}
+    var b=e.target.closest("[data-i]");if(b){idx=+b.dataset.i;queue();preview()}};
+  $("#pa",el).onclick=function(){if(!F.length){toast("Upload PNGs first");return}F.forEach(process);queue();preview();$("#dz",el).disabled=false;toast("Processed "+F.length+" file(s)")};
+  $("#cl",el).onclick=function(){F=[];idx=-1;cv.width=cv.height=0;$("#dz",el).disabled=$("#dc",el).disabled=true;queue()};
+  $("#dc",el).onclick=function(){if(idx<0)return;save(cv,F[idx].name.replace(/\.png$/i,"")+"-tinted.png","image/png")};
+  $("#dz",el).onclick=function(){if(!window.JSZip){toast("ZIP library failed to load");return}
+    var z=new JSZip(),done=F.filter(function(f){return f.done});
+    if(!done.length){toast("Process files first");return}
+    Promise.all(done.map(function(f){return new Promise(function(res){var c=document.createElement("canvas");c.width=f.out.width;c.height=f.out.height;c.getContext("2d").drawImage(f.out,0,0);
+      c.toBlob(function(b){z.file(f.name.replace(/\.png$/i,"")+"-tinted.png",b);res()})})})).then(function(){
+      z.generateAsync({type:"blob"}).then(function(b){var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="tinted-pngs.zip";a.click()})})};
+  queue();
+}
+
+/* ---------- Image Extractor (PPTX/DOCX via JSZip, PDF via pdf.js) ---------- */
+function extractor(el,t){
+  var assets=[];
+  el.innerHTML='<div class="ws"><div class="stage" style="justify-content:flex-start;overflow:auto"><div id="gl" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"></div><div class="hint mono" id="inf">Drop a PPTX, DOCX or PDF to extract images</div></div><div class="panel">'+head(t)+
+  '<button class="pb mono" id="up">CHOOSE FILE…</button>'+
+  '<div><div class="lb mono"><span>PDF page format</span></div><select id="fmt" style="width:100%;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:8px;font:inherit;font-size:12px"><option value="png">PNG (lossless)</option><option value="jpg">JPG (smaller)</option></select></div>'+
+  '<div class="two"><button class="pb mono" id="cl">CLEAR</button><span></span></div><button class="dl" id="dz" disabled>↓ DOWNLOAD ALL (ZIP)</button></div></div>';
+  function gallery(){$("#gl",el).innerHTML=assets.map(function(a){return '<img src="'+a.url+'" style="height:110px;border-radius:8px;border:1px solid var(--line)">'}).join("");
+    $("#inf",el).textContent=assets.length+" asset"+(assets.length==1?"":"s");$("#dz",el).disabled=!assets.length}
+  function addBlob(name,blob){assets.push({name:name,url:URL.createObjectURL(blob),blob:blob});gallery()}
+  function handle(file){assets=[];gallery();var ext=file.name.split(".").pop().toLowerCase();
+    if(ext=="pdf"){
+      if(!window.pdfjsLib){toast("PDF library failed to load");return}
+      file.arrayBuffer().then(function(buf){pdfjsLib.getDocument({data:buf}).promise.then(function(doc){
+        var n=doc.numPages,i=0;(function next(){if(i>=n){gallery();return}i++;doc.getPage(i).then(function(pg){
+          var vp=pg.getViewport({scale:2}),c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;
+          pg.render({canvasContext:c.getContext("2d"),viewport:vp}).promise.then(function(){
+            var mime=$("#fmt",el).value=="jpg"?"image/jpeg":"image/png";
+            c.toBlob(function(b){addBlob("page-"+i+"."+$("#fmt",el).value,b);next()},mime,.9)})})})()})}).catch(function(){toast("Could not read this PDF")})
+    }else if(ext=="pptx"||ext=="docx"){
+      if(!window.JSZip){toast("ZIP library failed to load");return}
+      file.arrayBuffer().then(function(buf){JSZip.loadAsync(buf).then(function(z){
+        var pre=ext=="pptx"?"ppt/media/":"word/media/",names=Object.keys(z.files).filter(function(n){return n.indexOf(pre)==0&&!z.files[n].dir});
+        if(!names.length){$("#inf",el).textContent="No media found inside this file";return}
+        var i=0;(function next(){if(i>=names.length){gallery();return}var n=names[i];i++;z.files[n].async("blob").then(function(b){addBlob(n.split("/").pop(),b);next()})})()})}).catch(function(){toast("Could not read this file")})
+    }else{toast("Unsupported file — use PPTX, DOCX or PDF")}}
+  $("#up",el).onclick=function(){var i=document.createElement("input");i.type="file";i.accept=".pptx,.docx,.pdf";i.onchange=function(){if(i.files[0])handle(i.files[0])};i.click()};
+  $("#cl",el).onclick=function(){assets=[];gallery()};
+  $("#dz",el).onclick=function(){if(!window.JSZip){toast("ZIP library failed to load");return}
+    var z=new JSZip();assets.forEach(function(a){z.file(a.name,a.blob)});z.generateAsync({type:"blob"}).then(function(b){var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="extracted-assets.zip";a.click()})};
+  gallery();
+}
+
+/* ---------- Image to Text / OCR (Tesseract.js) ---------- */
+function ocr(el,t){
+  var img=null,mode="direct",sel=null,drag=null;
+  el.innerHTML='<div class="ws"><div class="stage"><div style="position:relative;max-width:100%"><canvas></canvas><div id="ov" style="position:absolute;border:2px dashed #4b9cf5;background:#4b9cf522;display:none;pointer-events:none"></div></div><div class="hint mono" id="inf">Upload an image to begin</div></div><div class="panel">'+head(t)+
+  '<div class="two"><button class="chip mono" id="m0" aria-pressed="true">① DIRECT SCAN</button><button class="chip mono" id="m1" aria-pressed="false">② CROP & SCAN</button></div>'+
+  '<div class="two"><button class="pb mono" id="up">UPLOAD IMAGE…</button><button class="pb mono" id="ex" disabled>🔍 EXTRACT SELECTED</button></div>'+
+  '<textarea id="out" rows="8" style="width:100%;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:10px;font:12px/1.5 monospace" placeholder="Extracted text appears here"></textarea>'+
+  '<div class="two"><button class="pb mono" id="cp">📋 COPY</button><button class="pb mono" id="cl">✕ CLEAR</button></div></div></div>';
+  var cv=$("canvas",el),g=cv.getContext("2d"),ov=$("#ov",el);
+  function draw(){if(!img)return;var box=cv.parentElement.parentElement.getBoundingClientRect(),sc=Math.min(1,(box.width-20)/img.width,(box.height-40)/img.height);
+    cv.width=img.width;cv.height=img.height;cv.style.width=(img.width*sc)+"px";cv.style.height=(img.height*sc)+"px";g.drawImage(img,0,0)}
+  $("#up",el).onclick=function(){pick(function(i){img=i;sel=null;$("#ex",el).disabled=true;ov.style.display="none";draw();if(mode=="direct")run(cv)})};
+  $("#m0",el).onclick=function(){mode="direct";$("#m0",el).setAttribute("aria-pressed",true);$("#m1",el).setAttribute("aria-pressed",false);ov.style.display="none";$("#ex",el).disabled=true;$("#inf",el).textContent="Full image direct scan mode active"};
+  $("#m1",el).onclick=function(){mode="crop";$("#m1",el).setAttribute("aria-pressed",true);$("#m0",el).setAttribute("aria-pressed",false);$("#inf",el).textContent="Drag on the image to select a crop area"};
+  cv.onpointerdown=function(e){if(mode!="crop"||!img)return;var r=cv.getBoundingClientRect();drag=[e.clientX-r.left,e.clientY-r.top];ov.style.left=drag[0]+"px";ov.style.top=drag[1]+"px";ov.style.width="0px";ov.style.height="0px";ov.style.display="block"};
+  cv.onpointermove=function(e){if(!drag)return;var r=cv.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+    ov.style.left=Math.min(drag[0],x)+"px";ov.style.top=Math.min(drag[1],y)+"px";ov.style.width=Math.abs(x-drag[0])+"px";ov.style.height=Math.abs(y-drag[1])+"px"};
+  cv.onpointerup=function(){if(!drag)return;drag=null;var a=parseFloat(ov.style.width),b=parseFloat(ov.style.height);sel=a>6&&b>6?{x:parseFloat(ov.style.left),y:parseFloat(ov.style.top),w:a,h:b}:null;$("#ex",el).disabled=!sel};
+  function run(source){
+    if(!window.Tesseract){$("#inf",el).textContent="OCR library failed to load";return}
+    $("#inf",el).textContent="Initializing (0%)…";
+    Tesseract.recognize(source,"eng",{logger:function(m){if(m.status=="recognizing text")$("#inf",el).textContent="Recognizing… "+Math.round(m.progress*100)+"%"}})
+      .then(function(r){$("#out",el).value=r.data.text;$("#inf",el).textContent="Done"})
+      .catch(function(){$("#inf",el).textContent="OCR failed — try a clearer image"})}
+  $("#ex",el).onclick=function(){if(!sel||!img)return;var sc=cv.width/cv.clientWidth,c=document.createElement("canvas");
+    c.width=sel.w*sc;c.height=sel.h*sc;c.getContext("2d").drawImage(cv,sel.x*sc,sel.y*sc,sel.w*sc,sel.h*sc,0,0,c.width,c.height);run(c)};
+  $("#cp",el).onclick=function(){navigator.clipboard.writeText($("#out",el).value).then(function(){toast("Copied")})};
+  $("#cl",el).onclick=function(){$("#out",el).value="";img=null;cv.width=cv.height=0;ov.style.display="none";sel=null;$("#ex",el).disabled=true;$("#inf",el).textContent="Upload an image to begin"};
+}
+
+/* ---------- MP4 to GIF (gif.js) ---------- */
+function gifmaker(el,t){
+  var file=null;
+  el.innerHTML='<div class="ws"><div class="stage"><video style="max-width:100%;max-height:56vh;border-radius:10px" controls></video><div class="hint mono" id="inf">Upload an MP4 to begin</div></div><div class="panel">'+head(t)+
+  '<button class="pb mono" id="up">UPLOAD MP4…</button>'+
+  rng("st","Start (s)",0,10,.1,0,"s")+rng("en","End (s)",0,10,.1,3,"s")+
+  '<div><div class="lb mono"><span>Quality</span></div><select id="ql" style="width:100%;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:8px;font:inherit;font-size:12px"><option value="20">Low compression (high quality)</option><option value="10" selected>Medium compression (balanced)</option><option value="4">High compression (small file)</option></select></div>'+
+  rng("w","Width",80,720,10,320,"px")+
+  '<button class="dl" id="go">⚡ GENERATE GIF</button><div id="gif" style="display:none"><img id="gimg" style="max-width:100%;border-radius:10px;margin-bottom:8px"><button class="dl" id="dl2">↓ DOWNLOAD GIF</button></div></div></div>';
+  var vEl=$("video",el);
+  $("#up",el).onclick=function(){var i=document.createElement("input");i.type="file";i.accept="video/mp4";i.onchange=function(){if(i.files[0]){file=i.files[0];vEl.src=URL.createObjectURL(file);
+    vEl.onloadedmetadata=function(){var d=Math.min(10,vEl.duration);$("#st",el).max=d;$("#en",el).max=d;$("#en",el).value=d;$("#env",el).textContent=d.toFixed(1)+"s";$("#inf",el).textContent="Loaded · "+vEl.duration.toFixed(1)+"s total (max 10s clip)"}}};i.click()};
+  ["st","en","w"].forEach(function(k){$("#"+k,el).oninput=function(){$("#"+k+"v",el).textContent=this.value+(k=="w"?"px":"s")}});
+  $("#go",el).onclick=function(){
+    if(!file){toast("Upload a video first");return}
+    if(!window.GIF){toast("GIF library failed to load");return}
+    var s=+$("#st",el).value,e=+$("#en",el).value;if(e<=s){toast("End must be after start");return}
+    $("#inf",el).textContent="Preparing…";$("#go",el).disabled=true;
+    fetch("https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js").then(function(r){return r.blob()}).then(function(b){
+      var wu=URL.createObjectURL(b),w=+$("#w",el).value,h=Math.round(w*(vEl.videoHeight/vEl.videoWidth||1));
+      var g=new GIF({workers:2,quality:+$("#ql",el).value,width:w,height:h,workerScript:wu});
+      var c=document.createElement("canvas");c.width=w;c.height=h;var x=c.getContext("2d"),fps=8,frames=Math.max(1,Math.round((e-s)*fps)),n=0;
+      function seek(){if(n>=frames){g.render();return}vEl.currentTime=s+n/fps;n++}
+      vEl.onseeked=function(){x.drawImage(vEl,0,0,w,h);g.addFrame(c,{copy:true,delay:1000/fps});$("#inf",el).textContent="Capturing frame "+n+"/"+frames;seek()};
+      g.on("finished",function(blob){var u=URL.createObjectURL(blob);$("#gimg",el).src=u;$("#gif",el).style.display="block";$("#dl2",el).onclick=function(){var a=document.createElement("a");a.href=u;a.download="clip.gif";a.click()};$("#inf",el).textContent="Done";$("#go",el).disabled=false});
+      seek()
+    }).catch(function(){toast("Could not load the GIF worker");$("#go",el).disabled=false})};
+}
+
+/* ---------- Data Transfer (PeerJS, WebRTC) — both sides must be open at once ---------- */
+function transfer(el,t){
+  var peer=null,conn=null,file=null,recv=null;
+  el.innerHTML='<div class="ws"><div class="stage"><div class="hint mono" id="inf">WebRTC transfer — keep both tabs/devices open during the transfer</div></div><div class="panel">'+head(t)+
+  '<div class="two"><button class="chip mono" id="m0" aria-pressed="true">SEND FILE</button><button class="chip mono" id="m1" aria-pressed="false">RECEIVE FILE</button></div>'+
+  '<div id="send"><button class="pb mono" id="up">CHOOSE FILE…</button><div id="fn" class="mono" style="font-size:11px;color:var(--muted);margin:6px 0"></div><button class="dl" id="mk" disabled>CREATE TRANSFER</button><div id="code" class="mono" style="font-size:22px;font-weight:800;text-align:center;padding:10px;display:none"></div></div>'+
+  '<div id="rcv" style="display:none"><input id="tc" class="mono" placeholder="Enter transfer code" style="width:100%;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:9px;margin-bottom:8px"><button class="dl" id="cn">REQUEST ACCESS</button></div>'+
+  '<div id="pg" class="mono" style="font-size:11px;color:var(--muted);margin-top:6px"></div></div></div>';
+  function setMode(m){$("#send",el).style.display=m=="send"?"block":"none";$("#rcv",el).style.display=m=="send"?"none":"block";$("#m0",el).setAttribute("aria-pressed",m=="send");$("#m1",el).setAttribute("aria-pressed",m!="send")}
+  $("#m0",el).onclick=function(){setMode("send")};$("#m1",el).onclick=function(){setMode("recv")};
+  $("#up",el).onclick=function(){var i=document.createElement("input");i.type="file";i.onchange=function(){if(i.files[0]){file=i.files[0];$("#fn",el).textContent=file.name+" · "+(file.size/1048576).toFixed(2)+" MB";$("#mk",el).disabled=false}};i.click()};
+  function ensurePeer(cb){
+    if(!window.Peer){toast("Transfer library failed to load");return}
+    if(peer){cb();return}
+    peer=new Peer();peer.on("open",cb);peer.on("error",function(e){$("#inf",el).textContent="Connection error: "+e.type})}
+  $("#mk",el).onclick=function(){if(!file){toast("Choose a file first");return}ensurePeer(function(){
+    $("#code",el).style.display="block";$("#code",el).textContent=peer.id;$("#inf",el).textContent="Share this code · waiting for a receiver…";
+    peer.on("connection",function(c){conn=c;conn.on("open",function(){
+      conn.send({type:"meta",name:file.name,size:file.size});
+      var CH=64*1024,off=0,rd=new FileReader();
+      function next(){if(off>=file.size){conn.send({type:"done"});$("#inf",el).textContent="Transfer complete";return}
+        var slice=file.slice(off,off+CH);rd.onload=function(){conn.send(rd.result);off+=CH;$("#pg",el).textContent=Math.min(100,Math.round(off/file.size*100))+"% sent";next()};rd.readAsArrayBuffer(slice)}
+      $("#inf",el).textContent="Sending…";next()})})})};
+  $("#cn",el).onclick=function(){var code=$("#tc",el).value.trim();if(!code){toast("Enter a transfer code");return}ensurePeer(function(){
+    conn=peer.connect(code);recv={chunks:[],got:0};
+    conn.on("data",function(d){
+      if(d&&d.type=="meta"){recv.name=d.name;recv.size=d.size;$("#inf",el).textContent="Receiving "+d.name+" ("+(d.size/1048576).toFixed(2)+" MB)…"}
+      else if(d&&d.type=="done"){var b=new Blob(recv.chunks),u=URL.createObjectURL(b);
+        $("#pg",el).innerHTML='<button class="dl" id="sv">✅ SAVE '+recv.name+'</button>';$("#sv",el).onclick=function(){var a=document.createElement("a");a.href=u;a.download=recv.name||"file";a.click()};$("#inf",el).textContent="Transfer complete"}
+      else{recv.chunks.push(d);recv.got+=d.byteLength||0;if(recv.size)$("#pg",el).textContent=Math.min(100,Math.round(recv.got/recv.size*100))+"% received"}});
+    conn.on("open",function(){$("#inf",el).textContent="Connected · waiting for sender…"})})};
+}
+
+/* ---------- Tools not built yet: paste the tool's code into its build function ---------- */
+function soon(el,t){el.innerHTML='<div class="ph"><div class="ico" style="--c:'+t.c+'">'+t.l+'</div><h2 style="margin:0 0 6px">'+t.n+'</h2><p class="mono" style="font-size:12px">'+t.d+' This workspace is ready. Add the tool\'s code to its build function and it opens here.</p></div>'}
+
+var T=[
+ {id:"sp",n:"Shape Presets",l:"Sp",c:"#31A8FF",g:"Shapes",d:"Preset geometries and aspect ratios.",b:shapes},
+ {id:"cs",n:"Custom Shapes",l:"Cs",c:"#FF9A00",g:"Shapes",d:"Build your own mask geometry.",b:customShapes},
+ {id:"sy",n:"Shape Your Image",l:"Sy",c:"#FF3366",g:"Shapes",d:"Fit any image into a shape.",b:shapeImage},
+ {id:"ie",n:"Image Extractor",l:"Ie",c:"#9999FF",g:"Images",d:"Pull images out of files.",b:extractor},
+ {id:"it",n:"Image to Text",l:"It",c:"#00E4BB",g:"Images",d:"Read text from an image.",b:ocr},
+ {id:"po",n:"PNG Color Overlay",l:"Po",c:"#FF61F6",g:"Images",d:"Tint transparent PNGs.",b:batchOverlay},
+ {id:"pc",n:"PDF Converter",l:"Pc",c:"#EB1000",g:"Convert",d:"Turn PDFs into other formats.",b:pdf},
+ {id:"fc",n:"Format Converter",l:"Fc",c:"#35FA00",g:"Convert",d:"Switch between image formats.",b:converter},
+ {id:"mg",n:"MP4 to GIF",l:"Mg",c:"#FF6B2B",g:"Convert",d:"Turn video clips into GIFs.",b:gifmaker},
+ {id:"qr",n:"QR Generator",l:"Qr",c:"#FFD200",g:"Utility",d:"Make QR codes from links or text.",b:qr},
+ {id:"dt",n:"Data Transfer",l:"Dt",c:"#4B9CF5",g:"Utility",d:"Move data between tools.",b:transfer}
+];
+var by={};T.forEach(function(t){by[t.id]=t});
+var open=[],active="home",grp="All",qs="";
+var G=["All","Shapes","Images","Convert","Utility"];
+
+var views=$("#views");
+var home=document.createElement("div");home.className="pane home";home.id="p-home";
+home.innerHTML='<h1>Your tools</h1><p class="sub mono" id="cnt"></p><div class="tools"><input class="mono" type="search" id="q" placeholder="Search tools" aria-label="Search tools">'+
+ G.map(function(g){return '<button class="chip mono" data-g="'+g+'" aria-pressed="'+(g=="All")+'">'+g+'</button>'}).join("")+'</div><div class="grid" id="grid"></div>';
+views.appendChild(home);
+
+function grid(){
+  var L=T.filter(function(t){return(grp=="All"||t.g==grp)&&t.n.toLowerCase().indexOf(qs)>-1});
+  $("#cnt").textContent=L.length+" of "+T.length+" tools";
+  $("#grid").innerHTML=L.length?L.map(function(t){return '<button class="tile" data-id="'+t.id+'" style="--c:'+t.c+'"><div class="ico">'+t.l+'</div><div><h2>'+t.n+'</h2><p class="mono">'+t.d+'</p></div><span class="st mono">'+t.g+(t.b===soon?" · workspace only":"")+'</span></button>'}).join(""):'<p class="mono" style="color:var(--muted)">No tools match. Clear the search to see all tools.</p>';
+}
+function bar(){
+  var h='<button class="tab" role="tab" data-id="home" aria-selected="'+(active=="home")+'">Home</button>';
+  open.forEach(function(id){var t=by[id];h+='<div class="tab" role="tab" data-id="'+id+'" tabindex="0" style="--c:'+t.c+'" aria-selected="'+(active==id)+'"><span class="mini" style="--c:'+t.c+'">'+t.l+'</span>'+t.n+'<button class="x" data-x="'+id+'" aria-label="Close '+t.n+'">×</button></div>'});
+  h+='<div class="sp"><button class="chip mono" id="theme">Theme</button><div class="pill mono"><i></i>Online</div></div>';
+  $("#bar").innerHTML=h;
+  $("#theme").onclick=function(){var r=document.documentElement,d=r.dataset.theme?r.dataset.theme=="dark":!matchMedia("(prefers-color-scheme:light)").matches;r.dataset.theme=d?"light":"dark"};
+  document.querySelectorAll("#nav button").forEach(function(b){b.setAttribute("aria-current",b.dataset.id==active)});
+}
+function go(id){
+  if(id!="home"&&open.indexOf(id)<0){open.push(id);var p=document.createElement("div");p.className="pane";p.id="p-"+id;views.appendChild(p);by[id].b(p,by[id])}
+  active=id;views.querySelectorAll(".pane").forEach(function(p){p.hidden=p.id!="p-"+id});bar();
+}
+function close(id){
+  var i=open.indexOf(id);open.splice(i,1);$("#p-"+id).remove();
+  if(active==id)go(open[i-1]||open[0]||"home");else bar();
+}
+$("#nav").innerHTML=T.map(function(t){return '<button data-id="'+t.id+'" style="--c:'+t.c+'"><span class="mini">'+t.l+'</span><span>'+t.n+'</span></button>'}).join("");
+$("#nav").onclick=function(e){var b=e.target.closest("button");if(b)go(b.dataset.id)};
+$("#grid").onclick=function(e){var b=e.target.closest(".tile");if(b)go(b.dataset.id)};
+$("#bar").onclick=function(e){var x=e.target.closest("[data-x]");if(x){e.stopPropagation();close(x.dataset.x);return}var t=e.target.closest("[data-id]");if(t)go(t.dataset.id)};
+$("#bar").onkeydown=function(e){if(e.key=="Enter"){var t=e.target.closest("[data-id]");if(t)go(t.dataset.id)}};
+$("#q").oninput=function(){qs=this.value.toLowerCase().trim();grid()};
+home.querySelectorAll(".chip").forEach(function(b){b.onclick=function(){grp=b.dataset.g;home.querySelectorAll(".chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)});grid()}});
+$("#col").onclick=function(){document.body.classList.toggle("col")};
+grid();go("home");
+</script>
+</body>
+</html>
