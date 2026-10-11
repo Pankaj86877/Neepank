@@ -10,26 +10,34 @@ export default function Home() {
 
   useEffect(() => {
     setIsClient(true);
-    // Check if the URL has ?tool=... or ?view=toolbox or ?app=true
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const toolParam = params.get("tool");
-      const viewParam = params.get("view");
-      const appParam = params.get("app");
+    const checkView = () => {
+      if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        const toolParam = params.get("tool");
+        const viewParam = params.get("view");
+        const appParam = params.get("app");
+        const pathname = window.location.pathname.toLowerCase();
 
-      if (toolParam || viewParam === "toolbox" || appParam === "true") {
-        setView("toolbox");
+        if (pathname.includes("toolbox") || toolParam || viewParam === "toolbox" || appParam === "true") {
+          if (pathname === "/" && (viewParam === "toolbox" || toolParam)) {
+            window.history.replaceState({}, "", toolParam ? `/Neepank-toolbox?tool=${toolParam}` : "/Neepank-toolbox");
+          }
+          setView("toolbox");
+        } else {
+          setView("landing");
+        }
       }
-    }
+    };
+
+    checkView();
+    window.addEventListener("popstate", checkView);
+    return () => window.removeEventListener("popstate", checkView);
   }, []);
 
   const handleOpenTool = (toolId?: string) => {
     if (typeof window !== "undefined") {
-      if (toolId) {
-        window.history.pushState({}, "", `/?tool=${toolId}`);
-      } else {
-        window.history.pushState({}, "", "/?view=toolbox");
-      }
+      const targetUrl = toolId ? `/Neepank-toolbox?tool=${toolId}` : "/Neepank-toolbox";
+      window.history.pushState({}, "", targetUrl);
     }
     setView("toolbox");
   };

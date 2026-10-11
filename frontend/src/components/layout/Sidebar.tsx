@@ -255,9 +255,13 @@ export const Sidebar = ({ onBackToHome }: { onBackToHome?: () => void }) => {
         style={{ cursor: 'pointer', padding: '14px 18px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
       >
         <img 
-          src={theme === "dark" ? "/neepank-logo.png" : "/logo-light.png"} 
+          src={
+            isSidebarCollapsed 
+              ? "/neepank-mark.webp" 
+              : (theme === "dark" ? "/neepank-toolbox-dark.png" : "/neepank-toolbox-logo.png")
+          } 
           alt="Neepank Toolbox" 
-          style={{ width: isSidebarCollapsed ? '36px' : '135px', height: 'auto', transition: 'width 0.2s', objectFit: 'contain' }} 
+          style={{ width: isSidebarCollapsed ? '28px' : '135px', height: 'auto', transition: 'width 0.2s', objectFit: 'contain' }} 
         />
         {!isSidebarCollapsed && (
           <span style={{ fontSize: '11px', color: 'var(--brand)', opacity: 0.9 }}>

@@ -60,11 +60,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       try {
         const params = new URLSearchParams(window.location.search);
         const toolParam = params.get("tool");
-        const viewParam = params.get("view");
+        const pathname = window.location.pathname.toLowerCase();
         if (toolParam) {
           setActiveSection(toolParam);
           setOpenTabs(prev => prev.includes(toolParam) ? prev : [...prev, toolParam]);
-        } else if (viewParam === "toolbox") {
+        } else if (pathname.includes("toolbox") || params.get("view") === "toolbox") {
           setActiveSection("home");
         }
       } catch (e) {}
@@ -90,11 +90,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         return [section, ...filtered].slice(0, 6);
       });
       if (typeof window !== "undefined") {
-        window.history.replaceState({}, "", `/?tool=${section}`);
+        window.history.replaceState({}, "", `/Neepank-toolbox?tool=${section}`);
       }
     } else if (section === "home") {
       if (typeof window !== "undefined") {
-        window.history.replaceState({}, "", "/?view=toolbox");
+        window.history.replaceState({}, "", "/Neepank-toolbox");
       }
     }
   };
