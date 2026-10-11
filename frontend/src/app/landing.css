@@ -37,9 +37,40 @@
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  box-sizing: border-box;
+  display: block !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  min-height: 100vh !important;
+  position: relative !important;
   overflow-x: hidden;
+}
+
+.nk-landing main {
+  display: block !important;
+  flex: none !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+.nk-landing nav,
+.nk-landing .nk-nav-links {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  flex: none !important;
+  overflow: visible !important;
+  padding: 0 !important;
+}
+
+.nk-landing nav button {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nk-landing *,

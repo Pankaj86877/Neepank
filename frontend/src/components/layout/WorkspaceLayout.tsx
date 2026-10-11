@@ -6,7 +6,7 @@ import { TopBar } from "./TopBar";
 
 export const WorkspaceLayout = ({ children, onBackToHome }: { children: ReactNode; onBackToHome?: () => void }) => {
   return (
-    <>
+    <div className="app-shell">
       <Sidebar onBackToHome={onBackToHome} />
       <main>
         <TopBar onBackToHome={onBackToHome} />
@@ -14,7 +14,7 @@ export const WorkspaceLayout = ({ children, onBackToHome }: { children: ReactNod
           {children}
         </div>
       </main>
-    </>
+    </div>
   );
 };
 

@@ -8,7 +8,9 @@
 :root[data-theme=dark]{--bg:#0a0a0b;--side:#0f0f11;--card:#151518;--c2:#1c1c20;--line:#26262b;--text:#f4f4f5;--muted:#8d8d96}
 html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
 *{box-sizing:border-box}
-body{margin:0;height:100%;background:var(--bg);color:var(--text);font:15px/1.5 var(--font-body, 'Syne', sans-serif);display:flex}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font:15px/1.5 var(--font-body, 'Syne', sans-serif)}
+.app-shell{display:flex;width:100%;height:100vh;overflow:hidden}
+.app-shell main{flex:1;min-width:0;display:flex;flex-direction:column}
 button{font:inherit;color:inherit;cursor:pointer}
 .mono{font-family:var(--font-mono, 'JetBrains Mono', monospace)}
 :focus-visible{outline:2px solid var(--brand);outline-offset:2px}
@@ -17,9 +19,9 @@ aside{width:230px;background:var(--side);border-right:1px solid var(--line);disp
 .logo{width:32px;height:32px;border-radius:50%;background:#fff;color:var(--brand);display:grid;place-items:center;font-weight:800;flex-shrink:0}
 .brand b{display:block;font-size:19px;font-weight:800;line-height:1.1}.brand small{color:var(--muted);font-size:10px;letter-spacing:.2em}
 .sl{padding:18px 18px 8px;color:var(--muted);font-size:12.5px;font-weight:700;letter-spacing:.12em}
-nav{padding:0 12px;display:flex;flex-direction:column;gap:2px;flex:1;overflow-y:auto}
-nav button{display:flex;align-items:center;gap:12px;background:none;border:0;padding:7px 8px;border-radius:10px;color:var(--muted);text-align:left;white-space:nowrap;font-weight:500;font-size:13.5px}
-nav button:hover,nav button[aria-current=true]{background:var(--c2);color:var(--text)}
+aside nav{padding:0 12px;display:flex;flex-direction:column;gap:2px;flex:1;overflow-y:auto}
+aside nav button{display:flex;align-items:center;gap:12px;background:none;border:0;padding:7px 8px;border-radius:10px;color:var(--muted);text-align:left;white-space:nowrap;font-weight:500;font-size:13.5px}
+aside nav button:hover,aside nav button[aria-current=true]{background:var(--c2);color:var(--text)}
 .dnd-item { cursor: grab; }
 .dnd-item:active { cursor: grabbing; }
 .remove-btn:hover { color: #f43f5e; opacity: 1 !important; }
@@ -42,8 +44,7 @@ nav button:hover,nav button[aria-current=true]{background:var(--c2);color:var(--
 .mini svg{width:14px;height:14px;}
 .ico svg{width:26px;height:26px;}
 #col{margin:12px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 14px;text-align:left;color:var(--muted);white-space:nowrap;font-size:12.5px}
-body.col aside{width:68px}body.col .brand>div:last-child,body.col .sl,body.col nav button span:last-child,body.col #col span{display:none}body.col nav button{justify-content:center}
-main{flex:1;min-width:0;display:flex;flex-direction:column}
+body.col aside{width:68px}body.col .brand>div:last-child,body.col .sl,body.col aside nav button span:last-child,body.col #col span{display:none}body.col aside nav button{justify-content:center}
 .bar{display:flex;align-items:flex-end;gap:4px;padding:8px 12px 0;border-bottom:1px solid var(--line);background:var(--side);overflow-x:auto;flex-shrink:0}
 .tab{display:flex;align-items:center;gap:8px;padding:8px 10px 8px 12px;border:1px solid transparent;border-bottom:0;border-radius:10px 10px 0 0;background:none;color:var(--muted);font-size:13px;white-space:nowrap;font-weight:500}
 .tab:hover{color:var(--text)}
