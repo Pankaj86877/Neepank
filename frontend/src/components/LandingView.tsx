@@ -18,17 +18,16 @@ const TOOLS_DATA: ToolItem[] = [
     id: "pdf-converter",
     num: "01",
     title: "PDF Converter",
-    desc: "Convert PDFs to PNG, JPEG, or WebP. Extract high-res pages instantly right in your browser.",
+    desc: "High-Quality Image to PDF. Turn images into polished PDFs with custom page sizes and ordering.",
     category: "Formats",
     color: "#14b8a6",
     rgb: "20, 184, 166",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="16" y1="13" x2="8" y2="13" />
-        <line x1="16" y1="17" x2="8" y2="17" />
-        <polyline points="10 9 9 9 8 9" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+        <path d="M14 3v5h5" />
+        <path d="M9 13h6" />
+        <path d="M9 17h4" />
       </svg>
     ),
   },
@@ -36,15 +35,16 @@ const TOOLS_DATA: ToolItem[] = [
     id: "custom",
     num: "02",
     title: "Custom Shapes",
-    desc: "Freehand vector masking. Draw organic curves and polygon cutouts to mask images freely.",
+    desc: "Advanced Geometries. Build your own shapes with custom corners, diagonals, size and precision controls.",
     category: "Crop & Resize",
     color: "#3b82f6",
     rgb: "59, 130, 246",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="9" />
-        <path d="M12 3a9 9 0 0 1 9 9" />
-        <path d="M12 7a5 5 0 0 1 5 5" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9z" />
+        <circle cx="12" cy="3" r="1.4" fill="currentColor" />
+        <circle cx="19.8" cy="16.5" r="1.4" fill="currentColor" />
+        <circle cx="4.2" cy="16.5" r="1.4" fill="currentColor" />
       </svg>
     ),
   },
@@ -52,16 +52,16 @@ const TOOLS_DATA: ToolItem[] = [
     id: "presets",
     num: "03",
     title: "Shape Presets",
-    desc: "100+ geometric mask presets. Circle, star, badge, heart, and polygon image cropping in one click.",
+    desc: "Predefined output formats. Circles, squares, 16:9, stories, and YouTube presets ready for your creative layouts.",
     category: "Crop & Resize",
     color: "#e8682f",
     rgb: "232, 104, 47",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="7" height="7" rx="1.5" />
-        <rect x="14" y="3" width="7" height="7" rx="1.5" />
-        <rect x="14" y="14" width="7" height="7" rx="1.5" />
-        <rect x="3" y="14" width="7" height="7" rx="1.5" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="8" height="8" rx="1.5" />
+        <circle cx="17" cy="7" r="4" />
+        <path d="M7 14l4 7H3z" />
+        <rect x="14" y="14" width="7" height="7" rx="3.5" />
       </svg>
     ),
   },
@@ -69,13 +69,14 @@ const TOOLS_DATA: ToolItem[] = [
     id: "shape-image",
     num: "04",
     title: "Shape Your Image",
-    desc: "Combine photos with decorative silhouette masks and export with transparent backgrounds.",
+    desc: "Image Cropping & Transformation. Place any photo inside custom shapes with adjustable zoom and position.",
     category: "Crop & Resize",
     color: "#f59e0b",
     rgb: "245, 158, 11",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 2v14a2 2 0 0 0 2 2h14" />
+        <path d="M2 6h14a2 2 0 0 1 2 2v14" />
       </svg>
     ),
   },
@@ -83,15 +84,15 @@ const TOOLS_DATA: ToolItem[] = [
     id: "extractor",
     num: "05",
     title: "PDF/PPT/DOC to Image",
-    desc: "Extract all embedded images and slides from Office documents and PDF presentations effortlessly.",
+    desc: "Extract images from PDF, PPT & DOC files. Download assets individually or together as a clean ZIP package.",
     category: "Formats",
     color: "#10b981",
     rgb: "16, 185, 129",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-        <polyline points="7 10 12 15 17 10" />
-        <line x1="12" y1="15" x2="12" y2="3" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3v11" />
+        <path d="M8 10l4 4 4-4" />
+        <path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4" />
       </svg>
     ),
   },
@@ -99,16 +100,18 @@ const TOOLS_DATA: ToolItem[] = [
     id: "ocr",
     num: "06",
     title: "Image to Text / OCR",
-    desc: "Extract editable text from scanned documents, receipts, and photos in 50+ languages.",
+    desc: "Optical Character Recognition. Turn photos, scans, or screenshots into editable text with high accuracy.",
     category: "Extraction",
     color: "#6366f1",
     rgb: "99, 102, 241",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="18" height="18" rx="2" />
-        <path d="M7 8h10" />
-        <path d="M12 8v8" />
-        <path d="M9 16h6" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 8V6a2 2 0 0 1 2-2h2" />
+        <path d="M16 4h2a2 2 0 0 1 2 2v2" />
+        <path d="M20 16v2a2 2 0 0 1-2 2h-2" />
+        <path d="M8 20H6a2 2 0 0 1-2-2v-2" />
+        <path d="M8.5 9h7" />
+        <path d="M12 9v7" />
       </svg>
     ),
   },
@@ -116,13 +119,14 @@ const TOOLS_DATA: ToolItem[] = [
     id: "png-overlay",
     num: "07",
     title: "Icon Recolor",
-    desc: "Tint transparent PNG icons and logos with solid colors, dual gradients, or custom brand hues.",
+    desc: "Change the color of multiple icons at once. Tint transparent PNGs while preserving sharpness and alpha channels.",
     category: "Colors",
     color: "#ec4899",
     rgb: "236, 72, 153",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="9" cy="12" r="6" />
+        <circle cx="15" cy="12" r="6" />
       </svg>
     ),
   },
@@ -130,16 +134,16 @@ const TOOLS_DATA: ToolItem[] = [
     id: "format-converter",
     num: "08",
     title: "Image Converter",
-    desc: "Batch convert PNG, JPG, WebP, AVIF, BMP, and SVG files with fine quality and compression controls.",
+    desc: "Convert & Trace Images. Switch between JPG, PNG, WEBP, SVG, and HEIC instantly right inside your browser.",
     category: "Formats",
     color: "#f43f5e",
     rgb: "244, 63, 94",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="17 1 21 5 17 9" />
-        <path d="M3 11V9a4 4 0 0 1 4-4h14" />
-        <polyline points="7 23 3 19 7 15" />
-        <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 4l3 3-3 3" />
+        <path d="M20 7H8a4 4 0 0 0-4 4" />
+        <path d="M7 20l-3-3 3-3" />
+        <path d="M4 17h12a4 4 0 0 0 4-4" />
       </svg>
     ),
   },
@@ -147,14 +151,19 @@ const TOOLS_DATA: ToolItem[] = [
     id: "mp4-to-gif",
     num: "09",
     title: "MP4 to GIF",
-    desc: "Turn MP4 and WebM video clips into lightweight, looping GIFs with customizable frame rates.",
+    desc: "Video to GIF animation. Choose video segments, adjust frame rates, and render lightweight animated GIFs.",
     category: "Formats",
     color: "#8b5cf6",
     rgb: "139, 92, 246",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="2" width="20" height="20" rx="3" />
-        <polygon points="10 8 16 12 10 16 10 8" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="M8 5v14" />
+        <path d="M16 5v14" />
+        <path d="M3 9.5h5" />
+        <path d="M3 14.5h5" />
+        <path d="M16 9.5h5" />
+        <path d="M16 14.5h5" />
       </svg>
     ),
   },
@@ -162,20 +171,19 @@ const TOOLS_DATA: ToolItem[] = [
     id: "qr-generator",
     num: "10",
     title: "QR Generator",
-    desc: "Generate clean QR codes for URLs, contacts, and text with custom colors and center logos.",
+    desc: "Generate QR codes. Create clean QR codes for URLs, contacts, and text with custom colors and center logos.",
     category: "Sharing",
     color: "#06b6d4",
     rgb: "6, 182, 212",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="7" height="7" />
-        <rect x="14" y="3" width="7" height="7" />
-        <rect x="14" y="14" width="7" height="7" />
-        <rect x="3" y="14" width="7" height="7" />
-        <line x1="7" y1="7" x2="7.01" y2="7" strokeWidth="3" />
-        <line x1="17.01" y1="7" x2="17.02" y2="7" strokeWidth="3" />
-        <line x1="7" y1="17" x2="7.01" y2="17" strokeWidth="3" />
-        <line x1="17.01" y1="17" x2="17.02" y2="17" strokeWidth="3" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <path d="M14 14h3v3h-3z" />
+        <path d="M20 14h1" />
+        <path d="M14 20h1" />
+        <path d="M18 20h3v-3" />
       </svg>
     ),
   },
@@ -188,7 +196,7 @@ const TOOLS_DATA: ToolItem[] = [
     color: "#84cc16",
     rgb: "132, 204, 22",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="5" cy="12" r="2.5" />
         <circle cx="19" cy="12" r="2.5" />
         <path d="M8 12h8" />
@@ -200,12 +208,12 @@ const TOOLS_DATA: ToolItem[] = [
     id: "json-date",
     num: "12",
     title: "JSON Data Converter",
-    desc: "Format, convert, and parse JSON data to CSV, TSV, or YAML with live syntax validation.",
+    desc: "Format dates and export JSON data. Parse, clean, transform, and beautify data structures with ease.",
     category: "Formats",
     color: "#7CFFB2",
     rgb: "124, 255, 178",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <path d="M8 3H7a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2 2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1" />
         <path d="M16 3h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2 2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-1" />
       </svg>
@@ -215,17 +223,16 @@ const TOOLS_DATA: ToolItem[] = [
     id: "color-palette",
     num: "13",
     title: "Color Palette",
-    desc: "Extract colors from images. Generate aesthetic palettes, copy HEX/RGB codes, and test contrast.",
+    desc: "Extract and edit palettes. Sample colors from any image, generate harmonious palettes, and copy CSS values.",
     category: "Colors",
     color: "#f43f5e",
     rgb: "244, 63, 94",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
-        <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
-        <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
-        <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
-        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3a9 9 0 1 0 0 18c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.3A3.7 3.7 0 0 0 21 11.7C21 6.9 17 3 12 3z" />
+        <circle cx="7.5" cy="11" r="1" fill="currentColor" />
+        <circle cx="11" cy="7" r="1" fill="currentColor" />
+        <circle cx="16" cy="8" r="1" fill="currentColor" />
       </svg>
     ),
   },
@@ -238,9 +245,8 @@ const TOOLS_DATA: ToolItem[] = [
     color: "#10b981",
     rgb: "16, 185, 129",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="16 18 22 12 16 6" />
-        <polyline points="8 6 2 12 8 18" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M13 2L4 14h7l-1 8 9-12h-7z" />
       </svg>
     ),
   },
@@ -253,7 +259,7 @@ const TOOLS_DATA: ToolItem[] = [
     color: "#3b82f6",
     rgb: "59, 130, 246",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <path d="M15 3h6v6" />
         <path d="M9 21H3v-6" />
         <path d="M21 3l-7 7" />
@@ -270,7 +276,7 @@ const TOOLS_DATA: ToolItem[] = [
     color: "#8b5cf6",
     rgb: "139, 92, 246",
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <path d="M8 8l-4 4 4 4" />
         <path d="M16 8l4 4-4 4" />
         <path d="M13.5 6l-3 12" />
@@ -489,6 +495,7 @@ export const LandingView: React.FC<LandingViewProps> = ({ onOpenTool }) => {
                   </a>
                 </div>
 
+                {/* Trust Row */}
                 <div className="nk-trust-row" aria-label="Key Highlights">
                   <div className="nk-trust-item">
                     <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -506,19 +513,29 @@ export const LandingView: React.FC<LandingViewProps> = ({ onOpenTool }) => {
                   <span className="nk-trust-dot" aria-hidden="true">·</span>
                   <div className="nk-trust-item">
                     <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm-1 5a1 1 0 112 0v4a1 1 0 11-2 0V7zm1 8a1.25 1.25 0 100-2.5 1.25 1.25 0 000 2.5z" clipRule="evenodd" />
+                      <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                     </svg>
-                    <span>No account required</span>
-                  </div>
-                  <span className="nk-trust-dot" aria-hidden="true">·</span>
-                  <div className="nk-trust-item">
-                    <span className="nk-trust-badge">100% Free</span>
+                    <span>Zero setup</span>
                   </div>
                 </div>
               </div>
 
-              {/* Right: Mockup with Parallax */}
-              <div className="nk-hero-visual">
+              {/* Right: Hero Visual (Monitor Mockup with 3D Parallax & Floating Badges) */}
+              <div className="nk-hero-visual-wrap">
+                {/* Floating Pill 1 (Top-Left) */}
+                <div className="nk-hero-floating-badge nk-badge-top-left" aria-hidden="true">
+                  <span className="nk-badge-pulse-dot"></span>
+                  <span>100% Client-Side Engine</span>
+                </div>
+
+                {/* Floating Pill 2 (Bottom-Right) */}
+                <div className="nk-hero-floating-badge nk-badge-bottom-right" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" fill="currentColor" className="nk-badge-icon">
+                    <path fillRule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.351-.166-2.001A11.954 11.954 0 0110 1.944zM13.707 8.707a1 1 0 00-1.414-1.414L9 10.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span>Zero Cloud Uploads · 100% Private</span>
+                </div>
+
                 <div className="nk-hero-mockup-container" ref={heroMockupRef}>
                   <img
                     src="/landing/assets/hero.webp"
@@ -705,47 +722,50 @@ export const LandingView: React.FC<LandingViewProps> = ({ onOpenTool }) => {
         <section className="nk-how-section" id="how-it-works" aria-labelledby="how-heading">
           <div className="nk-container">
             <div className="nk-how-header">
-              <span className="nk-section-label">SIMPLE WORKFLOW</span>
-              <h2 id="how-heading" className="nk-how-title">How Neepank Toolbox Works</h2>
-              <p className="nk-how-sub">No setup, no software downloads, and no server uploads. Work directly in your browser.</p>
+              <h2 id="how-heading" className="nk-how-title">How It Works</h2>
+              <p className="nk-how-sub">Fast, private, and effortless digital tools right inside your web browser.</p>
             </div>
 
             <div className="nk-how-grid">
               <div className="nk-how-card">
-                <span className="nk-how-step-num">01</span>
-                <h3 className="nk-how-step-title">Select your tool</h3>
-                <p className="nk-how-step-desc">Pick from our 16 curated utilities — PDF converter, image masks, OCR reader, QR generator, and more.</p>
+                <div className="nk-how-step-num">1</div>
+                <h3 className="nk-how-step-title">Pick a tool</h3>
+                <p className="nk-how-step-desc">Browse the toolbox and select the exact tool you need for your task.</p>
               </div>
 
               <div className="nk-how-card">
-                <span className="nk-how-step-num">02</span>
-                <h3 className="nk-how-step-title">Process on-device</h3>
-                <p className="nk-how-step-desc">All computation happens locally via WebAssembly and WebRTC. Your sensitive files never leave your computer.</p>
+                <div className="nk-how-step-num">2</div>
+                <h3 className="nk-how-step-title">Add your file</h3>
+                <p className="nk-how-step-desc">Upload or drop your images, documents, or media straight into the browser.</p>
               </div>
 
               <div className="nk-how-card">
-                <span className="nk-how-step-num">03</span>
-                <h3 className="nk-how-step-title">Export instantly</h3>
-                <p className="nk-how-step-desc">Download crisp results in high-resolution WebP, PNG, SVG, or text with zero watermarks or quality loss.</p>
+                <div className="nk-how-step-num">3</div>
+                <h3 className="nk-how-step-title">Download your result</h3>
+                <p className="nk-how-step-desc">Save high-quality output instantly without watermarks or waiting.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* E) CTA SECTION */}
-        <section className="nk-cta-section" aria-label="Get Started">
+        {/* E) FINAL CTA CONTAINER */}
+        <section className="nk-cta-section" aria-label="Call to Action">
           <div className="nk-container">
             <div className="nk-cta-box">
-              <div className="nk-cta-bg-glow" aria-hidden="true"></div>
-              <h2 className="nk-cta-title">CREATE, CONVERT &amp; EDIT ON DEMAND</h2>
-              <p className="nk-cta-sub">Join thousands of creators and professionals using Neepank Toolbox every day.</p>
-              <button
-                type="button"
-                onClick={() => onOpenTool()}
-                className="nk-btn nk-btn-primary"
-              >
-                Explore the tools <span className="nk-arrow-icon" aria-hidden="true">→</span>
-              </button>
+              <div className="nk-cta-box-glow" aria-hidden="true"></div>
+              <div className="nk-cta-text-wrap">
+                <h2 className="nk-cta-headline">Your digital toolbox is ready.</h2>
+                <p className="nk-cta-subtext">Convert, create, extract, edit, and more all in one place.</p>
+              </div>
+              <div className="nk-cta-btn-wrap">
+                <button
+                  type="button"
+                  onClick={() => onOpenTool()}
+                  className="nk-cta-large-btn"
+                >
+                  Explore the tools <span className="nk-arrow-icon" aria-hidden="true">→</span>
+                </button>
+              </div>
             </div>
           </div>
         </section>
@@ -756,11 +776,19 @@ export const LandingView: React.FC<LandingViewProps> = ({ onOpenTool }) => {
         <div className="nk-container">
           <div className="nk-footer-inner">
             <div className="nk-footer-brand">
-              <img src="/landing/assets/neepank-logo.png" alt="Neepank Toolbox" height="26" style={{ objectFit: "contain", display: "block" }} />
+              <img
+                src="/landing/assets/neepank-logo.png"
+                alt="Neepank Toolbox"
+                className="nk-footer-logo-img"
+                width={120}
+                height={26}
+                style={{ height: "26px", maxHeight: "26px", width: "auto", maxWidth: "130px", objectFit: "contain", display: "block" }}
+              />
             </div>
             <p className="nk-footer-line">Built for creators, designers and teams.</p>
             <a href="#top" className="nk-back-top" aria-label="Back to top">
-              Back to top ↑
+              <span>Back to top</span>
+              <span aria-hidden="true">↑</span>
             </a>
           </div>
         </div>

@@ -60,21 +60,29 @@ export const TopBar = ({ onBackToHome }: { onBackToHome?: () => void }) => {
       <div style={{ display: 'flex', flex: 1, overflowX: 'auto', alignItems: 'flex-end', gap: '4px', paddingBottom: '0' }}>
         <button 
           className="tab" 
-          onClick={onBackToHome || (() => { window.location.href = "/"; })}
-          title="Return to Home Landing Page"
-          style={{ flexShrink: 0, color: 'var(--brand)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '5px' }}
-        >
-          <span>←</span> Home Page
-        </button>
-
-        <button 
-          className="tab" 
           aria-selected={activeSection === "home"} 
           onClick={() => setActiveSection("home")}
-          style={{ flexShrink: 0 }}
+          title="Home Workspace — Browse and select all tools"
+          style={{ 
+            flexShrink: 0, 
+            cursor: 'pointer',
+            fontWeight: activeSection === "home" ? 700 : 500,
+            "--tone": "#e8682f",
+            ...(activeSection === "home" ? { color: 'var(--text)' } : {})
+          } as React.CSSProperties}
         >
-          <div className="mini" style={{ "--c": "#8d8d96" } as React.CSSProperties} dangerouslySetInnerHTML={{ __html: toolIcons["home"] || "⌂" }} /> 
-          Home Workspace
+          <div 
+            className="mini" 
+            style={{ 
+              "--c": "#e8682f",
+              "--tone": "#e8682f",
+              background: activeSection === "home" ? "rgba(232, 104, 47, 0.15)" : undefined,
+              borderColor: "#e8682f",
+              color: "#e8682f"
+            } as React.CSSProperties} 
+            dangerouslySetInnerHTML={{ __html: toolIcons["home"] || "⌂" }} 
+          /> 
+          <span>Home Workspace</span>
         </button>
 
         {openTabs.map(tabId => {
@@ -86,7 +94,7 @@ export const TopBar = ({ onBackToHome }: { onBackToHome?: () => void }) => {
               className="tab" 
               aria-selected={activeSection === tabId}
               onClick={() => setActiveSection(tabId)}
-              style={{ flexShrink: 0 }}
+              style={{ flexShrink: 0, "--tone": data.color } as React.CSSProperties}
             >
               <div className="mini" style={{ "--c": data.color, ...(data.light ? { "--cl": data.light } : {}) } as React.CSSProperties} dangerouslySetInnerHTML={{ __html: toolIcons[data.icon] || data.icon }} /> 
               {data.label}

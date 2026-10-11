@@ -55,6 +55,23 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setOpenTabs([toolParam]);
       }
     } catch (e) {}
+    // Handle popstate for browser navigation (back/forward)
+    const handlePopState = () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const toolParam = params.get("tool");
+        const viewParam = params.get("view");
+        if (toolParam) {
+          setActiveSection(toolParam);
+          setOpenTabs(prev => prev.includes(toolParam) ? prev : [...prev, toolParam]);
+        } else if (viewParam === "toolbox") {
+          setActiveSection("home");
+        }
+      } catch (e) {}
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
   useEffect(() => {
@@ -72,6 +89,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         const filtered = prev.filter(t => t !== section);
         return [section, ...filtered].slice(0, 6);
       });
+      if (typeof window !== "undefined") {
+        window.history.replaceState({}, "", `/?tool=${section}`);
+      }
+    } else if (section === "home") {
+      if (typeof window !== "undefined") {
+        window.history.replaceState({}, "", "/?view=toolbox");
+      }
     }
   };
 

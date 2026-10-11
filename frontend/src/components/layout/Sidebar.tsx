@@ -267,6 +267,31 @@ export const Sidebar = ({ onBackToHome }: { onBackToHome?: () => void }) => {
       </div>
       
       <div className="nav-scroll" style={{ flex: 1, overflowY: 'auto' }}>
+        <nav style={{ padding: '8px 12px 6px', display: 'flex', flexDirection: 'column' }}>
+          <button
+            aria-current={activeSection === "home"}
+            onClick={() => handleNavClick("home")}
+            title="Home Workspace — Browse and select all tools"
+            style={{ 
+              fontWeight: activeSection === "home" ? 700 : 500,
+              color: activeSection === "home" ? "var(--text)" : "var(--muted)",
+              background: activeSection === "home" ? "var(--c2)" : "none"
+            }}
+          >
+            <div 
+              className="mini" 
+              style={{ 
+                "--c": "#e8682f", 
+                "--tone": "#e8682f",
+                borderColor: "#e8682f", 
+                color: "#e8682f",
+                background: activeSection === "home" ? "rgba(232, 104, 47, 0.15)" : undefined 
+              } as React.CSSProperties} 
+              dangerouslySetInnerHTML={{ __html: toolIcons["home"] || "⌂" }} 
+            />
+            <span>Home Workspace</span>
+          </button>
+        </nav>
         {renderCustomGroup("My Tools", myTools, true)}
         {renderGroup("Formats", "Formats")}
         {renderGroup("Crop & Resize", "Crop & Resize")}

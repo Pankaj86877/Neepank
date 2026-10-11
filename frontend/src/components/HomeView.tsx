@@ -152,7 +152,7 @@ export const HomeView = () => {
   });
 
   return (
-    <div className="pane home">
+    <div className="home">
       <h1>Your tools</h1>
       <p className="sub">Welcome to your Neepank Toolbox.</p>
       
